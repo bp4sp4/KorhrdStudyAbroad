@@ -1,0 +1,164 @@
+.container {
+  min-height: 100vh;
+  background: #111827;
+  color: #f9fafb;
+}
+
+.header {
+  background: #1f2937;
+  border-bottom: 1px solid #374151;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header_title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.header_right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header_email {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.btn_logout {
+  padding: 6px 14px;
+  font-size: 13px;
+  background: #374151;
+  color: #f9fafb;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.btn_logout:hover {
+  background: #4b5563;
+}
+
+.main {
+  padding: 24px;
+}
+
+.stats_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat_card {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 20px;
+  display: block;
+  transition: border-color 0.15s;
+}
+
+.stat_card_link {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 20px;
+  display: block;
+  transition: border-color 0.15s;
+  text-decoration: none;
+}
+
+.stat_card_link:hover {
+  border-color: #3b82f6;
+}
+
+.stat_label {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.stat_value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.stat_link {
+  font-size: 13px;
+  color: #60a5fa;
+  margin-top: 8px;
+}
+
+.table_wrap {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+}
+
+.table_header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #374151;
+  font-weight: 600;
+}
+
+.table_scroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+}
+
+.table thead tr {
+  border-bottom: 1px solid #374151;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 20px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid rgba(55, 65, 81, 0.5);
+  transition: background 0.1s;
+}
+
+.table tbody tr:hover {
+  background: rgba(55, 65, 81, 0.3);
+}
+
+.table td {
+  padding: 12px 20px;
+}
+
+.td_muted {
+  color: #d1d5db;
+}
+
+.td_date {
+  color: #9ca3af;
+}
+
+.badge_admin {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: rgba(37, 99, 235, 0.3);
+  color: #93c5fd;
+  border-radius: 999px;
+}
+
+.badge_user {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: #374151;
+  color: #9ca3af;
+  border-radius: 999px;
+}

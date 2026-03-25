@@ -1,0 +1,63 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn_login {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0051FF;
+  border: 1.5px solid #0051FF;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.btn_login:hover {
+  background: #c2d5ff;
+  color: #0051FF;
+}
+
+.btn_logout {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.btn_logout:hover {
+  background: #f3f4f6;
+}
+
+.user_email {
+  font-size: 14px;
+  color: #6b7280;
+}
