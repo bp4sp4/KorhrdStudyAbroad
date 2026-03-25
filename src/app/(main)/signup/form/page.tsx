@@ -57,7 +57,7 @@ function SignupForm() {
       setLoading(false)
       return
     }
-    setError('회원가입이 완료되었습니다! 이메일을 확인해주세요.')
+    setError('회원가입이 완료되었습니다!')
     setShowModal(true)
     setTimeout(() => router.push('/login'), 1500)
   }

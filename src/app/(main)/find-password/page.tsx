@@ -136,7 +136,7 @@ export default function FindPasswordPage() {
         <div className={styles.container}>
           <div className={styles.email_login_wrap}>
             <div className={styles.logo_wrap}>
-              <span className={styles.logo_text}>korhrdabroad</span>
+              <img src="/logo.png" alt="한평생 바로유학" className={styles.logo_img} />
             </div>
             <div className={styles.divider}>
               <span>새 비밀번호 설정</span>
@@ -201,7 +201,7 @@ export default function FindPasswordPage() {
       <div className={styles.container}>
         <div className={styles.email_login_wrap}>
           <div className={styles.logo_wrap}>
-            <span className={styles.logo_text}>korhrdabroad</span>
+            <img src="/logo.png" alt="한평생 바로유학" className={styles.logo_img} />
           </div>
           <div className={styles.divider}>
             <span>비밀번호 찾기</span>

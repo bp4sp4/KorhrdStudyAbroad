@@ -160,7 +160,7 @@ export default function FindEmailPage() {
       <div className={styles.container}>
         <div className={styles.email_login_wrap}>
           <div className={styles.logo_wrap}>
-            <span className={styles.logo_text}>korhrdabroad</span>
+            <img src="/logo.png" alt="한평생 바로유학" className={styles.logo_img} />
           </div>
           <div className={styles.divider}>
             <span>이메일 찾기</span>
