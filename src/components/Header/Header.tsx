@@ -9,7 +9,13 @@ export default async function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <a href="/" className={styles.logo}>korhrdabroad</a>
+        
+          <a href="/">
+            <span className={styles.logo}>
+              <img src="/logo.png" alt="한평생 바로유학" />
+            </span>
+          </a>
+        
 
         <nav className={styles.nav}>
           {user ? (
