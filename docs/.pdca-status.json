@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-25T09:55:15.521Z",
+  "lastUpdated": "2026-03-30T05:16:22.378Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -24,7 +24,11 @@
     "terms",
     "privacy",
     "phone",
-    "reset-password"
+    "reset-password",
+    "data",
+    "ProgramSwiper",
+    "ReviewSection",
+    "Footer"
   ],
   "primaryFeature": "supabase",
   "features": {
@@ -50,9 +54,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:15.814Z",
-        "lastUpdated": "2026-03-25T09:26:37.573Z"
+        "lastUpdated": "2026-03-30T03:41:22.514Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/layout.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/types/swiper.d.ts"
     },
     "auth": {
       "phase": "do",
@@ -167,7 +171,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T06:04:25.249Z",
-        "lastUpdated": "2026-03-25T06:04:25.249Z"
+        "lastUpdated": "2026-03-30T05:16:22.378Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/layout.tsx"
     },
@@ -326,6 +330,58 @@
         "lastUpdated": "2026-03-25T09:15:11.997Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/auth/reset-password/route.ts"
+    },
+    "data": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-30T03:16:32.970Z",
+        "lastUpdated": "2026-03-30T03:16:32.970Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/data/programs.ts"
+    },
+    "ProgramSwiper": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-30T03:16:40.610Z",
+        "lastUpdated": "2026-03-30T03:42:39.135Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ProgramSwiper/ProgramSwiper.tsx"
+    },
+    "ReviewSection": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-30T03:56:43.335Z",
+        "lastUpdated": "2026-03-30T04:58:27.096Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ReviewSection/ReviewSection.tsx"
+    },
+    "Footer": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-30T05:16:03.514Z",
+        "lastUpdated": "2026-03-30T05:16:03.514Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/Footer/Footer.tsx"
     }
   },
   "pipeline": {
@@ -336,7 +392,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-25T09:55:15.521Z"
+    "lastActivity": "2026-03-30T05:16:22.378Z"
   },
   "history": [
     {
@@ -1008,6 +1064,264 @@
     {
       "timestamp": "2026-03-25T09:55:15.521Z",
       "feature": "email",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:15:27.849Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:20:49.057Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:32:09.536Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:43:07.002Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:45:27.426Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:49:00.939Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:49:04.967Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:50:51.576Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T02:53:41.582Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:01:09.023Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:04:35.088Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:09:16.742Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:11:25.743Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:12:22.241Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:12:36.795Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:12:42.822Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:13:21.747Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:16:32.970Z",
+      "feature": "data",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:16:40.610Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:17:06.322Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:17:14.742Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:21:09.590Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:31:41.788Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:31:47.493Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:33:37.510Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:33:54.945Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:41:22.514Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:41:29.566Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:41:50.253Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:42:13.991Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:42:34.757Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:42:39.135Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:47:41.197Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:47:53.411Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:56:43.335Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:57:19.178Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T03:57:29.464Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T04:55:17.708Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T04:56:58.307Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T04:57:04.912Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T04:58:27.096Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T05:16:03.514Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-30T05:16:22.378Z",
+      "feature": "(main)",
       "phase": "do",
       "action": "updated"
     }

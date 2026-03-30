@@ -1,0 +1,157 @@
+/* Design Tokens */
+:root {
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f9fafb;
+  --color-bg-muted: #f3f4f6;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-border-subtle: #f3f4f6;
+
+  --color-text: #111827;
+  --color-text-subtle: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-text-inverse: #ffffff;
+
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-subtle: #eff6ff;
+
+  /* Toss Design System Tokens */
+  --toss-blue: #3182F6;
+  --toss-blue-hover: #1b64da;
+  --toss-blue-subtle: #EBF3FE;
+  --toss-bg: #F2F4F6;
+  --toss-card-bg: #FFFFFF;
+  --toss-text-primary: #191F28;
+  --toss-text-secondary: #8B95A1;
+  --toss-text-tertiary: #B0B8C1;
+  --toss-border: #E5E8EB;
+  --toss-border-hover: #D1D6DB;
+
+  /* Toss Layout */
+  --toss-nav-height: 56px;
+  --toss-sidebar-width: 220px;
+
+  /* Toss Border Radius */
+  --toss-radius-card: 8px;
+  --toss-radius-button: 8px;
+  --toss-radius-input: 8px;
+  --toss-radius-badge: 8px;
+
+  /* Toss Shadow */
+  --toss-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --toss-shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  --toss-shadow-dropdown: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* Status Colors (Toss spec) */
+  --color-pending: #FFB020;
+  --color-success: #22C55E;
+  --color-danger: #F04452;
+  --color-info: #3182F6;
+  --color-warning: #FFB020;
+
+  /* Typography */
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Fira Mono', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Transition */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+  --inner-width: 1260px;
+
+  /* Atomic Colors */
+  --atomic-blue-50: #E5EDFF;
+  --atomic-blue-500: #2554E8;
+  --atomic-mono-900: #010101;
+
+  /* Unit scale (Figma) */
+  --unit-1: 4px;
+  --unit-2: 8px;
+  --unit-3: 12px;
+  --unit-4: 16px;
+  --unit-5: 18px;
+  --unit-6: 20px;
+  --unit-8: 24px;
+  --unit-10: 32px;
+  --unit-12: 40px;
+  --unit-16: 48px;
+  --unit-20: 60px;
+  --unit-24: 80px;
+}
+
+/* Dark mode tokens */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0f172a;
+    --color-bg-subtle: #1e293b;
+    --color-bg-muted: #334155;
+    --color-surface: #1e293b;
+    --color-border: #334155;
+    --color-border-subtle: #1e293b;
+
+    --color-text: #f1f5f9;
+    --color-text-subtle: #94a3b8;
+    --color-text-muted: #64748b;
+    --color-text-inverse: #0f172a;
+
+    --color-primary: #3b82f6;
+    --color-primary-hover: #60a5fa;
+    --color-primary-subtle: #1e3a5f;
+  }
+}

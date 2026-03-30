@@ -4,22 +4,32 @@
   z-index: 100;
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--unit-6, 20px) 10px;
 }
 
 .inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-  height: 60px;
   display: flex;
-  align-items: center;
+  width: var(--inner-width, 1260px);
+  max-width: 100%;
   justify-content: space-between;
+  align-items: center;
+}
+
+/* 1400px 이하 (노트북) */
+@media (max-width: 1400px) {
+  .inner {
+    width: 100%;
+  }
 }
 
 .logo {
   display: block;
   width: 200px;
-  height: 58px;
+  height: 46px;
 }
 
 .logo img {
