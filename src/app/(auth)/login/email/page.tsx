@@ -72,7 +72,7 @@ export default function EmailLoginPage() {
       <div className={styles.card}>
         <div className={styles.container}>
           <div className={styles.logo_wrap}>
-            <img src="/logo.png" alt="한평생 바로유학" className={styles.logo_img} />
+            <img src="/logo.png" alt="한평생유학" className={styles.logo_img} />
           </div>
           <div className={styles.divider}>
             <span>이메일 로그인</span>

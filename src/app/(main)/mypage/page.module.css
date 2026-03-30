@@ -1,0 +1,429 @@
+.container {
+  display: flex;
+  padding: 60px clamp(40px, calc(44.315vw - 550.85px), 300px);
+  align-items: flex-start;
+  gap: 24px;
+  min-height: 100vh;
+  background: #F5F6FA;
+}
+
+/* ── 토스트 ── */
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  padding: 14px 24px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: #010101;
+  color: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 9999;
+  animation: fadeInUp 0.2s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── 왼쪽 사이드바 ── */
+.sidebar {
+display: flex;
+width: 312px;
+padding: 32px;
+flex-direction: column;
+gap: 24px;
+flex-shrink: 0;
+border-radius: 12px;
+background: var(--Atomic-Common-White, #FFF);
+}
+
+.sidebar_title {
+  color: #010101;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.sidebar_nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.nav_item {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  gap: 6px;
+  align-self: stretch;
+  border-radius: 6px;
+  border: 1px solid #E4E4E4;
+  background: #fff;
+  color: #3D3D3D;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.2px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.nav_active {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  gap: 6px;
+  align-self: stretch;
+  border-radius: 6px;
+  border: 1px solid #E4E4E4;
+  background: #e8efff;
+  color: #3D3D3D;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.2px;
+}
+
+.nav_icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ── 오른쪽 콘텐츠 ── */
+.content {
+  flex: 1 0 0;
+}
+
+.card {
+  display: flex;
+  padding: 48px 32px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  align-self: stretch;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.section_title {
+  color: #010101;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 31.2px;
+}
+
+/* ── 필드 ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: #010101;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.required {
+  color: #0051FF;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+/* 인풋 공통 */
+.input {
+  display: flex;
+  width: 300px;
+  height: 44px;
+  padding: 12px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #D0D0D0;
+  background: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #010101;
+  outline: none;
+  transition: border-color 0.15s;
+  font-weight: 700;
+}
+
+.input::placeholder {
+  color: #d1d5db;
+}
+
+.input:focus {
+  border-color: #0051FF;
+}
+
+.input_disabled {
+  display: flex;
+  width: 300px;
+  height: 44px;
+  padding: 12px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #D0D0D0;
+  background: #F2F2F2;
+  color: #9ca3af;
+  cursor: default;
+  font-weight: 700;
+}
+
+/* 인풋 + 눈 아이콘 래퍼 */
+.input_wrap {
+  position: relative;
+  display: flex;
+  width: 300px;
+  height: 44px;
+}
+
+.input_wrap .input {
+  width: 300px;
+  height: 44px;
+  padding: 12px;
+  padding-right: 44px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid #D0D0D0;
+  background: #fff;
+}
+
+.eye_btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* 변경하기 버튼 */
+.btn_row_right {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 440px;
+}
+
+.btn_change {
+  display: flex;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  background: #0051FF;
+  color: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn_change:hover:not(:disabled) {
+  background: #003ecc;
+}
+
+.btn_change:disabled {
+  background: #d1d5db;
+  cursor: default;
+}
+
+/* 구분선 */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #F2F2F2;
+  flex-shrink: 0;
+}
+
+/* 저장하기 버튼 */
+.btn_save {
+  display: flex;
+  width: 100%;
+  padding: 14px 22px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex: 1 0 0;
+  border-radius: 6px;
+  background: #0051FF;
+  color: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.2px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn_save:hover:not(:disabled) {
+  background: #003ecc;
+}
+
+.btn_save:disabled {
+  background: #d1d5db;
+  cursor: default;
+}
+
+.btn_row_withdraw {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* 탈퇴하기 */
+.btn_withdraw {
+  display: flex;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  background: #F2F2F2;
+  border: none;
+  color: #B2B2B2;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn_withdraw:hover {
+  background: #e5e5e5;
+}
+
+/* ── 프로그램 신청 내역 ── */
+.empty_state {
+  padding: 48px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.empty_text {
+  color: #9ca3af;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  text-align: center;
+}
+
+.history_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.history_info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.history_program {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #010101;
+}
+
+.history_date {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.history_badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.badge_pending {
+  background: #FFF3CD;
+  color: #B45309;
+}
+
+.badge_approved {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.badge_rejected {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+/* ── 반응형 ── */
+@media (max-width: 1199px) {
+  .container {
+    flex-direction: column;
+    padding: 40px 24px;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .sidebar_nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .nav_item {
+    width: auto;
+  }
+}

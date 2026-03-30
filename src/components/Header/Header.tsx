@@ -12,7 +12,7 @@ export default async function Header() {
         
           <a href="/">
             <span className={styles.logo}>
-              <img src="/logo.png" alt="한평생 바로유학" />
+              <img src="/logo.png" alt="한평생 유학" />
             </span>
           </a>
         
@@ -20,7 +20,7 @@ export default async function Header() {
         <nav className={styles.nav}>
           {user ? (
             <>
-              <span className={styles.user_email}>{user.email}</span>
+              <a href="/mypage" className={styles.btn_mypage}>마이페이지</a>
               <form action={logout}>
                 <button type="submit" className={styles.btn_logout}>로그아웃</button>
               </form>

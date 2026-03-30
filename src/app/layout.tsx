@@ -3,10 +3,10 @@ import './globals.css'
 import '@/styles/tokens.css'
 
 export const metadata: Metadata = {
-  title: '한평생 바로유학',
+  title: '한평생 유학',
   description: '유학 홈페이지',
   openGraph: {
-    title: '한평생 바로유학',
+    title: '한평생 유학',
     description: '유학 홈페이지',
     images: [
       {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '한평생 바로유학',
+    title: '한평생 유학',
     description: '유학 홈페이지',
     images: ['/og-image.png'],
   },

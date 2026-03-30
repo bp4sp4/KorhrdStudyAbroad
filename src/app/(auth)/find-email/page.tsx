@@ -6,17 +6,13 @@ import { useRouter } from 'next/navigation'
 import AlertModal from '@/components/AlertModal/AlertModal'
 import styles from '../auth.module.css'
 
-type Step = 'phone' | 'password'
-
-export default function FindPasswordPage() {
+export default function FindEmailPage() {
   const router = useRouter()
-  const [step, setStep] = useState<Step>('phone')
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [sent, setSent] = useState(false)
+  const [verified, setVerified] = useState(false)
   const [sending, setSending] = useState(false)
   const [verifying, setVerifying] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -24,6 +20,7 @@ export default function FindPasswordPage() {
   const [toast, setToast] = useState('')
   const [error, setError] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [foundEmail, setFoundEmail] = useState('')
   const [phoneTouched, setPhoneTouched] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -93,101 +90,63 @@ export default function FindPasswordPage() {
     const data = await res.json()
     setVerifying(false)
     if (data.success) {
+      setVerified(true)
       if (timerRef.current) clearInterval(timerRef.current)
-      setStep('password')
+      await findEmail()
     } else {
       setError(data.error || '인증번호가 올바르지 않습니다.')
       setShowModal(true)
     }
   }
 
-  const handleResetPassword = async () => {
-    if (password !== passwordConfirm) {
-      setError('비밀번호가 일치하지 않습니다.')
-      setShowModal(true)
-      return
-    }
+  const findEmail = async () => {
     setLoading(true)
-    const res = await fetch('/api/auth/reset-password', {
+    const res = await fetch('/api/auth/find-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ full_name: fullName, phone, password }),
+      body: JSON.stringify({ full_name: fullName, phone }),
     })
     const data = await res.json()
     setLoading(false)
     if (!res.ok) {
-      setError(data.error || '비밀번호 변경에 실패했습니다.')
+      setError(data.error || '입력하신 정보와 일치하는 이메일을 찾을 수 없습니다.')
       setShowModal(true)
       return
     }
-    showToast('성공적으로 변경되었습니다.')
-    setTimeout(() => router.push('/login'), 1500)
+    setFoundEmail(data.email)
   }
 
-  const isPasswordValid = password.length >= 8
-  const isPasswordMatch = password === passwordConfirm
-
-
-  // 새 비밀번호 설정 화면
-  if (step === 'password') {
+  if (foundEmail) {
     return (
-      <>
-        {showModal && <AlertModal message={error} onClose={() => setShowModal(false)} />}
-        <div className={styles.container}>
-          <div className={styles.email_login_wrap}>
-            <div className={styles.logo_wrap}>
-              <img src="/logo.png" alt="한평생 바로유학" className={styles.logo_img} />
-            </div>
-            <div className={styles.divider}>
-              <span>새 비밀번호 설정</span>
-            </div>
-
-            <div className={styles.form_group}>
-              <label className={styles.label}>
-                새 비밀번호<span className={styles.required}>*</span>
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={`${styles.input} ${password && !isPasswordValid ? styles.input_error : ''}`}
-                placeholder="최소 8자 이상"
-              />
-              {password && !isPasswordValid && (
-                <div className={styles.error_message}>최소 8자 이상 입력해 주세요.</div>
-              )}
-            </div>
-
-            <div className={styles.form_group}>
-              <label className={styles.label}>
-                비밀번호 확인<span className={styles.required}>*</span>
-              </label>
-              <input
-                type="password"
-                value={passwordConfirm}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
-                className={`${styles.input} ${passwordConfirm && !isPasswordMatch ? styles.input_error : ''}`}
-                placeholder="위 비밀번호와 동일하게 입력"
-              />
-              {passwordConfirm && !isPasswordMatch && (
-                <div className={styles.error_message}>비밀번호가 일치하지 않습니다.</div>
-              )}
-            </div>
-
+      <div className={styles.container}>
+        <div className={styles.email_login_wrap}>
+          <div className={styles.email_result}>
+            <p className={styles.found_email}>
+              사용자님의 이메일 아이디는<br />
+              <span className={styles.success_email}>{foundEmail}</span>
+              입니다.
+            </p>
+          </div>
+          <div className={styles.success_btn_wrap}>
             <button
-              className={styles.login_button}
-              disabled={!isPasswordValid || !isPasswordMatch || !passwordConfirm || loading}
-              onClick={handleResetPassword}
+              onClick={() => router.push('/login')}
+              className={styles.login_button_round}
+              style={{ marginBottom: 0 }}
             >
-              {loading ? '변경 중...' : '비밀번호 변경'}
+              로그인하기
+            </button>
+            <button
+              onClick={() => router.push('/find-password')}
+              className={styles.password_button}
+            >
+              비밀번호 찾기
             </button>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 
-  // 번호 인증 화면
   return (
     <>
       {toast && (
@@ -201,10 +160,10 @@ export default function FindPasswordPage() {
       <div className={styles.container}>
         <div className={styles.email_login_wrap}>
           <div className={styles.logo_wrap}>
-            <img src="/logo.png" alt="한평생 바로유학" className={styles.logo_img} />
+            <img src="/logo.png" alt="한평생유학" className={styles.logo_img} />
           </div>
           <div className={styles.divider}>
-            <span>비밀번호 찾기</span>
+            <span>이메일 찾기</span>
           </div>
 
           <div className={styles.form_group}>
@@ -233,6 +192,7 @@ export default function FindPasswordPage() {
                 setPhone(raw)
                 setSent(false)
                 setCode('')
+                setVerified(false)
               }}
               onBlur={() => setPhoneTouched(true)}
               className={`${styles.input} ${phoneError ? styles.input_error : ''}`}
@@ -291,10 +251,10 @@ export default function FindPasswordPage() {
           ) : (
             <button
               className={styles.login_button}
-              disabled={code.length !== 6 || verifying || timer === 0}
+              disabled={code.length !== 6 || verifying || timer === 0 || loading}
               onClick={verifyCode}
             >
-              {verifying ? '확인 중...' : '인증 확인'}
+              {verifying || loading ? '확인 중...' : '이메일 찾기'}
             </button>
           )}
 
