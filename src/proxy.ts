@@ -75,7 +75,7 @@ export async function proxy(request: NextRequest) {
   }
 
   // 일반 보호 라우트
-  const protectedRoutes = ['/profile', '/mypage']
+  const protectedRoutes = ['/profile', '/mypage', '/apply']
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   )

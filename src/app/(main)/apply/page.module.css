@@ -422,6 +422,40 @@ line-height: 31.2px; /* 120% */
   white-space: pre-line;
 }
 
+@keyframes errorSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.error_msg {
+  color: #FF3B30;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  margin-top: 6px;
+  animation: errorSlideIn 0.2s ease;
+}
+
+.input_error {
+  border-color: #FF3B30 !important;
+}
+
+.file_error {
+  border-color: #FF3B30 !important;
+}
+
+.file_name {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #010101;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 220px;
+}
+
 .agree_check {
   display: flex;
   align-items: center;

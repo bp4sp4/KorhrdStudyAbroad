@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import styles from './page.module.css'
+import { createClient } from '@/lib/supabase/client'
 
 const IconProgram = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -53,9 +55,10 @@ const PROGRAM_OPTIONS = [
   { value: '10week', label: '10주 프로그램' },
 ]
 
-function CustomSelect({ options, placeholder = '선택해주세요.' }: {
+function CustomSelect({ options, placeholder = '선택해주세요.', onSelect }: {
   options: { value: string; label: string }[]
   placeholder?: string
+  onSelect?: (value: string) => void
 }) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState('')
@@ -92,7 +95,7 @@ function CustomSelect({ options, placeholder = '선택해주세요.' }: {
             <li
               key={opt.value}
               className={`${styles.custom_select_item} ${selected === opt.value ? styles.custom_select_item_active : ''}`}
-              onClick={() => { setSelected(opt.value); setOpen(false) }}
+              onClick={() => { setSelected(opt.value); setOpen(false); onSelect?.(opt.value) }}
             >
               {opt.label}
             </li>
@@ -111,12 +114,255 @@ declare global {
   }
 }
 
+const FIELD_SECTION: Record<string, string> = {
+  program: 'program',
+  korean_name: 'basic', birth_date: 'basic', birth_city: 'basic',
+  address: 'basic', email: 'basic', phone: 'basic', school_name: 'basic', grade: 'basic', gender: 'basic',
+  passport_name: 'passport', passport_number: 'passport', passport_expiry: 'passport',
+  passport_file: 'passport', id_photo_file: 'passport',
+  guardian_name: 'guardian', guardian_phone: 'guardian', guardian_email: 'guardian', guardian_birth_city: 'guardian',
+  english_level: 'homestay', allergy: 'homestay', swim_level: 'homestay',
+  participant_agree: 'agree', participant_sig: 'agree',
+  guardian_agree: 'agree', guardian_sig: 'agree', refund_agree: 'agree',
+}
+
+const SECTION_ORDER = ['program', 'basic', 'passport', 'guardian', 'homestay', 'agree']
+
 export default function ApplyPage() {
-  const [active, setActive] = useState('basic')
+  const router = useRouter()
+  const [active, setActive] = useState('program')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
   const [addressDetail, setAddressDetail] = useState('')
   const [guardianPhone, setGuardianPhone] = useState('')
+  const [programValue, setProgramValue] = useState('')
+  const [schoolType, setSchoolType] = useState('')
+  const [errors, setErrors] = useState<Set<string>>(new Set())
+  const [fileNames, setFileNames] = useState<Record<string, string>>({})
+  const [fileObjects, setFileObjects] = useState<Record<string, File>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
+
+  const hasError = (field: string) => errors.has(field)
+  const clearError = (field: string) => setErrors(prev => { const s = new Set(prev); s.delete(field); return s })
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setFileNames(prev => ({ ...prev, [field]: file.name }))
+      setFileObjects(prev => ({ ...prev, [field]: file }))
+      clearError(field)
+    }
+  }
+
+  // IntersectionObserver: 스크롤 위치에 따라 active 업데이트
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('data-section')
+            if (id) setActive(id)
+          }
+        })
+      },
+      { rootMargin: '-120px 0px -50% 0px', threshold: 0 }
+    )
+    SECTION_ORDER.forEach(id => {
+      const el = sectionRefs.current[id]
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const scrollToSection = (id: string) => {
+    const el = sectionRefs.current[id]
+    if (!el) return
+    const top = el.getBoundingClientRect().top + window.scrollY - 112
+    window.scrollTo({ top, behavior: 'smooth' })
+    setActive(id)
+  }
+
+  const handleSubmit = async (isDraft = false) => {
+    if (!isDraft) {
+      const newErrors = new Set<string>()
+
+      if (!programValue) newErrors.add('program')
+
+      const basicSec = sectionRefs.current['basic']
+      if (basicSec) {
+        basicSec.querySelectorAll<HTMLInputElement>('[data-field]').forEach(input => {
+          const f = input.getAttribute('data-field')!
+          if (['text', 'email', 'tel'].includes(input.type) && !input.value.trim()) newErrors.add(f)
+        })
+        if (!basicSec.querySelector('input[name="gender"]:checked')) newErrors.add('gender')
+      }
+
+      const passSec = sectionRefs.current['passport']
+      if (passSec) {
+        passSec.querySelectorAll<HTMLInputElement>('[data-field]').forEach(input => {
+          const f = input.getAttribute('data-field')!
+          if (input.type === 'text' && !input.value.trim()) newErrors.add(f)
+        })
+        if (!fileNames['passport_file']) newErrors.add('passport_file')
+        if (!fileNames['id_photo_file']) newErrors.add('id_photo_file')
+      }
+
+      const guardSec = sectionRefs.current['guardian']
+      if (guardSec) {
+        guardSec.querySelectorAll<HTMLInputElement>('[data-field]').forEach(input => {
+          const f = input.getAttribute('data-field')!
+          if (['text', 'email', 'tel'].includes(input.type) && !input.value.trim()) newErrors.add(f)
+        })
+      }
+
+      const homestSec = sectionRefs.current['homestay']
+      if (homestSec) {
+        if (!homestSec.querySelector('input[name="english_level"]:checked')) newErrors.add('english_level')
+        const allergyBoxes = homestSec.querySelectorAll<HTMLInputElement>('input[name="allergy"]')
+        if (!Array.from(allergyBoxes).some(c => c.checked)) newErrors.add('allergy')
+        if (!homestSec.querySelector('input[name="swim_level"]:checked')) newErrors.add('swim_level')
+      }
+
+      const agreeSec = sectionRefs.current['agree']
+      if (agreeSec) {
+        if (!agreeSec.querySelector('input[name="participant_agree"]:checked')) newErrors.add('participant_agree')
+        if (!fileNames['participant_sig']) newErrors.add('participant_sig')
+        if (!agreeSec.querySelector('input[name="guardian_agree"]:checked')) newErrors.add('guardian_agree')
+        if (!fileNames['guardian_sig']) newErrors.add('guardian_sig')
+        if (!agreeSec.querySelector('input[name="refund_agree"]:checked')) newErrors.add('refund_agree')
+      }
+
+      setErrors(newErrors)
+
+      if (newErrors.size > 0) {
+        for (const id of SECTION_ORDER) {
+          if ([...newErrors].some(f => FIELD_SECTION[f] === id)) {
+            scrollToSection(id)
+            break
+          }
+        }
+        return
+      }
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      const supabase = createClient()
+
+      // 현재 로그인한 유저 id
+      const { data: { user } } = await supabase.auth.getUser()
+
+      const getValue = (field: string) =>
+        (document.querySelector<HTMLInputElement>(`[data-field="${field}"]`)?.value ?? '').trim()
+
+      const getRadio = (name: string) =>
+        document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? ''
+
+      const getCheckboxes = (name: string) =>
+        Array.from(document.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`))
+          .map(c => c.value)
+
+      // 파일 업로드
+      const uploadFile = async (fieldKey: string, folder: string): Promise<string | null> => {
+        const file = fileObjects[fieldKey]
+        if (!file) return null
+        const ext = file.name.split('.').pop()
+        const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+        const { data, error } = await supabase.storage
+          .from('application-files')
+          .upload(path, file)
+        if (error) { console.error('upload error', error); return null }
+        return data.path
+      }
+
+      const [passportFileUrl, idPhotoUrl, participantSigUrl, guardianSigUrl, guardianPassportUrl, guardianPhotoUrl] =
+        await Promise.all([
+          uploadFile('passport_file', 'passport'),
+          uploadFile('id_photo_file', 'id-photo'),
+          uploadFile('participant_sig', 'signatures'),
+          uploadFile('guardian_sig', 'signatures'),
+          uploadFile('guardian_passport', 'guardian-passport'),
+          uploadFile('guardian_photo', 'guardian-photo'),
+        ])
+
+      const getTextarea = (name: string) =>
+        (document.querySelector<HTMLTextAreaElement>(`[name="${name}"]`)?.value ?? '').trim() || null
+
+      const { error } = await supabase.from('applications').insert({
+        user_id: user?.id ?? null,
+        status: isDraft ? 'draft' : 'submitted',
+        // 프로그램
+        program: programValue,
+        // 참가자 기본정보
+        name: getValue('korean_name'),
+        english_name: getValue('english_name') || null,
+        birth_date: getValue('birth_date') || null,
+        blood_type: getRadio('blood') || null,
+        gender: getRadio('gender'),
+        birth_city: getValue('birth_city'),
+        phone,
+        email: getValue('email'),
+        school_type: schoolType || null,
+        school: getValue('school_name'),
+        school_grade: getValue('grade'),
+        address,
+        address_detail: addressDetail,
+        // 해외 출국용 정보
+        passport_name: getValue('passport_name'),
+        passport_number: getValue('passport_number'),
+        passport_expiry: getValue('passport_expiry') || null,
+        passport_file_url: passportFileUrl,
+        id_photo_url: idPhotoUrl,
+        // 보호자 정보
+        guardian_name: getValue('guardian_name'),
+        guardian_phone: guardianPhone,
+        guardian_email: getValue('guardian_email'),
+        guardian_birth_city: getValue('guardian_birth_city'),
+        guardian_passport_url: guardianPassportUrl,
+        guardian_photo_url: guardianPhotoUrl,
+        // 홈스테이 정보
+        english_level: getRadio('english_level'),
+        self_intro: getTextarea('self_intro'),
+        family_intro: getTextarea('family_intro'),
+        homestay_notes: getTextarea('homestay_notes'),
+        personality: getTextarea('personality'),
+        hobbies: getTextarea('hobbies'),
+        health_notes: getTextarea('health_notes'),
+        special_notes: getTextarea('special_notes'),
+        extra_notes: getTextarea('extra_notes'),
+        allergies: getCheckboxes('allergy'),
+        swim_level: getRadio('swim_level'),
+        // 참가 동의
+        participant_sig_url: participantSigUrl,
+        guardian_sig_url: guardianSigUrl,
+        agreed_terms: !!document.querySelector('input[name="participant_agree"]:checked'),
+        agreed_privacy: !!document.querySelector('input[name="guardian_agree"]:checked'),
+        agreed_media: !!document.querySelector('input[name="refund_agree"]:checked'),
+      })
+
+      if (error) {
+        console.error('insert error', error)
+        alert('신청 중 오류가 발생했습니다. 다시 시도해주세요.')
+        return
+      }
+
+      if (isDraft) {
+        alert('임시저장 되었습니다.')
+      } else {
+        alert('신청이 완료되었습니다!')
+        router.push('/')
+      }
+    } catch (e) {
+      console.error(e)
+      alert('오류가 발생했습니다. 다시 시도해주세요.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const formatPhone = (value: string) => {
     const digits = value.replace(/\D/g, '').slice(0, 11)
@@ -156,7 +402,7 @@ export default function ApplyPage() {
             <button
               key={item.id}
               className={`${styles.nav_item} ${active === item.id ? styles.nav_active : ''}`}
-              onClick={() => setActive(item.id)}
+              onClick={() => scrollToSection(item.id)}
             >
               <span className={styles.nav_icon}>{item.icon}</span>
               <span>{item.label}</span>
@@ -174,29 +420,39 @@ export default function ApplyPage() {
         </div>
 
         {/* 프로그램 선택 */}
-        <section className={styles.section}>
+        <section
+          className={styles.section}
+          data-section="program"
+          ref={el => { sectionRefs.current['program'] = el }}
+        >
           <h2 className={styles.section_title}>어떤 프로그램으로 참가하시나요?</h2>
           <div className={styles.field}>
             <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>신청하실 유학 프로그램을 선택해주세요.</p>
-            <CustomSelect options={PROGRAM_OPTIONS} />
+            <CustomSelect options={PROGRAM_OPTIONS} onSelect={(v) => { setProgramValue(v); clearError('program') }} />
+            {hasError('program') && <p className={styles.error_msg}>프로그램을 선택해주세요.</p>}
           </div>
         </section>
 
         {/* 참가자 기본 정보 */}
-        <section className={styles.section}>
+        <section
+          className={styles.section}
+          data-section="basic"
+          ref={el => { sectionRefs.current['basic'] = el }}
+        >
           <h2 className={styles.section_title}>참가자의 기본정보를 알려주세요.</h2>
 
           <div className={styles.field}>
             <label className={styles.label}>한국 이름 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>한글로 입력해주세요</p>
-            <input className={styles.input} type="text" placeholder="예) 홍길동" />
+            <input className={`${styles.input} ${hasError('korean_name') ? styles.input_error : ''}`} type="text" placeholder="예) 홍길동" data-field="korean_name" onChange={() => clearError('korean_name')} />
+            {hasError('korean_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>영어이름</label>
             <p className={styles.field_desc}>영어이름이 있다면 입력해주세요</p>
-            <input className={styles.input} type="text" placeholder="예) Danny" />
+            <input className={styles.input} type="text" placeholder="예) Danny" data-field="english_name" />
           </div>
 
           <div className={styles.field}>
@@ -204,12 +460,13 @@ export default function ApplyPage() {
             <p className={styles.field_desc}>성별을 선택해주세요</p>
             <div className={styles.radio_group}>
               <label className={styles.radio_label}>
-                <input type="radio" name="gender" value="male" /> 남자(Male)
+                <input type="radio" name="gender" value="남자" onChange={() => clearError('gender')} /> 남자(Male)
               </label>
               <label className={styles.radio_label}>
-                <input type="radio" name="gender" value="female" /> 여자(Female)
+                <input type="radio" name="gender" value="여자" onChange={() => clearError('gender')} /> 여자(Female)
               </label>
             </div>
+            {hasError('gender') && <p className={styles.error_msg}>성별을 선택해주세요.</p>}
           </div>
 
           <div className={styles.field}>
@@ -227,13 +484,15 @@ export default function ApplyPage() {
           <div className={styles.field}>
             <label className={styles.label}>생년월일 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>생년월일을 입력해주세요</p>
-            <input className={styles.input} type="text" placeholder="YYYY/MM/DD" />
+            <input className={`${styles.input} ${hasError('birth_date') ? styles.input_error : ''}`} type="text" placeholder="YYYY/MM/DD" data-field="birth_date" onChange={() => clearError('birth_date')} />
+            {hasError('birth_date') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>출생 도시 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>참가자의 출생 도시를 입력해주세요</p>
-            <input className={styles.input} type="text" placeholder="예) 서울" />
+            <input className={`${styles.input} ${hasError('birth_city') ? styles.input_error : ''}`} type="text" placeholder="예) 서울" data-field="birth_city" onChange={() => clearError('birth_city')} />
+            {hasError('birth_city') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
@@ -241,13 +500,14 @@ export default function ApplyPage() {
             <p className={styles.field_desc}>집 주소를 입력해주세요.</p>
             <div className={styles.address_row}>
               <input
-                className={`${styles.input} ${styles.input_wide}`}
+                className={`${styles.input} ${styles.input_wide} ${hasError('address') ? styles.input_error : ''}`}
                 type="text"
                 placeholder="주소를 검색해주세요."
                 value={address}
                 readOnly
+                data-field="address"
               />
-              <button type="button" className={styles.btn_address} onClick={openPostcode}>
+              <button type="button" className={styles.btn_address} onClick={() => { openPostcode(); clearError('address') }}>
                 주소 찾기
               </button>
             </div>
@@ -258,24 +518,28 @@ export default function ApplyPage() {
               value={addressDetail}
               onChange={(e) => setAddressDetail(e.target.value)}
             />
+            {hasError('address') && <p className={styles.error_msg}>주소를 검색해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>이메일 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>참가자의 이메일 주소를 입력해주세요.</p>
-            <input className={styles.input} type="email" placeholder="예) hpsabroad@email.com" />
+            <input className={`${styles.input} ${hasError('email') ? styles.input_error : ''}`} type="email" placeholder="예) hpsabroad@email.com" data-field="email" onChange={() => clearError('email')} />
+            {hasError('email') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>연락처 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>참가자의 연락가능한 연락처를 입력해주세요. 만약 없을 경우, 보호자의 연락처를 입력해주세요.</p>
             <input
-              className={styles.input}
+              className={`${styles.input} ${hasError('phone') ? styles.input_error : ''}`}
               type="tel"
               placeholder="예) 010-0000-0000"
               value={phone}
-              onChange={handlePhone}
+              onChange={(e) => { handlePhone(e); clearError('phone') }}
+              data-field="phone"
             />
+            {hasError('phone') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
@@ -287,73 +551,161 @@ export default function ApplyPage() {
                 { value: 'middle', label: '중학교' },
                 { value: 'high', label: '고등학교' },
                 { value: 'university', label: '대학교' },
-              ]} placeholder="초/중/고/대" />
-              <input className={`${styles.input} ${styles.input_school}`} type="text" placeholder="예)한영성초등학교" />
+              ]} placeholder="초/중/고/대" onSelect={(v) => setSchoolType(v)} />
+              <input className={`${styles.input} ${styles.input_school} ${hasError('school_name') ? styles.input_error : ''}`} type="text" placeholder="예)한영성초등학교" data-field="school_name" onChange={() => clearError('school_name')} />
             </div>
+            {hasError('school_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>학년 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>학년을 작성해주세요.</p>
-            <input className={styles.input} type="text" placeholder="예) 4학년" />
+            <input className={`${styles.input} ${hasError('grade') ? styles.input_error : ''}`} type="text" placeholder="예) 4학년" data-field="grade" onChange={() => clearError('grade')} />
+            {hasError('grade') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
         </section>
 
         {/* 해외 출국용 정보 */}
-        <section className={styles.section}>
+        <section
+          className={styles.section}
+          data-section="passport"
+          ref={el => { sectionRefs.current['passport'] = el }}
+        >
           <h2 className={styles.section_title}>해외 출국시에 꼭 필요한 정보를 알려주세요.</h2>
 
           <div className={styles.field}>
             <label className={styles.label}>여권상 영문 이름 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>이름 → 성 순서로 입력해주세요</p>
-            <input className={styles.input} type="text" placeholder="예) Gildong Hong" />
+            <input className={`${styles.input} ${hasError('passport_name') ? styles.input_error : ''}`} type="text" placeholder="예) Gildong Hong" data-field="passport_name" onChange={() => clearError('passport_name')} />
+            {hasError('passport_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>여권번호 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>여권번호를 정확하게 입력해주세요.</p>
-            <input className={styles.input} type="text" placeholder="예) M12345678 혹은 M123A4567" />
+            <input className={`${styles.input} ${hasError('passport_number') ? styles.input_error : ''}`} type="text" placeholder="예) M12345678 혹은 M123A4567" data-field="passport_number" onChange={() => clearError('passport_number')} />
+            {hasError('passport_number') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>여권만료일 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>여권 만료일을 정확하게 입력해주세요.</p>
-            <input className={styles.input} type="text" placeholder="예) 24 Jan 2030" />
+            <input className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`} type="text" placeholder="예) 24 Jan 2030" data-field="passport_expiry" onChange={() => clearError('passport_expiry')} />
+            {hasError('passport_expiry') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>여권사본 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(기준 작성.. JPG, PNG)</p>
-            <label className={styles.file_upload}>
-              <span className={styles.file_placeholder}>파일을 업로드해주세요.</span>
+            <label className={`${styles.file_upload} ${hasError('passport_file') ? styles.file_error : ''}`}>
+              <span className={fileNames['passport_file'] ? styles.file_name : styles.file_placeholder}>
+                {fileNames['passport_file'] || '파일을 업로드해주세요.'}
+              </span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 16 12 12 8 16"/>
-                <line x1="12" y1="12" x2="12" y2="21"/>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
               </svg>
-              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} />
+              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} onChange={e => handleFileChange(e, 'passport_file')} />
             </label>
+            {hasError('passport_file') && <p className={styles.error_msg}>파일을 업로드해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>증명사진 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>증명사진을 올려주세요.(기준 작성.. JPG, PNG)</p>
-            <label className={styles.file_upload}>
-              <span className={styles.file_placeholder}>파일을 업로드해주세요.</span>
+            <label className={`${styles.file_upload} ${hasError('id_photo_file') ? styles.file_error : ''}`}>
+              <span className={fileNames['id_photo_file'] ? styles.file_name : styles.file_placeholder}>
+                {fileNames['id_photo_file'] || '파일을 업로드해주세요.'}
+              </span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 16 12 12 8 16"/>
-                <line x1="12" y1="12" x2="12" y2="21"/>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
               </svg>
-              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} />
+              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} onChange={e => handleFileChange(e, 'id_photo_file')} />
+            </label>
+            {hasError('id_photo_file') && <p className={styles.error_msg}>파일을 업로드해주세요.</p>}
+          </div>
+
+        </section>
+
+        {/* 보호자 정보 */}
+        <section
+          className={styles.section}
+          data-section="guardian"
+          ref={el => { sectionRefs.current['guardian'] = el }}
+        >
+          <h2 className={styles.section_title}>보호자 정보를 알려주세요.</h2>
+
+          <div className={styles.field}>
+            <label className={styles.label}>보호자 이름 <span className={styles.required}>*</span></label>
+            <p className={styles.field_desc}>한글로 입력해주세요.</p>
+            <input className={`${styles.input} ${hasError('guardian_name') ? styles.input_error : ''}`} type="text" placeholder="예) 홍길동" data-field="guardian_name" onChange={() => clearError('guardian_name')} />
+            {hasError('guardian_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>보호자 연락처 <span className={styles.required}>*</span></label>
+            <p className={styles.field_desc}>보호자의 연락가능한 연락처를 알려주세요.</p>
+            <input
+              className={`${styles.input} ${hasError('guardian_phone') ? styles.input_error : ''}`}
+              type="tel"
+              placeholder="예) 010-0000-0000"
+              value={guardianPhone}
+              onChange={(e) => { handleGuardianPhone(e); clearError('guardian_phone') }}
+              data-field="guardian_phone"
+            />
+            {hasError('guardian_phone') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>보호자 이메일 <span className={styles.required}>*</span></label>
+            <p className={styles.field_desc}>보호자의 이메일 주소를 입력해주세요.</p>
+            <input className={`${styles.input} ${hasError('guardian_email') ? styles.input_error : ''}`} type="email" placeholder="예) hpsabroad@email.com" data-field="guardian_email" onChange={() => clearError('guardian_email')} />
+            {hasError('guardian_email') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>보호자 출생 도시 <span className={styles.required}>*</span></label>
+            <p className={styles.field_desc}>보호자의 출생 도시를 입력해주세요.</p>
+            <input className={`${styles.input} ${hasError('guardian_birth_city') ? styles.input_error : ''}`} type="text" placeholder="예) 서울" data-field="guardian_birth_city" onChange={() => clearError('guardian_birth_city')} />
+            {hasError('guardian_birth_city') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>보호자 여권사본</label>
+            <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(기준 작성.. JPG, PNG)</p>
+            <label className={styles.file_upload}>
+              <span className={fileNames['guardian_passport'] ? styles.file_name : styles.file_placeholder}>
+                {fileNames['guardian_passport'] || '파일을 업로드해주세요.'}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} onChange={e => handleFileChange(e, 'guardian_passport')} />
+            </label>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>보호자 증명사진</label>
+            <p className={styles.field_desc}>증명사진을 올려주세요.(기준 작성.. JPG, PNG)</p>
+            <label className={styles.file_upload}>
+              <span className={fileNames['guardian_photo'] ? styles.file_name : styles.file_placeholder}>
+                {fileNames['guardian_photo'] || '파일을 업로드해주세요.'}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} onChange={e => handleFileChange(e, 'guardian_photo')} />
             </label>
           </div>
 
         </section>
 
         {/* 홈스테이 정보 */}
-        <section className={styles.section}>
+        <section
+          className={styles.section}
+          data-section="homestay"
+          ref={el => { sectionRefs.current['homestay'] = el }}
+        >
           <h2 className={styles.section_title}>딱 맞는 매칭을 위한 홈스테이 관련 정보를 알려주세요.</h2>
 
           <div className={styles.field}>
@@ -362,52 +714,53 @@ export default function ApplyPage() {
             <div className={styles.radio_group}>
               {['상', '중', '하'].map((level) => (
                 <label key={level} className={styles.radio_label}>
-                  <input type="radio" name="english_level" value={level} /> {level}
+                  <input type="radio" name="english_level" value={level} onChange={() => clearError('english_level')} /> {level}
                 </label>
               ))}
             </div>
+            {hasError('english_level') && <p className={styles.error_msg}>항목을 선택해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>자기소개 (Self introduction) <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>홈스테이 부모님을 위한 자기소개를 간략하게 영어로 써주세요.</p>
-            <textarea className={styles.textarea} placeholder="예) I am very cheerful and enjoy conversation." />
+            <textarea className={styles.textarea} name="self_intro" placeholder="예) I am very cheerful and enjoy conversation." />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>가족소개</label>
             <p className={styles.field_desc}>학생의 가족에 대해서 간략하게 소개해주세요.</p>
-            <textarea className={styles.textarea} />
+            <textarea className={styles.textarea} name="family_intro" />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>홈스테이 고려사항</label>
             <p className={styles.field_desc}>반려동물이나 가족구성원에 관한 요구사항을 자세하게 입력해주세요.</p>
-            <textarea className={styles.textarea} />
+            <textarea className={styles.textarea} name="homestay_notes" />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>성격</label>
             <p className={styles.field_desc}>학생의 성격을 자세하게 작성해주세요.</p>
-            <textarea className={styles.textarea} />
+            <textarea className={styles.textarea} name="personality" />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>취미</label>
             <p className={styles.field_desc}>학생의 취미가 있다면 작성해주세요.</p>
-            <textarea className={styles.textarea} />
+            <textarea className={styles.textarea} name="hobbies" />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>특기</label>
             <p className={styles.field_desc}>학생의 특기사항이 있다면 작성해주세요.</p>
-            <textarea className={styles.textarea} />
+            <textarea className={styles.textarea} name="special_notes" />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>음식, 건강상의 주의사항</label>
             <p className={styles.field_desc}>알러지, 입원경력 및 장기복용 약이 있다면 상세하게 작성해주세요.</p>
-            <textarea className={styles.textarea} />
+            <textarea className={styles.textarea} name="health_notes" />
           </div>
 
           <div className={styles.field}>
@@ -428,10 +781,11 @@ export default function ApplyPage() {
                 '그 외 기타 (Others)',
               ].map((item) => (
                 <label key={item} className={styles.checkbox_label}>
-                  <input type="checkbox" name="allergy" value={item} /> {item}
+                  <input type="checkbox" name="allergy" value={item} onChange={() => clearError('allergy')} /> {item}
                 </label>
               ))}
             </div>
+            {hasError('allergy') && <p className={styles.error_msg}>알러지를 선택해주세요.</p>}
           </div>
 
           <div className={styles.field}>
@@ -445,86 +799,27 @@ export default function ApplyPage() {
                 '고급 (Advanced)',
               ].map((level) => (
                 <label key={level} className={styles.radio_label}>
-                  <input type="radio" name="swim_level" value={level} /> {level}
+                  <input type="radio" name="swim_level" value={level} onChange={() => clearError('swim_level')} /> {level}
                 </label>
               ))}
             </div>
+            {hasError('swim_level') && <p className={styles.error_msg}>항목을 선택해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>참고사항</label>
             <p className={styles.field_desc}>또 다른 참고사항이 있으시다면 이곳에 작성해주세요.</p>
-            <textarea className={styles.textarea} />
-          </div>
-
-        </section>
-
-        {/* 보호자 정보 */}
-        <section className={styles.section}>
-          <h2 className={styles.section_title}>보호자 정보를 알려주세요.</h2>
-
-          <div className={styles.field}>
-            <label className={styles.label}>보호자 이름 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>한글로 입력해주세요.</p>
-            <input className={styles.input} type="text" placeholder="예) 홍길동" />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>보호자 연락처 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>보호자의 연락가능한 연락처를 알려주세요.</p>
-            <input
-              className={styles.input}
-              type="tel"
-              placeholder="예) 010-0000-0000"
-              value={guardianPhone}
-              onChange={handleGuardianPhone}
-            />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>보호자 이메일 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>보호자의 이메일 주소를 입력해주세요.</p>
-            <input className={styles.input} type="email" placeholder="예) hpsabroad@email.com" />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>보호자 출생 도시 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>보호자의 출생 도시를 입력해주세요.</p>
-            <input className={styles.input} type="text" placeholder="예) 서울" />
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>보호자 여권사본</label>
-            <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(기준 작성.. JPG, PNG)</p>
-            <label className={styles.file_upload}>
-              <span className={styles.file_placeholder}>파일을 업로드해주세요.</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 16 12 12 8 16"/>
-                <line x1="12" y1="12" x2="12" y2="21"/>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
-              </svg>
-              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} />
-            </label>
-          </div>
-
-          <div className={styles.field}>
-            <label className={styles.label}>보호자 증명사진</label>
-            <p className={styles.field_desc}>증명사진을 올려주세요.(기준 작성.. JPG, PNG)</p>
-            <label className={styles.file_upload}>
-              <span className={styles.file_placeholder}>파일을 업로드해주세요.</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 16 12 12 8 16"/>
-                <line x1="12" y1="12" x2="12" y2="21"/>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
-              </svg>
-              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} />
-            </label>
+            <textarea className={styles.textarea} name="extra_notes" />
           </div>
 
         </section>
 
         {/* 참가 동의 */}
-        <section className={styles.section}>
+        <section
+          className={styles.section}
+          data-section="agree"
+          ref={el => { sectionRefs.current['agree'] = el }}
+        >
           <h2 className={styles.section_title}>마지막으로 동의를 진행해주세요!</h2>
 
           <div className={styles.field}>
@@ -535,52 +830,57 @@ export default function ApplyPage() {
 
 나의 개인적은 불순종과 불찰로 일어나는 불상사에 대해서는 본 캠프 주관자에게 책임을 절대로 전가하지 않을 것을 약속합니다.`}</p>
             <label className={styles.agree_check}>
-              <input type="checkbox" name="participant_agree" /> 네, 동의합니다.
+              <input type="checkbox" name="participant_agree" onChange={() => clearError('participant_agree')} /> 네, 동의합니다.
             </label>
+            {hasError('participant_agree') && <p className={styles.error_msg}>동의해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>참가자 동의 서명 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>참가자 사인을 사진찍어서 올려주세요. (종이에 쓰시고 사진 찍어도 괜찮습니다.)</p>
-            <label className={styles.file_upload}>
-              <span className={styles.file_placeholder}>파일을 업로드해주세요.</span>
+            <label className={`${styles.file_upload} ${hasError('participant_sig') ? styles.file_error : ''}`}>
+              <span className={fileNames['participant_sig'] ? styles.file_name : styles.file_placeholder}>
+                {fileNames['participant_sig'] || '파일을 업로드해주세요.'}
+              </span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 16 12 12 8 16"/>
-                <line x1="12" y1="12" x2="12" y2="21"/>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
               </svg>
-              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} />
+              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} onChange={e => handleFileChange(e, 'participant_sig')} />
             </label>
+            {hasError('participant_sig') && <p className={styles.error_msg}>파일을 업로드해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>보호자 동의서 <span className={styles.required}>*</span></label>
             <p className={styles.agree_text}>{`본인은 금번 행사에 참가하는 학생의 보호자로서 본 캠프의 교육이념을 잘 이해하였으며, 학생의 안전, 교육, 여행 및 긴급한 의료진행 결정 등을 모든 프로그램을 주관하는 관계자에게 위임하고, 학생개인의 부적절한 행동으로 말미암아 일어나는 불미스러운 일에 대해서 귀국이 불가피 할 경우 본인의 비용으로 학생을 귀국시킬 것이며, 관계 기관에 그 어떠한 책임도 전가하지 않을 것 입니다. 그리고 그곳에서 촬영된 사진과 동영상의 저작권은 주최측에 있음을 동의합니다.`}</p>
             <label className={styles.agree_check}>
-              <input type="checkbox" name="guardian_agree" /> 네, 동의합니다.
+              <input type="checkbox" name="guardian_agree" onChange={() => clearError('guardian_agree')} /> 네, 동의합니다.
             </label>
+            {hasError('guardian_agree') && <p className={styles.error_msg}>동의해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>보호자 동의 서명 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>참가자 사인을 사진찍어서 올려주세요. (종이에 쓰시고 사진 찍어도 괜찮습니다.)</p>
-            <label className={styles.file_upload}>
-              <span className={styles.file_placeholder}>파일을 업로드해주세요.</span>
+            <label className={`${styles.file_upload} ${hasError('guardian_sig') ? styles.file_error : ''}`}>
+              <span className={fileNames['guardian_sig'] ? styles.file_name : styles.file_placeholder}>
+                {fileNames['guardian_sig'] || '파일을 업로드해주세요.'}
+              </span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B2B2B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="16 16 12 12 8 16"/>
-                <line x1="12" y1="12" x2="12" y2="21"/>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
               </svg>
-              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} />
+              <input type="file" accept=".jpg,.jpeg,.png" className={styles.file_input} onChange={e => handleFileChange(e, 'guardian_sig')} />
             </label>
+            {hasError('guardian_sig') && <p className={styles.error_msg}>파일을 업로드해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>전체 캠프비 및 항공료 환불에 관한 규정 <span className={styles.required}>*</span></label>
             <p className={styles.agree_text}>{`본 캠프는 그 비용이 참가신청비, 연수비 그리고 항공료로 구분이 됩니다. 참가신청비는 이곳에서 캠프준비하는 비용으로 사용되기에 환불이 불가하며, 연수비는 출국전이면 언제든지 100%환불가능하고, 항공사규정에 맞게 환불해 드립니다.`}</p>
             <label className={styles.agree_check}>
-              <input type="checkbox" name="refund_agree" /> 네, 확인했습니다.
+              <input type="checkbox" name="refund_agree" onChange={() => clearError('refund_agree')} /> 네, 확인했습니다.
             </label>
+            {hasError('refund_agree') && <p className={styles.error_msg}>확인해주세요.</p>}
           </div>
 
         </section>
@@ -590,8 +890,12 @@ export default function ApplyPage() {
 
     {/* 하단 액션 바 */}
     <div className={styles.action_bar}>
-      <button type="button" className={styles.btn_draft}>임시저장</button>
-      <button type="button" className={styles.btn_submit_apply}>유학 프로그램 신청하기</button>
+      <button type="button" className={styles.btn_draft} onClick={() => handleSubmit(true)} disabled={isSubmitting}>
+        {isSubmitting ? '저장 중...' : '임시저장'}
+      </button>
+      <button type="button" className={styles.btn_submit_apply} onClick={() => handleSubmit(false)} disabled={isSubmitting}>
+        {isSubmitting ? '신청 중...' : '유학 프로그램 신청하기'}
+      </button>
     </div>
     </>
   )
