@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.css'
 import { createClient } from '@/lib/supabase/client'
@@ -160,7 +160,7 @@ const FIELD_SECTION: Record<string, string> = {
 
 const SECTION_ORDER = ['program', 'basic', 'passport', 'guardian', 'homestay', 'agree']
 
-export default function ApplyPage() {
+function ApplyPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [step, setStep] = useState<'payment' | 'form'>('payment')
@@ -1249,5 +1249,13 @@ export default function ApplyPage() {
       </button>
     </div>
     </>
+  )
+}
+
+export default function ApplyPage() {
+  return (
+    <Suspense>
+      <ApplyPageInner />
+    </Suspense>
   )
 }
