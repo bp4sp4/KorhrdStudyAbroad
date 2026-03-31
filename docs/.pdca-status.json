@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-31T05:20:52.944Z",
+  "lastUpdated": "2026-03-31T05:33:45.203Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -372,7 +372,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:56:43.335Z",
-        "lastUpdated": "2026-03-30T04:58:27.096Z"
+        "lastUpdated": "2026-03-31T05:33:45.203Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ReviewSection/ReviewSection.tsx"
     },
@@ -476,7 +476,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-31T05:20:52.944Z"
+    "lastActivity": "2026-03-31T05:33:45.203Z"
   },
   "history": [
     {
@@ -2846,6 +2846,12 @@
     {
       "timestamp": "2026-03-31T05:20:52.944Z",
       "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T05:33:45.203Z",
+      "feature": "ReviewSection",
       "phase": "do",
       "action": "updated"
     }
