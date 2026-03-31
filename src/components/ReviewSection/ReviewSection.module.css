@@ -49,9 +49,22 @@
   flex-shrink: 0;
   padding: 32px;
   border-radius: 12px;
-  background: url('/main/review.png') center / cover no-repeat;
+  background: #000;
   position: relative;
   overflow: hidden;
+}
+
+/* 카드 배경 이미지 */
+.review_image_wrap {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.review_image {
+  object-fit: cover;
+  object-position: center;
 }
 
 /* 그라디언트 오버레이 */
