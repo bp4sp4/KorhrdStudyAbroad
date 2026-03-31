@@ -3,36 +3,44 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 const CLOSE_FN = `<script>function done(){try{localStorage.setItem('payment_complete',Date.now().toString())}catch(e){}if(window.opener){try{window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*')}catch(e){}}window.close()}</script>`
 
-function buildSuccessHtml(_csturl: string | null) {
+function buildSuccessHtml(csturl: string | null) {
+  // 영수증 URL이 있으면: 완료 신호 보내고 영수증 페이지로 바로 이동
+  // 없으면: 완료 카드 표시
+  const body = csturl
+    ? `<script>
+        try{localStorage.setItem('payment_complete',Date.now().toString())}catch(e){}
+        if(window.opener){try{window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*')}catch(e){}}
+        window.location.replace('${csturl}');
+      </script>`
+    : `${CLOSE_FN}
+      <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#4C85FF 0%,#0051FF 100%);padding:20px}
+        .card{text-align:center;background:#fff;padding:48px 40px 36px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:380px;width:100%}
+        .icon{width:72px;height:72px;margin:0 auto 20px;background:#e8efff;border-radius:50%;display:flex;align-items:center;justify-content:center}
+        h1{color:#010101;margin:0 0 8px;font-size:22px;font-weight:700}
+        p{color:#919191;margin:0 0 28px;font-size:14px}
+        .btn{display:block;padding:14px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;width:100%;background:#0051FF;color:#fff}
+      </style>
+      <div class="card">
+        <div class="icon">
+          <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+            <path d="M8 20L16 28L32 12" stroke="#0051FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1>결제가 완료되었습니다!</h1>
+        <p>아래 버튼을 눌러 창을 닫아주세요</p>
+        <button class="btn" onclick="done()">확인</button>
+      </div>`
+
   return `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>결제 완료</title>
-    ${CLOSE_FN}
-    <style>
-      *{margin:0;padding:0;box-sizing:border-box}
-      body{font-family:-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#4C85FF 0%,#0051FF 100%);padding:20px}
-      .card{text-align:center;background:#fff;padding:48px 40px 36px;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:380px;width:100%}
-      .icon{width:72px;height:72px;margin:0 auto 20px;background:#e8efff;border-radius:50%;display:flex;align-items:center;justify-content:center}
-      h1{color:#010101;margin:0 0 8px;font-size:22px;font-weight:700}
-      p{color:#919191;margin:0 0 28px;font-size:14px}
-      .btn{display:block;padding:14px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;width:100%;background:#0051FF;color:#fff}
-    </style>
   </head>
-  <body>
-    <div class="card">
-      <div class="icon">
-        <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-          <path d="M8 20L16 28L32 12" stroke="#0051FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h1>결제가 완료되었습니다!</h1>
-      <p>아래 버튼을 눌러 창을 닫아주세요</p>
-      <button class="btn" onclick="done()">확인</button>
-    </div>
-  </body>
+  <body>${body}</body>
 </html>`
 }
 
