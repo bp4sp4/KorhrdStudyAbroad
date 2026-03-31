@@ -381,6 +381,63 @@ function ApplyPageInner() {
 
     isRestoringRef.current = false
     setShouldRestore(false)
+
+    // 첫 번째 비어있는 필드의 섹션으로 스크롤
+    setTimeout(() => {
+      const requiredFields = [
+        { selector: '[data-field="korean_name"]', section: 'basic' },
+        { selector: '[data-field="birth_date"]', section: 'basic' },
+        { selector: '[data-field="birth_city"]', section: 'basic' },
+        { selector: '[data-field="email"]', section: 'basic' },
+        { selector: '[data-field="school_name"]', section: 'basic' },
+        { selector: 'input[name="gender"]', section: 'basic', isRadio: true },
+        { selector: '[data-field="passport_name"]', section: 'passport' },
+        { selector: '[data-field="passport_number"]', section: 'passport' },
+        { selector: '[data-field="passport_expiry"]', section: 'passport' },
+        { selector: '[data-field="guardian_name"]', section: 'guardian' },
+        { selector: '[data-field="guardian_email"]', section: 'guardian' },
+        { selector: '[data-field="guardian_birth_city"]', section: 'guardian' },
+        { selector: 'input[name="english_level"]', section: 'homestay', isRadio: true },
+        { selector: 'input[name="swim_level"]', section: 'homestay', isRadio: true },
+        { selector: 'input[name="participant_agree"]', section: 'agree', isCheckbox: true },
+        { selector: 'input[name="guardian_agree"]', section: 'agree', isCheckbox: true },
+        { selector: 'input[name="refund_agree"]', section: 'agree', isCheckbox: true },
+      ]
+
+      for (const field of requiredFields) {
+        if (field.isRadio) {
+          const checked = document.querySelector<HTMLInputElement>(`${field.selector}:checked`)
+          if (!checked) {
+            const sectionEl = sectionRefs.current[field.section]
+            if (sectionEl) {
+              sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              setActive(field.section)
+            }
+            return
+          }
+        } else if (field.isCheckbox) {
+          const cb = document.querySelector<HTMLInputElement>(field.selector)
+          if (cb && !cb.checked) {
+            const sectionEl = sectionRefs.current[field.section]
+            if (sectionEl) {
+              sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              setActive(field.section)
+            }
+            return
+          }
+        } else {
+          const el = document.querySelector<HTMLInputElement>(field.selector)
+          if (el && !el.value) {
+            const sectionEl = sectionRefs.current[field.section]
+            if (sectionEl) {
+              sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              setActive(field.section)
+            }
+            return
+          }
+        }
+      }
+    }, 300)
   }, [shouldRestore, draftToRestore])
 
   // IntersectionObserver: 스크롤 위치에 따라 active 업데이트
