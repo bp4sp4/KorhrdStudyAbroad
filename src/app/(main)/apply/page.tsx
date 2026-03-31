@@ -51,18 +51,32 @@ const NAV_ITEMS = [
 ]
 
 const PROGRAM_OPTIONS = [
-  { value: '3week', label: '3주 프로그램' },
-  { value: '10week', label: '10주 프로그램' },
+  { value: 'philippines_cebu_solo', label: '필리핀 세부 나홀로' },
+  { value: 'usa_newjersey_solo', label: '미국 뉴저지 나홀로' },
+  { value: 'canada_vancouver_solo', label: '캐나다 밴쿠버-써리 나홀로' },
+  { value: 'uk_solo', label: '영국 나홀로' },
+  { value: 'nz_auckland_solo', label: '뉴질랜드 오클랜드 나홀로' },
+  { value: 'nz_hamilton_solo_4w', label: '뉴질랜드 해밀턴 나홀로 4주' },
+  { value: 'nz_hamilton_parent_4w', label: '뉴질랜드 해밀턴 부모동반 4주' },
+  { value: 'nz_hamilton_solo_3w', label: '뉴질랜드 해밀턴 나홀로 3주' },
+  { value: 'nz_hamilton_parent_3w', label: '뉴질랜드 해밀턴 부모동반 3주' },
+  { value: 'nz_hamilton_solo_10w', label: '뉴질랜드 해밀턴 나홀로 10주' },
+  { value: 'nz_hamilton_parent_10w', label: '뉴질랜드 해밀턴 부모동반 10주' },
 ]
 
-function CustomSelect({ options, placeholder = '선택해주세요.', onSelect }: {
+function CustomSelect({ options, placeholder = '선택해주세요.', onSelect, value }: {
   options: { value: string; label: string }[]
   placeholder?: string
   onSelect?: (value: string) => void
+  value?: string
 }) {
   const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState(value ?? '')
   const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (value !== undefined) setSelected(value)
+  }, [value])
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -141,8 +155,26 @@ export default function ApplyPage() {
   const [fileNames, setFileNames] = useState<Record<string, string>>({})
   const [fileObjects, setFileObjects] = useState<Record<string, File>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showDraftModal, setShowDraftModal] = useState(false)
+  const [draftToRestore, setDraftToRestore] = useState<Record<string, unknown> | null>(null)
+  const [shouldRestore, setShouldRestore] = useState(false)
+  const [draftId, setDraftId] = useState<string | null>(null)
+  const [existingFileUrls, setExistingFileUrls] = useState<Record<string, string | null>>({})
 
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
+  const submittedRef = useRef(false)
+  const isRestoringRef = useRef(false)
+
+  // 페이지 이탈 시 경고
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (submittedRef.current) return
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [])
 
   const hasError = (field: string) => errors.has(field)
   const clearError = (field: string) => setErrors(prev => { const s = new Set(prev); s.delete(field); return s })
@@ -155,6 +187,88 @@ export default function ApplyPage() {
       clearError(field)
     }
   }
+
+  // 마운트 시 DB에서 임시저장 확인
+  useEffect(() => {
+    const checkDraft = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data: draft } = await supabase
+        .from('applications')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('status', 'draft')
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .single()
+      if (draft) {
+        setDraftId(draft.id)
+        setDraftToRestore(draft)
+        setShowDraftModal(true)
+      }
+    }
+    checkDraft()
+  }, [])
+
+  // 이어서 작성 선택 후 DOM 복원
+  useEffect(() => {
+    if (!shouldRestore || !draftToRestore) return
+    const d = draftToRestore as Record<string, unknown>
+
+    // DB 컬럼명 → data-field 매핑
+    const fieldMap: Record<string, string> = {
+      name: 'korean_name', english_name: 'english_name',
+      birth_date: 'birth_date', birth_city: 'birth_city',
+      email: 'email', school_grade: 'grade', school: 'school_name',
+      passport_name: 'passport_name', passport_number: 'passport_number',
+      passport_expiry: 'passport_expiry',
+      guardian_name: 'guardian_name', guardian_email: 'guardian_email',
+      guardian_birth_city: 'guardian_birth_city',
+    }
+    Object.entries(fieldMap).forEach(([dbCol, dataField]) => {
+      const el = document.querySelector<HTMLInputElement>(`[data-field="${dataField}"]`)
+      if (el && d[dbCol]) el.value = d[dbCol] as string
+    })
+
+    const radioMap: Record<string, string> = {
+      gender: 'gender', blood_type: 'blood', english_level: 'english_level', swim_level: 'swim_level',
+    }
+    Object.entries(radioMap).forEach(([dbCol, name]) => {
+      const val = d[dbCol] as string
+      if (val) {
+        const radio = document.querySelector<HTMLInputElement>(`input[name="${name}"][value="${val}"]`)
+        if (radio) radio.checked = true
+      }
+    })
+
+    const allergyVals = (d['allergies'] as string[]) ?? []
+    allergyVals.forEach(val => {
+      const cb = document.querySelector<HTMLInputElement>(`input[name="allergy"][value="${val}"]`)
+      if (cb) cb.checked = true
+    });
+
+    [['agreed_terms', 'participant_agree'], ['agreed_privacy', 'guardian_agree'], ['agreed_media', 'refund_agree']]
+      .forEach(([dbCol, name]) => {
+        if (d[dbCol]) {
+          const cb = document.querySelector<HTMLInputElement>(`input[name="${name}"]`)
+          if (cb) cb.checked = true
+        }
+      })
+
+    const textareaMap: Record<string, string> = {
+      self_intro: 'self_intro', family_intro: 'family_intro', homestay_notes: 'homestay_notes',
+      personality: 'personality', hobbies: 'hobbies', health_notes: 'health_notes',
+      special_notes: 'special_notes', extra_notes: 'extra_notes',
+    }
+    Object.entries(textareaMap).forEach(([dbCol, name]) => {
+      const el = document.querySelector<HTMLTextAreaElement>(`[name="${name}"]`)
+      if (el && d[dbCol]) el.value = d[dbCol] as string
+    })
+
+    isRestoringRef.current = false
+    setShouldRestore(false)
+  }, [shouldRestore, draftToRestore])
 
   // IntersectionObserver: 스크롤 위치에 따라 active 업데이트
   useEffect(() => {
@@ -266,38 +380,38 @@ export default function ApplyPage() {
         Array.from(document.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`))
           .map(c => c.value)
 
-      // 파일 업로드
-      const uploadFile = async (fieldKey: string, folder: string): Promise<string | null> => {
+      // 파일 업로드 - 새 파일 선택 시만 업로드, 아니면 기존 URL 유지
+      const uploadFileOrKeep = async (fieldKey: string, folder: string): Promise<string | null> => {
         const file = fileObjects[fieldKey]
-        if (!file) return null
-        const ext = file.name.split('.').pop()
-        const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-        const { data, error } = await supabase.storage
-          .from('application-files')
-          .upload(path, file)
-        if (error) { console.error('upload error', error); return null }
-        return data.path
+        if (file) {
+          const ext = file.name.split('.').pop()
+          const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+          const { data, error } = await supabase.storage
+            .from('application-files')
+            .upload(path, file)
+          if (error) { console.error('upload error', error); return existingFileUrls[fieldKey] ?? null }
+          return data.path
+        }
+        return existingFileUrls[fieldKey] ?? null
       }
 
       const [passportFileUrl, idPhotoUrl, participantSigUrl, guardianSigUrl, guardianPassportUrl, guardianPhotoUrl] =
         await Promise.all([
-          uploadFile('passport_file', 'passport'),
-          uploadFile('id_photo_file', 'id-photo'),
-          uploadFile('participant_sig', 'signatures'),
-          uploadFile('guardian_sig', 'signatures'),
-          uploadFile('guardian_passport', 'guardian-passport'),
-          uploadFile('guardian_photo', 'guardian-photo'),
+          uploadFileOrKeep('passport_file', 'passport'),
+          uploadFileOrKeep('id_photo_file', 'id-photo'),
+          uploadFileOrKeep('participant_sig', 'signatures'),
+          uploadFileOrKeep('guardian_sig', 'signatures'),
+          uploadFileOrKeep('guardian_passport', 'guardian-passport'),
+          uploadFileOrKeep('guardian_photo', 'guardian-photo'),
         ])
 
       const getTextarea = (name: string) =>
         (document.querySelector<HTMLTextAreaElement>(`[name="${name}"]`)?.value ?? '').trim() || null
 
-      const { error } = await supabase.from('applications').insert({
+      const payload = {
         user_id: user?.id ?? null,
         status: isDraft ? 'draft' : 'submitted',
-        // 프로그램
         program: programValue,
-        // 참가자 기본정보
         name: getValue('korean_name'),
         english_name: getValue('english_name') || null,
         birth_date: getValue('birth_date') || null,
@@ -311,20 +425,17 @@ export default function ApplyPage() {
         school_grade: getValue('grade'),
         address,
         address_detail: addressDetail,
-        // 해외 출국용 정보
         passport_name: getValue('passport_name'),
         passport_number: getValue('passport_number'),
         passport_expiry: getValue('passport_expiry') || null,
         passport_file_url: passportFileUrl,
         id_photo_url: idPhotoUrl,
-        // 보호자 정보
         guardian_name: getValue('guardian_name'),
         guardian_phone: guardianPhone,
         guardian_email: getValue('guardian_email'),
         guardian_birth_city: getValue('guardian_birth_city'),
         guardian_passport_url: guardianPassportUrl,
         guardian_photo_url: guardianPhotoUrl,
-        // 홈스테이 정보
         english_level: getRadio('english_level'),
         self_intro: getTextarea('self_intro'),
         family_intro: getTextarea('family_intro'),
@@ -336,23 +447,33 @@ export default function ApplyPage() {
         extra_notes: getTextarea('extra_notes'),
         allergies: getCheckboxes('allergy'),
         swim_level: getRadio('swim_level'),
-        // 참가 동의
         participant_sig_url: participantSigUrl,
         guardian_sig_url: guardianSigUrl,
         agreed_terms: !!document.querySelector('input[name="participant_agree"]:checked'),
         agreed_privacy: !!document.querySelector('input[name="guardian_agree"]:checked'),
         agreed_media: !!document.querySelector('input[name="refund_agree"]:checked'),
-      })
+      }
 
-      if (error) {
-        console.error('insert error', error)
-        alert('신청 중 오류가 발생했습니다. 다시 시도해주세요.')
+      let dbError
+      if (draftId) {
+        const { error } = await supabase.from('applications').update(payload).eq('id', draftId)
+        dbError = error
+      } else {
+        const { data, error } = await supabase.from('applications').insert(payload).select('id').single()
+        if (data) setDraftId(data.id)
+        dbError = error
+      }
+
+      if (dbError) {
+        console.error('db error', dbError)
+        alert('오류가 발생했습니다. 다시 시도해주세요.')
         return
       }
 
       if (isDraft) {
         alert('임시저장 되었습니다.')
       } else {
+        submittedRef.current = true
         alert('신청이 완료되었습니다!')
         router.push('/')
       }
@@ -429,7 +550,7 @@ export default function ApplyPage() {
           <div className={styles.field}>
             <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>신청하실 유학 프로그램을 선택해주세요.</p>
-            <CustomSelect options={PROGRAM_OPTIONS} onSelect={(v) => { setProgramValue(v); clearError('program') }} />
+            <CustomSelect options={PROGRAM_OPTIONS} value={programValue} onSelect={(v) => { setProgramValue(v); clearError('program') }} />
             {hasError('program') && <p className={styles.error_msg}>프로그램을 선택해주세요.</p>}
           </div>
         </section>
@@ -444,20 +565,20 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>한국 이름 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>한글로 입력해주세요</p>
+            <p className={styles.field_desc}>한글로 입력해주세요.</p>
             <input className={`${styles.input} ${hasError('korean_name') ? styles.input_error : ''}`} type="text" placeholder="예) 홍길동" data-field="korean_name" onChange={() => clearError('korean_name')} />
             {hasError('korean_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>영어이름</label>
-            <p className={styles.field_desc}>영어이름이 있다면 입력해주세요</p>
+            <p className={styles.field_desc}>영어이름이 있다면 입력해주세요.</p>
             <input className={styles.input} type="text" placeholder="예) Danny" data-field="english_name" />
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>성별 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>성별을 선택해주세요</p>
+            <p className={styles.field_desc}>성별을 선택해주세요.</p>
             <div className={styles.radio_group}>
               <label className={styles.radio_label}>
                 <input type="radio" name="gender" value="남자" onChange={() => clearError('gender')} /> 남자(Male)
@@ -471,7 +592,7 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>혈액형</label>
-            <p className={styles.field_desc}>혈액형을 선택해주세요</p>
+            <p className={styles.field_desc}>혈액형을 선택해주세요.</p>
             <div className={styles.radio_group}>
               {['A', 'B', 'O', 'AB'].map((type) => (
                 <label key={type} className={styles.radio_label}>
@@ -483,14 +604,14 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>생년월일 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>생년월일을 입력해주세요</p>
+            <p className={styles.field_desc}>생년월일을 입력해주세요.</p>
             <input className={`${styles.input} ${hasError('birth_date') ? styles.input_error : ''}`} type="text" placeholder="YYYY/MM/DD" data-field="birth_date" onChange={() => clearError('birth_date')} />
             {hasError('birth_date') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
 
           <div className={styles.field}>
             <label className={styles.label}>출생 도시 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>참가자의 출생 도시를 입력해주세요</p>
+            <p className={styles.field_desc}>참가자의 출생 도시를 입력해주세요.</p>
             <input className={`${styles.input} ${hasError('birth_city') ? styles.input_error : ''}`} type="text" placeholder="예) 서울" data-field="birth_city" onChange={() => clearError('birth_city')} />
             {hasError('birth_city') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
@@ -551,7 +672,7 @@ export default function ApplyPage() {
                 { value: 'middle', label: '중학교' },
                 { value: 'high', label: '고등학교' },
                 { value: 'university', label: '대학교' },
-              ]} placeholder="초/중/고/대" onSelect={(v) => setSchoolType(v)} />
+              ]} placeholder="초/중/고/대" value={schoolType} onSelect={(v) => setSchoolType(v)} />
               <input className={`${styles.input} ${styles.input_school} ${hasError('school_name') ? styles.input_error : ''}`} type="text" placeholder="예)한영성초등학교" data-field="school_name" onChange={() => clearError('school_name')} />
             </div>
             {hasError('school_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
@@ -576,7 +697,7 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>여권상 영문 이름 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>이름 → 성 순서로 입력해주세요</p>
+            <p className={styles.field_desc}>이름 → 성 순서로 입력해주세요.</p>
             <input className={`${styles.input} ${hasError('passport_name') ? styles.input_error : ''}`} type="text" placeholder="예) Gildong Hong" data-field="passport_name" onChange={() => clearError('passport_name')} />
             {hasError('passport_name') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
           </div>
@@ -597,7 +718,7 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>여권사본 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(기준 작성.. JPG, PNG)</p>
+            <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(.jpg, .jpeg, .png파일만 가능합니다.)</p>
             <label className={`${styles.file_upload} ${hasError('passport_file') ? styles.file_error : ''}`}>
               <span className={fileNames['passport_file'] ? styles.file_name : styles.file_placeholder}>
                 {fileNames['passport_file'] || '파일을 업로드해주세요.'}
@@ -612,7 +733,7 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>증명사진 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>증명사진을 올려주세요.(기준 작성.. JPG, PNG)</p>
+            <p className={styles.field_desc}>증명사진을 올려주세요.(.jpg, .jpeg, .png파일만 가능합니다.)</p>
             <label className={`${styles.file_upload} ${hasError('id_photo_file') ? styles.file_error : ''}`}>
               <span className={fileNames['id_photo_file'] ? styles.file_name : styles.file_placeholder}>
                 {fileNames['id_photo_file'] || '파일을 업로드해주세요.'}
@@ -672,7 +793,7 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>보호자 여권사본</label>
-            <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(기준 작성.. JPG, PNG)</p>
+            <p className={styles.field_desc}>사진면과 사인한 면이 모두 나와야합니다.(.jpg, .jpeg, .png파일만 가능합니다.)</p>
             <label className={styles.file_upload}>
               <span className={fileNames['guardian_passport'] ? styles.file_name : styles.file_placeholder}>
                 {fileNames['guardian_passport'] || '파일을 업로드해주세요.'}
@@ -686,7 +807,7 @@ export default function ApplyPage() {
 
           <div className={styles.field}>
             <label className={styles.label}>보호자 증명사진</label>
-            <p className={styles.field_desc}>증명사진을 올려주세요.(기준 작성.. JPG, PNG)</p>
+            <p className={styles.field_desc}>증명사진을 올려주세요.(.jpg, .jpeg, .png파일만 가능합니다.)</p>
             <label className={styles.file_upload}>
               <span className={fileNames['guardian_photo'] ? styles.file_name : styles.file_placeholder}>
                 {fileNames['guardian_photo'] || '파일을 업로드해주세요.'}
@@ -822,6 +943,8 @@ export default function ApplyPage() {
         >
           <h2 className={styles.section_title}>마지막으로 동의를 진행해주세요!</h2>
 
+      
+
           <div className={styles.field}>
             <label className={styles.label}>참가자 동의서 <span className={styles.required}>*</span></label>
             <p className={styles.agree_text}>{`나는 본 캠프의 모든 프로그램에 적극 참여하며, 개인적인 행동은 삼가고, 진행하시는 분들의 말씀에 잘 따르고, 개인적인 안전과 위생에 최선을 다할 것을 약속합니다.
@@ -887,6 +1010,65 @@ export default function ApplyPage() {
 
       </div>
     </div>
+
+    {/* 임시저장 복원 모달 */}
+    {showDraftModal && (
+      <div className={styles.modal_overlay}>
+        <div className={styles.modal}>
+          <p className={styles.modal_title}>이전에 작성 중인 신청서가 있습니다.</p>
+          <p className={styles.modal_desc}>이어서 작성하시겠습니까?</p>
+          <div className={styles.modal_buttons}>
+            <button
+              type="button"
+              className={styles.modal_btn_secondary}
+              onClick={() => {
+                setDraftToRestore(null)
+                setShowDraftModal(false)
+              }}
+            >
+              새로 작성하기
+            </button>
+            <button
+              type="button"
+              className={styles.modal_btn_primary}
+              onClick={() => {
+                if (draftToRestore) {
+                  const d = draftToRestore as Record<string, unknown>
+                  // controlled states 복원 (DB 컬럼명 기준)
+                  setPhone((d.phone as string) ?? '')
+                  setAddress((d.address as string) ?? '')
+                  setAddressDetail((d.address_detail as string) ?? '')
+                  setGuardianPhone((d.guardian_phone as string) ?? '')
+                  setProgramValue((d.program as string) ?? '')
+                  setSchoolType((d.school_type as string) ?? '')
+                  // 기존 파일 URL 저장
+                  setExistingFileUrls({
+                    passport_file: (d.passport_file_url as string) ?? null,
+                    id_photo_file: (d.id_photo_url as string) ?? null,
+                    participant_sig: (d.participant_sig_url as string) ?? null,
+                    guardian_sig: (d.guardian_sig_url as string) ?? null,
+                    guardian_passport: (d.guardian_passport_url as string) ?? null,
+                    guardian_photo: (d.guardian_photo_url as string) ?? null,
+                  })
+                  // 기존 파일 있으면 파일명 표시
+                  const savedFiles: Record<string, string> = {}
+                  if (d.passport_file_url) savedFiles.passport_file = '저장된 파일'
+                  if (d.id_photo_url) savedFiles.id_photo_file = '저장된 파일'
+                  if (d.participant_sig_url) savedFiles.participant_sig = '저장된 파일'
+                  if (d.guardian_sig_url) savedFiles.guardian_sig = '저장된 파일'
+                  setFileNames(prev => ({ ...prev, ...savedFiles }))
+                }
+                isRestoringRef.current = true
+                setShowDraftModal(false)
+                setShouldRestore(true)
+              }}
+            >
+              이어서 작성하기
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* 하단 액션 바 */}
     <div className={styles.action_bar}>

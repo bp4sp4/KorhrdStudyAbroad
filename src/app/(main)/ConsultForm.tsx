@@ -84,7 +84,7 @@ export default function ConsultForm() {
 
         {/* 개인정보 동의 */}
         <label className={styles.privacy_row}>
-          <span className={styles.privacy_link}>개인정보보호처리방침</span>
+          <a href="/privacy" className={styles.privacy_link} target="_blank" rel="noopener noreferrer">개인정보처리방침</a>
           <span className={styles.privacy_agree}>동의</span>
           <input name="privacy_agreed" type="checkbox" className={styles.privacy_input} required />
           <span className={styles.privacy_checkbox}>

@@ -18,9 +18,11 @@ export default async function Header() {
         
 
         <nav className={styles.nav}>
+          <a href="/program" className={styles.btn_mypage}>프로그램</a>
           {user ? (
             <>
               <a href="/mypage" className={styles.btn_mypage}>마이페이지</a>
+              <a href="/apply" className={styles.btn_mypage}>참가신청</a>
               <form action={logout}>
                 <button type="submit" className={styles.btn_logout}>로그아웃</button>
               </form>

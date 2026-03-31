@@ -415,10 +415,10 @@ line-height: 31.2px; /* 120% */
 
 .agree_text {
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 22px;
-  color: #3D3D3D;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 25.2px;
+  color: #919191;
   white-space: pre-line;
 }
 
@@ -473,11 +473,15 @@ line-height: 31.2px; /* 120% */
   display: flex;
   padding: 42px 10px;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   gap: 12px;
   background: #fff;
   backdrop-filter: blur(5px);
   width: 100%;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.06);
 }
 
 .btn_draft {
@@ -524,6 +528,87 @@ line-height: 31.2px; /* 120% */
 }
 
 .btn_submit_apply:hover {
+  background: #003FCC;
+}
+
+/* ── 임시저장 복원 모달 ── */
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 36px 32px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
+}
+
+.modal_title {
+  color: #010101;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.modal_desc {
+  color: #919191;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.modal_buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.modal_btn_secondary {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #D0D0D0;
+  background: #fff;
+  color: #3D3D3D;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.modal_btn_secondary:hover {
+  background: #F5F5F5;
+}
+
+.modal_btn_primary {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #0051FF;
+  color: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.modal_btn_primary:hover {
   background: #003FCC;
 }
 

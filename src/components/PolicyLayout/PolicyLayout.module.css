@@ -1,0 +1,122 @@
+.wrapper {
+  min-height: 100vh;
+  background: #F9FAFB;
+  padding: 72px 0 120px;
+}
+
+.inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.title_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 36px;
+}
+
+.page_title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #191F28;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.version_select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7684' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding: 10px 40px 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333D4B;
+  border: 1.5px solid #E5E8EB;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 240px;
+  transition: border-color 0.15s;
+}
+
+.version_select:focus {
+  outline: none;
+  border-color: #0051FF;
+}
+
+.tab_bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1.5px solid #E5E8EB;
+  margin-bottom: 32px;
+}
+
+.tab {
+  padding: 12px 20px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #ADB5BD;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover {
+  color: #333D4B;
+}
+
+.tab_active {
+  color: #0051FF;
+  font-weight: 700;
+  border-bottom-color: #0051FF;
+}
+
+.content_box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 44px;
+  max-height: 600px;
+  overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.content_box::-webkit-scrollbar {
+  width: 4px;
+}
+
+.content_box::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content_box::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 2px;
+}
+
+.back_wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.back_btn {
+  padding: 16px 80px;
+  background: #0051FF;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.back_btn:hover {
+  background: #003FCC;
+}

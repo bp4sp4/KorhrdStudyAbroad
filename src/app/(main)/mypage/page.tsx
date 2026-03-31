@@ -43,9 +43,32 @@ const NAV_ITEMS = [
 
 type Application = {
   id: string
-  program_name: string
+  program: string | null
+  name: string | null
   status: string
   created_at: string
+}
+
+const PROGRAM_LABEL: Record<string, string> = {
+  philippines_cebu_solo: '필리핀 세부 나홀로',
+  usa_newjersey_solo: '미국 뉴저지 나홀로',
+  canada_vancouver_solo: '캐나다 밴쿠버-써리 나홀로',
+  uk_solo: '영국 나홀로',
+  nz_auckland_solo: '뉴질랜드 오클랜드 나홀로',
+  nz_hamilton_solo_4w: '뉴질랜드 해밀턴 나홀로 4주',
+  nz_hamilton_parent_4w: '뉴질랜드 해밀턴 부모동반 4주',
+  nz_hamilton_solo_3w: '뉴질랜드 해밀턴 나홀로 3주',
+  nz_hamilton_parent_3w: '뉴질랜드 해밀턴 부모동반 3주',
+  nz_hamilton_solo_10w: '뉴질랜드 해밀턴 나홀로 10주',
+  nz_hamilton_parent_10w: '뉴질랜드 해밀턴 부모동반 10주',
+}
+
+const STATUS_LABEL: Record<string, string> = {
+  draft: '임시저장',
+  submitted: '신청완료',
+  reviewing: '검토중',
+  approved: '승인',
+  rejected: '반려',
 }
 
 export default function MyPage() {
@@ -97,8 +120,9 @@ export default function MyPage() {
       const supabase = createClient()
       const { data } = await supabase
         .from('applications')
-        .select('id, program_name, status, created_at')
+        .select('id, program, name, status, created_at')
         .eq('user_id', userId)
+        .neq('status', 'draft')
         .order('created_at', { ascending: false })
       setApplications(data ?? [])
       setLoadingApplications(false)
@@ -301,18 +325,22 @@ export default function MyPage() {
               <ul className={styles.history_list}>
                 {applications.map((app) => (
                   <li key={app.id} className={styles.history_item}>
-                    <div className={styles.history_info}>
-                      <p className={styles.history_program}>{app.program_name}</p>
-                      <p className={styles.history_date}>
-                        {new Date(app.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
-                      </p>
+                    <div className={styles.history_top}>
+                      <div className={styles.history_info}>
+                        <p className={styles.history_program}>
+                          {PROGRAM_LABEL[app.program ?? ''] ?? app.program ?? '프로그램 미지정'}
+                        </p>
+                        <p className={styles.history_name}>{app.name ?? '-'}</p>
+                      </div>
+                      <span className={`${styles.history_badge} ${styles[`badge_${app.status}`]}`}>
+                        {STATUS_LABEL[app.status] ?? app.status}
+                      </span>
                     </div>
-                    <span className={`${styles.history_badge} ${styles[`badge_${app.status}`]}`}>
-                      {app.status === 'pending' ? '검토 중'
-                        : app.status === 'approved' ? '승인됨'
-                        : app.status === 'rejected' ? '반려됨'
-                        : app.status}
-                    </span>
+                    <div className={styles.history_bottom}>
+                      <span className={styles.history_date}>
+                        신청일 · {new Date(app.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </span>
+                    </div>
                   </li>
                 ))}
               </ul>

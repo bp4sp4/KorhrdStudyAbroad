@@ -169,7 +169,7 @@ background: var(--Atomic-Common-White, #FFF);
   color: #010101;
   outline: none;
   transition: border-color 0.15s;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .input::placeholder {
@@ -192,7 +192,7 @@ background: var(--Atomic-Common-White, #FFF);
   background: #F2F2F2;
   color: #9ca3af;
   cursor: default;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 /* 인풋 + 눈 아이콘 래퍼 */
@@ -350,17 +350,31 @@ background: var(--Atomic-Common-White, #FFF);
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  width: 100%;
 }
 
 .history_item {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: box-shadow 0.15s;
+}
+
+.history_item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.history_top {
+  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  background: #fafafa;
+  gap: 12px;
 }
 
 .history_info {
@@ -371,39 +385,62 @@ background: var(--Atomic-Common-White, #FFF);
 
 .history_program {
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: #010101;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.2px;
+}
+
+.history_name {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.history_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid #F3F4F6;
 }
 
 .history_date {
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 13px;
-  color: #9ca3af;
+  font-size: 12px;
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .history_badge {
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 20px;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   flex-shrink: 0;
 }
 
-.badge_pending {
-  background: #FFF3CD;
-  color: #B45309;
+.badge_submitted {
+  background: #EFF6FF;
+  color: #2563EB;
+}
+
+.badge_reviewing {
+  background: #FFFBEB;
+  color: #D97706;
 }
 
 .badge_approved {
-  background: #D1FAE5;
-  color: #065F46;
+  background: #ECFDF5;
+  color: #059669;
 }
 
 .badge_rejected {
-  background: #FEE2E2;
-  color: #991B1B;
+  background: #FEF2F2;
+  color: #DC2626;
 }
 
 /* ── 반응형 ── */

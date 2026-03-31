@@ -51,7 +51,17 @@ const STATUS_CLASS: Record<string, string> = {
   approved: 'badge_approved', rejected: 'badge_rejected',
 }
 const PROGRAM_LABEL: Record<string, string> = {
-  '3week': '3주 프로그램', '10week': '10주 프로그램',
+  philippines_cebu_solo: '필리핀 세부 나홀로',
+  usa_newjersey_solo: '미국 뉴저지 나홀로',
+  canada_vancouver_solo: '캐나다 밴쿠버-써리 나홀로',
+  uk_solo: '영국 나홀로',
+  nz_auckland_solo: '뉴질랜드 오클랜드 나홀로',
+  nz_hamilton_solo_4w: '뉴질랜드 해밀턴 나홀로 4주',
+  nz_hamilton_parent_4w: '뉴질랜드 해밀턴 부모동반 4주',
+  nz_hamilton_solo_3w: '뉴질랜드 해밀턴 나홀로 3주',
+  nz_hamilton_parent_3w: '뉴질랜드 해밀턴 부모동반 3주',
+  nz_hamilton_solo_10w: '뉴질랜드 해밀턴 나홀로 10주',
+  nz_hamilton_parent_10w: '뉴질랜드 해밀턴 부모동반 10주',
 }
 
 export default function DashboardClient({
