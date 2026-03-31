@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 function buildSuccessHtml(csturl: string | null) {
   if (csturl) {
-    // 부모창에 결제완료 메시지 전송 후 PayApp 영수증으로 이동
+    // 부모창에 메시지 전송 + 영수증 새 탭으로 열기 + 팝업 닫기
     return `<!DOCTYPE html>
 <html>
   <head><meta charset="UTF-8"><title>결제 완료</title></head>
@@ -12,7 +12,8 @@ function buildSuccessHtml(csturl: string | null) {
       if (window.opener) {
         window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*');
       }
-      window.location.href = '${csturl}';
+      window.open('${csturl}', '_blank');
+      window.close();
     </script>
   </body>
 </html>`
