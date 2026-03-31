@@ -167,6 +167,7 @@ function ApplyPageInner() {
   const [paymentProgram, setPaymentProgram] = useState('')
   const [paymentPhone, setPaymentPhone] = useState('')
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
+  const [showPaymentDoneModal, setShowPaymentDoneModal] = useState(false)
   const [active, setActive] = useState('program')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
@@ -216,9 +217,19 @@ function ApplyPageInner() {
     }
   }
 
+  // PayApp 팝업에서 결제완료 메시지 수신
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data?.type === 'PAYMENT_COMPLETE') {
+        setShowPaymentDoneModal(true)
+      }
+    }
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
+
   // 마운트 시 결제 완료 여부 + 프로필 전화번호 확인
   useEffect(() => {
-    const isReturnFromPayment = searchParams.get('payment') === 'success'
     const check = async () => {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -230,7 +241,7 @@ function ApplyPageInner() {
           .single()
         if (profile?.phone) setPaymentPhone(profile.phone)
       }
-      if (isReturnFromPayment) await new Promise(r => setTimeout(r, 1500))
+      // 이미 결제 완료된 유저가 재방문 시 바로 폼으로 이동
       const paid = await checkAnyCompletedPayment()
       if (paid) {
         setStep('form')
@@ -1181,6 +1192,38 @@ function ApplyPageInner() {
     </div>
 
     {/* 임시저장 복원 모달 */}
+    {showPaymentDoneModal && (
+      <div className={styles.modal_overlay}>
+        <div className={styles.modal}>
+          <p className={styles.modal_title}>결제가 완료되었습니다.</p>
+          <p className={styles.modal_desc}>신청서를 작성하러 이동하시겠습니까?</p>
+          <div className={styles.modal_buttons}>
+            <button
+              type="button"
+              className={styles.modal_btn_secondary}
+              onClick={() => setShowPaymentDoneModal(false)}
+            >
+              나중에
+            </button>
+            <button
+              type="button"
+              className={styles.modal_btn_primary}
+              onClick={async () => {
+                setShowPaymentDoneModal(false)
+                const paid = await checkAnyCompletedPayment()
+                if (paid) {
+                  setStep('form')
+                  setProgramValue(paid.program)
+                }
+              }}
+            >
+              신청서 작성하기
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
     {showDraftModal && (
       <div className={styles.modal_overlay}>
         <div className={styles.modal}>

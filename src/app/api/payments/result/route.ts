@@ -2,26 +2,23 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 function buildSuccessHtml(csturl: string | null) {
-  // CSTURL이 있으면 부모창 처리 후 PayApp 영수증으로 리다이렉트
-  // CSTURL이 없으면 기본 완료 화면
   if (csturl) {
+    // 부모창에 결제완료 메시지 전송 후 PayApp 영수증으로 이동
     return `<!DOCTYPE html>
 <html>
   <head><meta charset="UTF-8"><title>결제 완료</title></head>
   <body>
     <script>
-      // 부모창을 신청서 페이지로 이동
       if (window.opener) {
-        window.opener.location.href = '/apply?payment=success';
+        window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*');
       }
-      // 이 팝업은 PayApp 영수증으로 이동
       window.location.href = '${csturl}';
     </script>
   </body>
 </html>`
   }
 
-  // CSTURL 없을 때 fallback
+  // CSTURL 없을 때 fallback — 버튼 클릭 시 메시지 전송 후 닫기
   return `<!DOCTYPE html>
 <html>
   <head>
@@ -46,8 +43,8 @@ function buildSuccessHtml(csturl: string | null) {
         </svg>
       </div>
       <h1>결제가 완료되었습니다!</h1>
-      <p>신청서 작성 페이지로 이동하세요</p>
-      <button class="btn" onclick="if(window.opener){window.opener.location.href='/apply?payment=success';window.close();}else{window.location.href='/apply?payment=success';}">신청서 작성하기</button>
+      <p>창을 닫고 신청서를 작성해 주세요</p>
+      <button class="btn" onclick="if(window.opener){window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*');} window.close();">확인</button>
     </div>
   </body>
 </html>`
