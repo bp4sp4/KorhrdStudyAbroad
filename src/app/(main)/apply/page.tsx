@@ -254,14 +254,14 @@ function ApplyPageInner() {
         console.log('[PAYMENT] polling: no user')
         return
       }
-      const { data, error } = await supabase
+      const { data: rows, error } = await supabase
         .from('payments')
         .select('id, program, status')
         .eq('user_id', user.id)
         .eq('status', 'completed')
         .order('created_at', { ascending: false })
         .limit(1)
-        .maybeSingle()
+      const data = rows?.[0] ?? null
       console.log('[PAYMENT] polling result:', { data, error })
       if (data) {
         console.log('[PAYMENT] polling → completed! showPaymentDoneModal = true')
