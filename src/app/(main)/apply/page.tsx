@@ -588,7 +588,8 @@ function ApplyPageInner() {
     try {
       // 1. DB에 pending 레코드 생성
       const orderId = await createPaymentRecord(paymentProgram, price.amount)
-      const goodName = PROGRAM_OPTIONS.find(o => o.value === paymentProgram)?.label ?? '유학 프로그램'
+      const goodName = (PROGRAM_OPTIONS.find(o => o.value === paymentProgram)?.label ?? '유학 프로그램')
+        .replace(/[\u{1F000}-\u{1FFFF}]/gu, '').trim()
 
       // 2. 서버에서 PayApp API 호출 → payurl 받기
       const res = await fetch('/api/payments', {
