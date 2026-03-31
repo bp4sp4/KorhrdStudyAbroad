@@ -228,12 +228,22 @@ function ApplyPageInner() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
-  // 결제 스텝에서 DB 폴링 — postMessage 실패 대비
+  // 결제 스텝에서 DB 폴링 — 브라우저 클라이언트로 직접 쿼리 (서버 액션 캐시 우회)
   useEffect(() => {
     if (step !== 'payment') return
+    const supabase = createClient()
     const interval = setInterval(async () => {
-      const paid = await checkAnyCompletedPayment()
-      if (paid) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data } = await supabase
+        .from('payments')
+        .select('id, program')
+        .eq('user_id', user.id)
+        .eq('status', 'completed')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      if (data) {
         clearInterval(interval)
         setShowPaymentDoneModal(true)
       }
