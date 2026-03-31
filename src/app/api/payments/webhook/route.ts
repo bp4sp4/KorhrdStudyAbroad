@@ -4,7 +4,10 @@ import { createAdminClient } from '@/lib/supabase/admin'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text()
+    console.log('PayApp webhook raw body:', body)
+    console.log('PayApp webhook Content-Type:', request.headers.get('content-type'))
     const params = new URLSearchParams(body)
+    console.log('PayApp webhook all params:', Object.fromEntries(params.entries()))
 
     const state = params.get('state')
     const tradeid = params.get('tradeid')
@@ -14,7 +17,7 @@ export async function POST(request: NextRequest) {
     const paymethod = params.get('paymethod')
     const csturl = params.get('csturl') || params.get('CSTURL')
 
-    console.log('PayApp webhook:', { state, tradeid, mul_no, var1, price, paymethod, csturl })
+    console.log('PayApp webhook parsed:', { state, tradeid, mul_no, var1, price, paymethod, csturl })
 
     const supabase = createAdminClient()
 
