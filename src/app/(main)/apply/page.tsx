@@ -243,30 +243,22 @@ function ApplyPageInner() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
-  // 결제 스텝에서 DB 폴링 — 브라우저 클라이언트로 직접 쿼리 (서버 액션 캐시 우회)
+  // 결제 스텝에서 DB 폴링 — 서버 API 엔드포인트로 체크 (RLS 우회)
   useEffect(() => {
     if (step !== 'payment') return
-    console.log('[PAYMENT] polling started, step:', step)
-    const supabase = createClient()
+    console.log('[PAYMENT] polling started')
     const interval = setInterval(async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        console.log('[PAYMENT] polling: no user')
-        return
-      }
-      const { data: rows, error } = await supabase
-        .from('payments')
-        .select('id, program, status')
-        .eq('user_id', user.id)
-        .eq('status', 'completed')
-        .order('created_at', { ascending: false })
-        .limit(1)
-      const data = rows?.[0] ?? null
-      console.log('[PAYMENT] polling result:', { data, error })
-      if (data) {
-        console.log('[PAYMENT] polling → completed! showPaymentDoneModal = true')
-        clearInterval(interval)
-        setShowPaymentDoneModal(true)
+      try {
+        const res = await fetch('/api/payments/check')
+        const json = await res.json()
+        console.log('[PAYMENT] polling result:', json)
+        if (json.completed) {
+          console.log('[PAYMENT] polling → completed! showing modal')
+          clearInterval(interval)
+          setShowPaymentDoneModal(true)
+        }
+      } catch (e) {
+        console.log('[PAYMENT] polling error:', e)
       }
     }, 2000)
     return () => {
