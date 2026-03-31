@@ -33,36 +33,8 @@ const GROUP_HEIGHT = CARD_ROW_HEIGHT * 2 // 4카드(2열×2행) = 898px
 const LEFT  = REVIEWS.filter((_, i) => i % 2 === 0) // 6개
 const RIGHT = REVIEWS.filter((_, i) => i % 2 === 1) // 6개
 
-const FADE_ZONE = GROUP_HEIGHT * 0.4 // 페이드 구간 (그룹 높이의 40%)
-
-function calcOpacities(scrolled: number): number[] {
-  return BG_IMAGES.map((_, i) => {
-    const start = i * GROUP_HEIGHT
-    const end = (i + 1) * GROUP_HEIGHT
-
-    if (i === 0) {
-      if (scrolled < end - FADE_ZONE) return 1
-      if (scrolled < end) return (end - scrolled) / FADE_ZONE
-      return 0
-    }
-    if (i === BG_IMAGES.length - 1) {
-      const fadeIn = start - FADE_ZONE
-      if (scrolled < fadeIn) return 0
-      if (scrolled < start) return (scrolled - fadeIn) / FADE_ZONE
-      return 1
-    }
-    // 중간 이미지: fade in → 유지 → fade out
-    const fadeIn = start - FADE_ZONE
-    if (scrolled < fadeIn) return 0
-    if (scrolled < start) return (scrolled - fadeIn) / FADE_ZONE
-    if (scrolled < end - FADE_ZONE) return 1
-    if (scrolled < end) return (end - scrolled) / FADE_ZONE
-    return 0
-  })
-}
-
 export default function ReviewSection() {
-  const [opacities, setOpacities] = useState(() => calcOpacities(0))
+  const [bgIndex, setBgIndex] = useState(0)
   const [visible, setVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -74,7 +46,8 @@ export default function ReviewSection() {
       const inView = rect.top < window.innerHeight && rect.bottom > 0
       setVisible(inView)
       const scrolled = Math.max(0, -rect.top)
-      setOpacities(calcOpacities(scrolled))
+      const idx = Math.min(Math.floor(scrolled / GROUP_HEIGHT), BG_IMAGES.length - 1)
+      setBgIndex(idx)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -89,7 +62,7 @@ export default function ReviewSection() {
           className={styles.review_bg}
           style={{
             backgroundImage: `url(${img})`,
-            opacity: opacities[i],
+            opacity: i <= bgIndex ? 1 : 0,
           }}
         />
       ))}
