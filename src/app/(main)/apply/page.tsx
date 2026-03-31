@@ -189,6 +189,8 @@ function ApplyPageInner() {
   const submittedRef = useRef(false)
   const isRestoringRef = useRef(false)
   const stepRef = useRef<'payment' | 'form'>('payment')
+  const paymentPopupRef = useRef<Window | null>(null)
+  const paymentCompletedRef = useRef(false)
 
   // step 변경 시 ref 동기화
   useEffect(() => { stepRef.current = step }, [step])
@@ -240,7 +242,7 @@ function ApplyPageInner() {
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
-  // 결제 스텝에서 DB 폴링 — 서버 API 엔드포인트로 체크 (RLS 우회)
+  // 결제 스텝에서 DB 폴링 — 완료 감지만, 모달은 팝업 닫힌 후에
   useEffect(() => {
     if (step !== 'payment') return
     const interval = setInterval(async () => {
@@ -249,11 +251,27 @@ function ApplyPageInner() {
         const json = await res.json()
         if (json.completed) {
           clearInterval(interval)
-          setShowPaymentDoneModal(true)
+          paymentCompletedRef.current = true
+          // 팝업이 없거나(모바일/팝업차단) 이미 닫혔으면 바로 모달
+          if (!paymentPopupRef.current || paymentPopupRef.current.closed) {
+            setShowPaymentDoneModal(true)
+          }
         }
       } catch (e) {}
     }, 2000)
     return () => clearInterval(interval)
+  }, [step])
+
+  // 팝업 닫힘 감지 — paymentCompleted && popup.closed 되면 모달
+  useEffect(() => {
+    if (step !== 'payment') return
+    const check = setInterval(() => {
+      if (paymentCompletedRef.current && paymentPopupRef.current && paymentPopupRef.current.closed) {
+        clearInterval(check)
+        setShowPaymentDoneModal(true)
+      }
+    }, 500)
+    return () => clearInterval(check)
   }, [step])
 
   // 마운트 시 결제 완료 여부 + 프로필 전화번호 확인
@@ -633,12 +651,16 @@ function ApplyPageInner() {
       }
 
       // 3. 모바일/데스크톱 분기
+      paymentCompletedRef.current = false
+      paymentPopupRef.current = null
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       if (isMobile) {
         window.location.href = data.data.payurl
       } else {
         const popup = window.open(data.data.payurl, 'payapp_payment', 'width=800,height=900,left=200,top=100')
-        if (!popup) {
+        if (popup) {
+          paymentPopupRef.current = popup
+        } else {
           // 팝업 차단된 경우 새 탭으로
           window.open(data.data.payurl, '_blank')
         }

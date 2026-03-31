@@ -1,10 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
+const CLOSE_SCRIPT = `
+  try { localStorage.setItem('payment_complete', Date.now().toString()); } catch(e){}
+  if(window.opener){ try{ window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*'); }catch(e){} }
+  window.close();
+`
+
 function buildSuccessHtml(csturl: string | null) {
-  const receiptBtn = csturl
-    ? `<a href="${csturl}" target="_blank" class="btn btn_receipt">영수증 보기</a>`
-    : ''
+  // 영수증이 있으면 iframe으로 바로 표시, 없으면 완료 카드
+  if (csturl) {
+    return `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 영수증</title>
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box}
+      html,body{height:100%;display:flex;flex-direction:column;font-family:-apple-system,sans-serif;background:#f5f5f5}
+      .toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0051FF;color:#fff;flex-shrink:0}
+      .toolbar_title{font-size:15px;font-weight:700}
+      .btn_confirm{background:#fff;color:#0051FF;border:none;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:700;cursor:pointer}
+      iframe{flex:1;border:none;width:100%}
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <span class="toolbar_title">결제 영수증</span>
+      <button class="btn_confirm" onclick="${CLOSE_SCRIPT}">확인</button>
+    </div>
+    <iframe src="${csturl}"></iframe>
+  </body>
+</html>`
+  }
 
   return `<!DOCTYPE html>
 <html>
@@ -19,10 +48,7 @@ function buildSuccessHtml(csturl: string | null) {
       .icon{width:72px;height:72px;margin:0 auto 20px;background:#e8efff;border-radius:50%;display:flex;align-items:center;justify-content:center}
       h1{color:#010101;margin:0 0 8px;font-size:22px;font-weight:700}
       p{color:#919191;margin:0 0 28px;font-size:14px}
-      .btns{display:flex;flex-direction:column;gap:10px}
-      .btn{display:block;padding:14px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;width:100%;text-decoration:none;text-align:center}
-      .btn_receipt{background:#f0f4ff;color:#0051FF}
-      .btn_close{background:#0051FF;color:#fff}
+      .btn{display:block;padding:14px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;width:100%;background:#0051FF;color:#fff}
     </style>
   </head>
   <body>
@@ -33,15 +59,8 @@ function buildSuccessHtml(csturl: string | null) {
         </svg>
       </div>
       <h1>결제가 완료되었습니다!</h1>
-      <p>영수증을 확인 후 창을 닫아주세요</p>
-      <div class="btns">
-        ${receiptBtn}
-        <button class="btn btn_close" onclick="
-          try { localStorage.setItem('payment_complete', Date.now().toString()); } catch(e){}
-          if(window.opener){ try{ window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*'); }catch(e){} }
-          window.close();
-        ">닫기</button>
-      </div>
+      <p>아래 버튼을 눌러 창을 닫아주세요</p>
+      <button class="btn" onclick="${CLOSE_SCRIPT}">확인</button>
     </div>
   </body>
 </html>`

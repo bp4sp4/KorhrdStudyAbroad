@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-31T09:40:30.686Z",
+  "lastUpdated": "2026-03-31T09:46:16.972Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -415,7 +415,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:08:53.194Z",
-        "lastUpdated": "2026-03-31T09:40:30.686Z"
+        "lastUpdated": "2026-03-31T09:43:25.779Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/apply/page.tsx"
     },
@@ -506,7 +506,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-31T06:54:06.773Z",
-        "lastUpdated": "2026-03-31T09:07:27.294Z"
+        "lastUpdated": "2026-03-31T09:46:16.972Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/payments/result/route.ts"
     },
@@ -532,7 +532,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-31T09:40:30.686Z"
+    "lastActivity": "2026-03-31T09:46:16.972Z"
   },
   "history": [
     {
@@ -3580,6 +3580,42 @@
     {
       "timestamp": "2026-03-31T09:40:30.686Z",
       "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:43:04.376Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:43:13.600Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:43:25.779Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:44:30.797Z",
+      "feature": "result",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:44:59.461Z",
+      "feature": "result",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:46:16.972Z",
+      "feature": "result",
       "phase": "do",
       "action": "updated"
     }
