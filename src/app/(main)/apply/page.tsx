@@ -220,7 +220,9 @@ function ApplyPageInner() {
   // PayApp 팝업에서 결제완료 메시지 수신 (postMessage fallback)
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
+      console.log('[PAYMENT] postMessage received:', e.data, 'origin:', e.origin)
       if (e.data?.type === 'PAYMENT_COMPLETE') {
+        console.log('[PAYMENT] postMessage → showPaymentDoneModal = true')
         setShowPaymentDoneModal(true)
       }
     }
@@ -231,24 +233,33 @@ function ApplyPageInner() {
   // 결제 스텝에서 DB 폴링 — 브라우저 클라이언트로 직접 쿼리 (서버 액션 캐시 우회)
   useEffect(() => {
     if (step !== 'payment') return
+    console.log('[PAYMENT] polling started, step:', step)
     const supabase = createClient()
     const interval = setInterval(async () => {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-      const { data } = await supabase
+      if (!user) {
+        console.log('[PAYMENT] polling: no user')
+        return
+      }
+      const { data, error } = await supabase
         .from('payments')
-        .select('id, program')
+        .select('id, program, status')
         .eq('user_id', user.id)
         .eq('status', 'completed')
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle()
+      console.log('[PAYMENT] polling result:', { data, error })
       if (data) {
+        console.log('[PAYMENT] polling → completed! showPaymentDoneModal = true')
         clearInterval(interval)
         setShowPaymentDoneModal(true)
       }
     }, 2000)
-    return () => clearInterval(interval)
+    return () => {
+      console.log('[PAYMENT] polling stopped')
+      clearInterval(interval)
+    }
   }, [step])
 
   // 마운트 시 결제 완료 여부 + 프로필 전화번호 확인

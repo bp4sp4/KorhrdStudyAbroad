@@ -20,10 +20,10 @@ const REVIEWS = [
 ]
 
 // 4카드 = 2행씩 배경 변경 (총 3그룹)
-const BG_GRADIENTS = [
-  'linear-gradient(180deg, #4C85FF 0%, #E5EDFF 100%)',
-  'linear-gradient(180deg, #0030B0 0%, #4C85FF 100%)',
-  'linear-gradient(180deg, #001A6E 0%, #0030B0 100%)',
+const BG_IMAGES = [
+  '/main/review/review_background_01.png',
+  '/main/review/review_background_02.png',
+  '/main/review/review_background_03.png',
 ]
 
 // 카드 높이 425px + gap 24px = 449px/행, 2행 = 898px/그룹
@@ -33,17 +33,48 @@ const GROUP_HEIGHT = CARD_ROW_HEIGHT * 2 // 4카드(2열×2행) = 898px
 const LEFT  = REVIEWS.filter((_, i) => i % 2 === 0) // 6개
 const RIGHT = REVIEWS.filter((_, i) => i % 2 === 1) // 6개
 
+const FADE_ZONE = GROUP_HEIGHT * 0.4 // 페이드 구간 (그룹 높이의 40%)
+
+function calcOpacities(scrolled: number): number[] {
+  return BG_IMAGES.map((_, i) => {
+    const start = i * GROUP_HEIGHT
+    const end = (i + 1) * GROUP_HEIGHT
+
+    if (i === 0) {
+      if (scrolled < end - FADE_ZONE) return 1
+      if (scrolled < end) return (end - scrolled) / FADE_ZONE
+      return 0
+    }
+    if (i === BG_IMAGES.length - 1) {
+      const fadeIn = start - FADE_ZONE
+      if (scrolled < fadeIn) return 0
+      if (scrolled < start) return (scrolled - fadeIn) / FADE_ZONE
+      return 1
+    }
+    // 중간 이미지: fade in → 유지 → fade out
+    const fadeIn = start - FADE_ZONE
+    if (scrolled < fadeIn) return 0
+    if (scrolled < start) return (scrolled - fadeIn) / FADE_ZONE
+    if (scrolled < end - FADE_ZONE) return 1
+    if (scrolled < end) return (end - scrolled) / FADE_ZONE
+    return 0
+  })
+}
+
 export default function ReviewSection() {
-  const [bgIndex, setBgIndex] = useState(0)
+  const [opacities, setOpacities] = useState(() => calcOpacities(0))
+  const [visible, setVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const handleScroll = () => {
       const section = sectionRef.current
       if (!section) return
-      const scrolledInto = -section.getBoundingClientRect().top
-      const idx = Math.floor(Math.max(0, scrolledInto) / GROUP_HEIGHT)
-      setBgIndex(Math.min(idx, BG_GRADIENTS.length - 1))
+      const rect = section.getBoundingClientRect()
+      const inView = rect.top < window.innerHeight && rect.bottom > 0
+      setVisible(inView)
+      const scrolled = Math.max(0, -rect.top)
+      setOpacities(calcOpacities(scrolled))
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -51,11 +82,19 @@ export default function ReviewSection() {
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className={styles.review}
-      style={{ background: BG_GRADIENTS[bgIndex] }}
-    >
+    <section ref={sectionRef} className={styles.review}>
+      {visible && BG_IMAGES.map((img, i) => (
+        <div
+          key={img}
+          className={styles.review_bg}
+          style={{
+            backgroundImage: `url(${img})`,
+            opacity: opacities[i],
+          }}
+        />
+      ))}
+      {visible && <div className={styles.review_gradient} />}
+
       <h2 className={styles.review_title}>
         소중한 경험,<br />한평생유학에서만<br />가능합니다.
       </h2>
