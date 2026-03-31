@@ -221,7 +221,6 @@ function ApplyPageInner() {
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === 'payment_complete') {
-        console.log('[PAYMENT] localStorage event → showPaymentDoneModal = true')
         localStorage.removeItem('payment_complete')
         setShowPaymentDoneModal(true)
       }
@@ -233,9 +232,7 @@ function ApplyPageInner() {
   // postMessage fallback
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
-      console.log('[PAYMENT] postMessage received:', e.data, 'origin:', e.origin)
       if (e.data?.type === 'PAYMENT_COMPLETE') {
-        console.log('[PAYMENT] postMessage → showPaymentDoneModal = true')
         setShowPaymentDoneModal(true)
       }
     }
@@ -246,25 +243,17 @@ function ApplyPageInner() {
   // 결제 스텝에서 DB 폴링 — 서버 API 엔드포인트로 체크 (RLS 우회)
   useEffect(() => {
     if (step !== 'payment') return
-    console.log('[PAYMENT] polling started')
     const interval = setInterval(async () => {
       try {
         const res = await fetch('/api/payments/check')
         const json = await res.json()
-        console.log('[PAYMENT] polling result:', json)
         if (json.completed) {
-          console.log('[PAYMENT] polling → completed! showing modal')
           clearInterval(interval)
           setShowPaymentDoneModal(true)
         }
-      } catch (e) {
-        console.log('[PAYMENT] polling error:', e)
-      }
+      } catch (e) {}
     }, 2000)
-    return () => {
-      console.log('[PAYMENT] polling stopped')
-      clearInterval(interval)
-    }
+    return () => clearInterval(interval)
   }, [step])
 
   // 마운트 시 결제 완료 여부 + 프로필 전화번호 확인
@@ -727,6 +716,38 @@ function ApplyPageInner() {
           </section>
         </div>
       </div>
+
+      {showPaymentDoneModal && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal}>
+            <p className={styles.modal_title}>결제가 완료되었습니다.</p>
+            <p className={styles.modal_desc}>신청서를 작성하러 이동하시겠습니까?</p>
+            <div className={styles.modal_buttons}>
+              <button
+                type="button"
+                className={styles.modal_btn_secondary}
+                onClick={() => router.push('/mypage')}
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                className={styles.modal_btn_primary}
+                onClick={async () => {
+                  setShowPaymentDoneModal(false)
+                  const paid = await checkAnyCompletedPayment()
+                  if (paid) {
+                    setStep('form')
+                    setProgramValue(paid.program)
+                  }
+                }}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </>
     )
   }

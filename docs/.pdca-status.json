@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-31T09:28:40.941Z",
+  "lastUpdated": "2026-03-31T09:40:30.686Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -415,7 +415,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:08:53.194Z",
-        "lastUpdated": "2026-03-31T09:23:55.174Z"
+        "lastUpdated": "2026-03-31T09:40:30.686Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/apply/page.tsx"
     },
@@ -519,7 +519,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-31T09:23:42.801Z",
-        "lastUpdated": "2026-03-31T09:28:40.941Z"
+        "lastUpdated": "2026-03-31T09:38:36.977Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/payments/check/route.ts"
     }
@@ -532,7 +532,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-31T09:28:40.941Z"
+    "lastActivity": "2026-03-31T09:40:30.686Z"
   },
   "history": [
     {
@@ -3550,6 +3550,36 @@
     {
       "timestamp": "2026-03-31T09:28:40.941Z",
       "feature": "check",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:38:36.977Z",
+      "feature": "check",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:38:44.351Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:38:48.516Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:38:53.618Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T09:40:30.686Z",
+      "feature": "apply",
       "phase": "do",
       "action": "updated"
     }
