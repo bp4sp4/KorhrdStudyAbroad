@@ -382,31 +382,54 @@ function ApplyPageInner() {
     isRestoringRef.current = false
     setShouldRestore(false)
 
-    // 임시저장 데이터에서 첫 번째 비어있는 섹션으로 스크롤
+    // 임시저장 데이터에서 첫 번째 비어있는 필드로 스크롤
     setTimeout(() => {
-      // 섹션별로 필수 필드 그룹화 — 섹션 내 모든 필드가 비어있으면 해당 섹션으로 이동
-      const sectionFields: { section: string; cols: string[] }[] = [
-        { section: 'basic', cols: ['name', 'gender'] },
-        { section: 'passport', cols: ['passport_name', 'passport_number'] },
-        { section: 'guardian', cols: ['guardian_name', 'guardian_phone', 'guardian_email'] },
-        { section: 'homestay', cols: ['english_level', 'swim_level'] },
-        { section: 'agree', cols: ['agreed_terms', 'agreed_privacy', 'agreed_media'] },
+      const fields = [
+        { col: 'name', section: 'basic', field: 'korean_name' },
+        { col: 'birth_date', section: 'basic', field: 'birth_date' },
+        { col: 'birth_city', section: 'basic', field: 'birth_city' },
+        { col: 'gender', section: 'basic', field: 'gender' },
+        { col: 'email', section: 'basic', field: 'email' },
+        { col: 'phone', section: 'basic', field: 'phone' },
+        { col: 'school', section: 'basic', field: 'school_name' },
+        { col: 'school_grade', section: 'basic', field: 'grade' },
+        { col: 'address', section: 'basic', field: 'address' },
+        { col: 'passport_name', section: 'passport', field: 'passport_name' },
+        { col: 'passport_number', section: 'passport', field: 'passport_number' },
+        { col: 'passport_expiry', section: 'passport', field: 'passport_expiry' },
+        { col: 'passport_file_url', section: 'passport', field: 'passport_file' },
+        { col: 'id_photo_url', section: 'passport', field: 'id_photo_file' },
+        { col: 'guardian_name', section: 'guardian', field: 'guardian_name' },
+        { col: 'guardian_phone', section: 'guardian', field: 'guardian_phone' },
+        { col: 'guardian_email', section: 'guardian', field: 'guardian_email' },
+        { col: 'guardian_birth_city', section: 'guardian', field: 'guardian_birth_city' },
+        { col: 'english_level', section: 'homestay', field: 'english_level' },
+        { col: 'swim_level', section: 'homestay', field: 'swim_level' },
+        { col: 'agreed_terms', section: 'agree', field: 'participant_agree' },
+        { col: 'agreed_privacy', section: 'agree', field: 'guardian_agree' },
+        { col: 'agreed_media', section: 'agree', field: 'refund_agree' },
+        { col: 'participant_sig_url', section: 'agree', field: 'participant_sig' },
+        { col: 'guardian_sig_url', section: 'agree', field: 'guardian_sig' },
       ]
 
-      for (const { section, cols } of sectionFields) {
-        const hasEmpty = cols.some(col => {
-          const val = d[col]
-          if (val === null || val === undefined) return true
-          if (typeof val === 'string' && !val.trim()) return true
-          if (typeof val === 'boolean' && !val) return true
-          return false
-        })
-        if (hasEmpty) {
-          const sectionEl = sectionRefs.current[section]
-          if (sectionEl) {
-            sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            setActive(section)
+      const isEmpty = (val: unknown) => {
+        if (val === null || val === undefined) return true
+        if (typeof val === 'string' && !val.trim()) return true
+        if (typeof val === 'boolean' && !val) return true
+        return false
+      }
+
+      for (const { col, section, field } of fields) {
+        if (isEmpty(d[col])) {
+          // 해당 필드 요소로 직접 스크롤 시도, 없으면 섹션으로
+          const el = document.querySelector(`[data-field="${field}"], input[name="${field}"]`)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          } else {
+            const sectionEl = sectionRefs.current[section]
+            if (sectionEl) sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
           }
+          setActive(section)
           return
         }
       }
