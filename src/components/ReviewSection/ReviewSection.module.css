@@ -76,8 +76,7 @@
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.00) 45%,
-    rgba(0, 0, 0, 0.55) 100%
+    rgba(0, 0, 0, 0.00) 45%
   );
   pointer-events: none;
 }
