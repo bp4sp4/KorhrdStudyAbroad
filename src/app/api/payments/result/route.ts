@@ -3,17 +3,12 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 function buildSuccessHtml(csturl: string | null) {
   if (csturl) {
-    // 첫 방문: 부모창에 결제완료 메시지 즉시 전송 후 PayApp 영수증으로 이동
+    // CSTURL 있으면 PayApp 영수증으로 이동 (폴링으로 부모창 모달 처리)
     return `<!DOCTYPE html>
 <html>
   <head><meta charset="UTF-8"><title>결제 완료</title></head>
   <body>
-    <script>
-      if (window.opener) {
-        window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*');
-      }
-      window.location.href = '${csturl}';
-    </script>
+    <script>window.location.href = '${csturl}';</script>
   </body>
 </html>`
   }
@@ -73,19 +68,6 @@ const FAIL_HTML = `<!DOCTYPE html>
   </body>
 </html>`
 
-const CLOSE_HTML = `<!DOCTYPE html>
-<html>
-  <head><meta charset="UTF-8"><title>결제 완료</title></head>
-  <body>
-    <script>
-      if (window.opener) {
-        window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*');
-      }
-      window.close();
-    </script>
-  </body>
-</html>`
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -99,16 +81,10 @@ export async function GET(request: NextRequest) {
 
     const supabase = createAdminClient()
 
-    // 현재 DB 상태 조회
     const { data: payment } = await supabase.from('payments')
       .select('status, csturl')
       .eq('payapp_order_id', var1)
       .single()
-
-    // 이미 completed = 영수증 확인 후 재방문 → 팝업 닫기
-    if (payment?.status === 'completed') {
-      return new NextResponse(CLOSE_HTML, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
-    }
 
     // 실패 처리
     if (state === '0') {
@@ -118,17 +94,20 @@ export async function GET(request: NextRequest) {
       return new NextResponse(FAIL_HTML, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
 
-    // 첫 방문: pending → completed 업데이트
+    // DB 업데이트 (pending인 경우만, 이미 webhook이 completed 처리했을 수도 있음)
     const finalCsturl = csturlFromParams || payment?.csturl || null
-    await supabase.from('payments')
-      .update({
-        status: 'completed',
-        payapp_tid: tradeid || mul_no || undefined,
-        csturl: finalCsturl ?? undefined,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('payapp_order_id', var1)
+    if (payment?.status !== 'completed') {
+      await supabase.from('payments')
+        .update({
+          status: 'completed',
+          payapp_tid: tradeid || mul_no || undefined,
+          csturl: finalCsturl ?? undefined,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('payapp_order_id', var1)
+    }
 
+    // 항상 영수증 표시 (부모창 모달은 폴링으로 처리)
     return new NextResponse(buildSuccessHtml(finalCsturl), {
       status: 200,
       headers: { 'Content-Type': 'text/html; charset=utf-8' }
