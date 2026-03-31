@@ -217,7 +217,20 @@ function ApplyPageInner() {
     }
   }
 
-  // PayApp 팝업에서 결제완료 메시지 수신 (postMessage fallback)
+  // localStorage 이벤트로 결제완료 수신 (팝업 → 부모창, COOP 우회)
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'payment_complete') {
+        console.log('[PAYMENT] localStorage event → showPaymentDoneModal = true')
+        localStorage.removeItem('payment_complete')
+        setShowPaymentDoneModal(true)
+      }
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [])
+
+  // postMessage fallback
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       console.log('[PAYMENT] postMessage received:', e.data, 'origin:', e.origin)
