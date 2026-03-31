@@ -1202,9 +1202,9 @@ function ApplyPageInner() {
             <button
               type="button"
               className={styles.modal_btn_secondary}
-              onClick={() => setShowPaymentDoneModal(false)}
+              onClick={() => router.push('/mypage')}
             >
-              나중에
+              취소
             </button>
             <button
               type="button"
@@ -1218,7 +1218,7 @@ function ApplyPageInner() {
                 }
               }}
             >
-              신청서 작성하기
+              확인
             </button>
           </div>
         </div>

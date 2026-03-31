@@ -3,18 +3,12 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 function buildSuccessHtml(csturl: string | null) {
   if (csturl) {
-    // 부모창에 메시지 전송 + 영수증 새 탭으로 열기 + 팝업 닫기
+    // 첫 방문: PayApp 영수증으로 이동 (재방문은 서버에서 CLOSE_HTML 반환)
     return `<!DOCTYPE html>
 <html>
   <head><meta charset="UTF-8"><title>결제 완료</title></head>
   <body>
-    <script>
-      if (window.opener) {
-        window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*');
-      }
-      window.open('${csturl}', '_blank');
-      window.close();
-    </script>
+    <script>window.location.href = '${csturl}';</script>
   </body>
 </html>`
   }
@@ -74,78 +68,69 @@ const FAIL_HTML = `<!DOCTYPE html>
   </body>
 </html>`
 
+const CLOSE_HTML = `<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"><title>결제 완료</title></head>
+  <body>
+    <script>
+      if (window.opener) {
+        window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*');
+      }
+      window.close();
+    </script>
+  </body>
+</html>`
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
-    // 모든 파라미터 로그 (PayApp이 어떤 값을 보내는지 확인용)
-    const allParams: Record<string, string> = {}
-    searchParams.forEach((v, k) => { allParams[k] = v })
-    console.log('[result] GET params:', allParams)
-
     const state = searchParams.get('state')
     const tradeid = searchParams.get('tradeid')
     const mul_no = searchParams.get('mul_no')
-    const var1 = searchParams.get('var1') // orderId
-    // PayApp이 returnurl 파라미터로 csturl을 전달하는 경우
+    const var1 = searchParams.get('var1')
     const csturlFromParams = searchParams.get('csturl') || searchParams.get('CSTURL')
+
+    if (!var1) return new NextResponse(FAIL_HTML, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
 
     const supabase = createAdminClient()
 
-    if (state === '1' || (state === null && mul_no)) {
-      // DB에서 기존 csturl 조회 (webhook에서 먼저 저장됐을 수 있음)
-      const { data: payment } = await supabase.from('payments')
-        .select('csturl')
-        .eq('payapp_order_id', var1)
-        .single()
+    // 현재 DB 상태 조회
+    const { data: payment } = await supabase.from('payments')
+      .select('status, csturl')
+      .eq('payapp_order_id', var1)
+      .single()
 
-      const finalCsturl = csturlFromParams || payment?.csturl || null
+    // 이미 completed = 영수증 확인 후 재방문 → 팝업 닫기
+    if (payment?.status === 'completed') {
+      return new NextResponse(CLOSE_HTML, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
+    }
 
-      await supabase.from('payments')
-        .update({
-          status: 'completed',
-          payapp_tid: tradeid || mul_no,
-          csturl: finalCsturl ?? undefined,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('payapp_order_id', var1)
-
-      return new NextResponse(buildSuccessHtml(finalCsturl), {
-        status: 200,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      })
-    } else if (state === '0') {
+    // 실패 처리
+    if (state === '0') {
       await supabase.from('payments')
         .update({ status: 'failed', updated_at: new Date().toISOString() })
         .eq('payapp_order_id', var1)
-
-      return new NextResponse(FAIL_HTML, {
-        status: 200,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      })
-    } else {
-      const { data: payment } = var1 ? await supabase.from('payments')
-        .select('csturl')
-        .eq('payapp_order_id', var1)
-        .single() : { data: null }
-
-      const finalCsturl = csturlFromParams || payment?.csturl || null
-
-      if (var1) {
-        await supabase.from('payments')
-          .update({ status: 'completed', csturl: finalCsturl ?? undefined, updated_at: new Date().toISOString() })
-          .eq('payapp_order_id', var1)
-      }
-      return new NextResponse(buildSuccessHtml(finalCsturl), {
-        status: 200,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      })
+      return new NextResponse(FAIL_HTML, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
     }
-  } catch (error) {
-    console.error('Payment result error:', error)
-    return new NextResponse(FAIL_HTML, {
+
+    // 첫 방문: pending → completed 업데이트
+    const finalCsturl = csturlFromParams || payment?.csturl || null
+    await supabase.from('payments')
+      .update({
+        status: 'completed',
+        payapp_tid: tradeid || mul_no || undefined,
+        csturl: finalCsturl ?? undefined,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('payapp_order_id', var1)
+
+    return new NextResponse(buildSuccessHtml(finalCsturl), {
       status: 200,
       headers: { 'Content-Type': 'text/html; charset=utf-8' }
     })
+  } catch (error) {
+    console.error('Payment result error:', error)
+    return new NextResponse(FAIL_HTML, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } })
   }
 }
 
