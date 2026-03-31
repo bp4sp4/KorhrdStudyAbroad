@@ -82,11 +82,12 @@ const PROGRAM_OPTIONS = [
   { value: 'nz_hamilton_parent_10w', label: '뉴질랜드 해밀턴 부모동반 10주' },
 ]
 
-function CustomSelect({ options, placeholder = '선택해주세요.', onSelect, value }: {
+function CustomSelect({ options, placeholder = '선택해주세요.', onSelect, value, disabled }: {
   options: { value: string; label: string }[]
   placeholder?: string
   onSelect?: (value: string) => void
   value?: string
+  disabled?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(value ?? '')
@@ -110,8 +111,9 @@ function CustomSelect({ options, placeholder = '선택해주세요.', onSelect, 
     <div className={styles.custom_select} ref={ref}>
       <button
         type="button"
-        className={`${styles.custom_select_trigger} ${open ? styles.custom_select_open : ''}`}
-        onClick={() => setOpen(!open)}
+        className={`${styles.custom_select_trigger} ${open ? styles.custom_select_open : ''} ${disabled ? styles.custom_select_disabled : ''}`}
+        onClick={() => !disabled && setOpen(!open)}
+        disabled={disabled}
       >
         <span className={selected ? styles.custom_select_value : styles.custom_select_placeholder}>
           {selectedLabel ?? placeholder}
@@ -823,7 +825,7 @@ function ApplyPageInner() {
           <div className={styles.field}>
             <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>신청하실 유학 프로그램을 선택해주세요.</p>
-            <CustomSelect options={PROGRAM_OPTIONS} value={programValue} onSelect={(v) => { setProgramValue(v); clearError('program') }} />
+            <CustomSelect options={PROGRAM_OPTIONS} value={programValue} onSelect={(v) => { setProgramValue(v); clearError('program') }} disabled={step === 'form'} />
             {hasError('program') && <p className={styles.error_msg}>프로그램을 선택해주세요.</p>}
           </div>
         </section>
