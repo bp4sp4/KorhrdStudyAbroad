@@ -41,6 +41,23 @@ const NAV_ITEMS = [
   { id: 'history', icon: <IconHistory />, label: '프로그램 신청 내역' },
 ]
 
+type Payment = {
+  id: string
+  program: string
+  amount: number
+  payapp_order_id: string | null
+  payapp_tid: string | null
+  status: string
+  created_at: string
+}
+
+const PAYMENT_STATUS_LABEL: Record<string, string> = {
+  pending: '대기중', completed: '결제완료', failed: '실패', cancelled: '취소',
+}
+const PAYMENT_STATUS_COLOR: Record<string, string> = {
+  pending: 'badge_pending', completed: 'badge_completed', failed: 'badge_failed', cancelled: 'badge_cancelled',
+}
+
 type Application = {
   id: string
   program: string | null
@@ -86,6 +103,8 @@ export default function MyPage() {
   const [userId, setUserId] = useState('')
   const [applications, setApplications] = useState<Application[]>([])
   const [loadingApplications, setLoadingApplications] = useState(false)
+  const [payments, setPayments] = useState<Payment[]>([])
+  const [loadingPayments, setLoadingPayments] = useState(false)
   const [toast, setToast] = useState('')
 
   const showToast = (msg: string) => {
@@ -112,6 +131,22 @@ export default function MyPage() {
     }
     load()
   }, [router])
+
+  useEffect(() => {
+    if (active !== 'payment' || !userId) return
+    const load = async () => {
+      setLoadingPayments(true)
+      const supabase = createClient()
+      const { data } = await supabase
+        .from('payments')
+        .select('id, program, amount, payapp_order_id, payapp_tid, status, created_at')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+      setPayments(data ?? [])
+      setLoadingPayments(false)
+    }
+    load()
+  }, [active, userId])
 
   useEffect(() => {
     if (active !== 'history' || !userId) return
@@ -309,6 +344,47 @@ export default function MyPage() {
               <button className={styles.btn_withdraw}>탈퇴하기</button>
             </div>
 
+          </div>
+        )}
+
+        {active === 'payment' && (
+          <div className={styles.card}>
+            <h2 className={styles.section_title}>결제 내역</h2>
+            {loadingPayments ? (
+              <p className={styles.empty_text}>불러오는 중...</p>
+            ) : payments.length === 0 ? (
+              <div className={styles.empty_state}>
+                <p className={styles.empty_text}>결제 내역이 없습니다.</p>
+              </div>
+            ) : (
+              <ul className={styles.history_list}>
+                {payments.map((pay) => (
+                  <li key={pay.id} className={styles.history_item}>
+                    <div className={styles.history_top}>
+                      <div className={styles.history_info}>
+                        <p className={styles.history_program}>
+                          {PROGRAM_LABEL[pay.program] ?? pay.program}
+                        </p>
+                        <p className={styles.history_amount}>
+                          {pay.amount.toLocaleString('ko-KR')}원
+                        </p>
+                      </div>
+                      <span className={`${styles.history_badge} ${styles[PAYMENT_STATUS_COLOR[pay.status] ?? 'badge_pending']}`}>
+                        {PAYMENT_STATUS_LABEL[pay.status] ?? pay.status}
+                      </span>
+                    </div>
+                    <div className={styles.history_bottom}>
+                      <span className={styles.history_date}>
+                        결제일 · {new Date(pay.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </span>
+                      {pay.payapp_tid && (
+                        <span className={styles.history_tid}>거래번호 {pay.payapp_tid}</span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
 

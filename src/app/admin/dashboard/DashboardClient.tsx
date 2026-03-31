@@ -24,6 +24,18 @@ type Application = {
   email: string | null
 }
 
+type Payment = {
+  id: string
+  user_id: string | null
+  program: string
+  amount: number
+  payapp_order_id: string | null
+  payapp_tid: string | null
+  status: string
+  created_at: string
+  profiles: { full_name: string | null } | null
+}
+
 type Consultation = {
   id: string
   user_id: string | null
@@ -64,15 +76,24 @@ const PROGRAM_LABEL: Record<string, string> = {
   nz_hamilton_parent_10w: '뉴질랜드 해밀턴 부모동반 10주',
 }
 
+const PAYMENT_STATUS_LABEL: Record<string, string> = {
+  pending: '대기중', completed: '결제완료', failed: '실패', cancelled: '취소',
+}
+const PAYMENT_STATUS_CLASS: Record<string, string> = {
+  pending: 'badge_draft', completed: 'badge_approved', failed: 'badge_rejected', cancelled: 'badge_reviewing',
+}
+
 export default function DashboardClient({
   users,
   applications,
   consultations,
+  payments,
   adminEmail,
 }: {
   users: User[]
   applications: Application[]
   consultations: Consultation[]
+  payments: Payment[]
   adminEmail: string
 }) {
   const router = useRouter()
@@ -106,8 +127,8 @@ export default function DashboardClient({
             <p className={styles.stat_value}>{applications.filter(a => a.status === 'submitted').length}</p>
           </div>
           <div className={styles.stat_card}>
-            <p className={styles.stat_label}>결제 건수</p>
-            <p className={styles.stat_value}>-</p>
+            <p className={styles.stat_label}>결제 완료</p>
+            <p className={styles.stat_value}>{payments.filter(p => p.status === 'completed').length}</p>
           </div>
         </div>
 
@@ -229,9 +250,32 @@ export default function DashboardClient({
         {/* 결제 목록 */}
         {tab === 'payments' && (
           <div className={styles.table_wrap}>
-            <div className={styles.empty_state}>
-              <p className={styles.empty_title}>결제 내역 없음</p>
-              <p className={styles.empty_text}>결제 데이터가 이곳에 표시됩니다.</p>
+            <div className={styles.table_scroll}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>신청자</th><th>프로그램</th><th>금액</th><th>상태</th><th>주문번호</th><th>결제일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {payments.length === 0 ? (
+                    <tr><td colSpan={6} className={styles.td_empty}>결제 내역이 없습니다.</td></tr>
+                  ) : payments.map(p => (
+                    <tr key={p.id}>
+                      <td>{p.profiles?.full_name ?? '-'}</td>
+                      <td>{PROGRAM_LABEL[p.program] ?? p.program}</td>
+                      <td>{p.amount.toLocaleString('ko-KR')}원</td>
+                      <td>
+                        <span className={styles[PAYMENT_STATUS_CLASS[p.status] ?? 'badge_draft']}>
+                          {PAYMENT_STATUS_LABEL[p.status] ?? p.status}
+                        </span>
+                      </td>
+                      <td className={styles.td_muted}>{p.payapp_order_id ?? '-'}</td>
+                      <td className={styles.td_date}>{new Date(p.created_at).toLocaleDateString('ko-KR')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         )}

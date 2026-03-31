@@ -443,6 +443,40 @@ background: var(--Atomic-Common-White, #FFF);
   color: #DC2626;
 }
 
+.badge_pending {
+  background: #F3F4F6;
+  color: #6B7280;
+}
+
+.badge_completed {
+  background: #ECFDF5;
+  color: #059669;
+}
+
+.badge_failed {
+  background: #FEF2F2;
+  color: #DC2626;
+}
+
+.badge_cancelled {
+  background: #FFFBEB;
+  color: #D97706;
+}
+
+.history_amount {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0051FF;
+  margin: 4px 0 0;
+}
+
+.history_tid {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
 /* ── 반응형 ── */
 @media (max-width: 1199px) {
   .container {

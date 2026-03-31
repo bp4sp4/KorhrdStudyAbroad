@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-31T05:49:09.548Z",
+  "lastUpdated": "2026-03-31T07:34:26.332Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -34,7 +34,10 @@
     "mypage",
     "[id]",
     "program",
-    "PolicyLayout"
+    "PolicyLayout",
+    "webhook",
+    "payments",
+    "result"
   ],
   "primaryFeature": "supabase",
   "features": {
@@ -125,9 +128,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:52.912Z",
-        "lastUpdated": "2026-03-31T05:18:19.044Z"
+        "lastUpdated": "2026-03-31T06:38:36.394Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/admin/dashboard/DashboardClient.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/admin/dashboard/page.tsx"
     },
     "admin": {
       "phase": "do",
@@ -372,7 +375,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:56:43.335Z",
-        "lastUpdated": "2026-03-31T05:49:09.548Z"
+        "lastUpdated": "2026-03-31T06:13:31.042Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ReviewSection/ReviewSection.tsx"
     },
@@ -411,7 +414,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:08:53.194Z",
-        "lastUpdated": "2026-03-31T05:18:12.464Z"
+        "lastUpdated": "2026-03-31T07:14:07.569Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/apply/page.tsx"
     },
@@ -424,7 +427,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:14:10.664Z",
-        "lastUpdated": "2026-03-31T05:20:52.944Z"
+        "lastUpdated": "2026-03-31T07:05:27.931Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/mypage/page.tsx"
     },
@@ -466,6 +469,45 @@
         "lastUpdated": "2026-03-31T03:44:09.868Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/PolicyLayout/PolicyLayout.tsx"
+    },
+    "webhook": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-31T06:36:24.988Z",
+        "lastUpdated": "2026-03-31T07:19:12.619Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/payments/webhook/route.ts"
+    },
+    "payments": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-31T06:53:46.616Z",
+        "lastUpdated": "2026-03-31T07:15:12.914Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/payments/route.ts"
+    },
+    "result": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-31T06:54:06.773Z",
+        "lastUpdated": "2026-03-31T07:34:26.332Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/payments/result/route.ts"
     }
   },
   "pipeline": {
@@ -476,7 +518,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-31T05:49:09.548Z"
+    "lastActivity": "2026-03-31T07:34:26.332Z"
   },
   "history": [
     {
@@ -2870,6 +2912,384 @@
     {
       "timestamp": "2026-03-31T05:49:09.548Z",
       "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:12:48.479Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:13:31.042Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:36:24.988Z",
+      "feature": "webhook",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:36:34.313Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:36:54.686Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:37:06.500Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:37:11.185Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:37:17.898Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:37:34.495Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:37:55.175Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:38:09.343Z",
+      "feature": "dashboard",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:38:16.152Z",
+      "feature": "dashboard",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:38:21.313Z",
+      "feature": "dashboard",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:38:30.433Z",
+      "feature": "dashboard",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:38:36.394Z",
+      "feature": "dashboard",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:39:06.463Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:39:12.106Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:40:30.686Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:41:09.046Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:41:15.787Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:41:22.737Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:41:33.174Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:47:57.260Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:48:01.488Z",
+      "feature": "webhook",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:48:19.714Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:48:25.122Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:53:46.616Z",
+      "feature": "payments",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:06.773Z",
+      "feature": "result",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:15.250Z",
+      "feature": "webhook",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:23.824Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:28.495Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:37.017Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:54.326Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:54:59.599Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:57:29.709Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:57:37.524Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:57:49.163Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:57:55.145Z",
+      "feature": "payments",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:57:58.805Z",
+      "feature": "payments",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:58:42.026Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:59:15.575Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T06:59:22.332Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:00:34.199Z",
+      "feature": "payments",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:00:52.758Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:00:57.909Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:05:03.287Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:05:12.944Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:05:18.709Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:05:27.931Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:10:54.061Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:11:47.869Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:11:53.566Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:11:59.868Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:12:32.851Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:13:51.988Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:13:57.597Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:14:07.569Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:15:12.914Z",
+      "feature": "payments",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:15:50.228Z",
+      "feature": "result",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:19:12.619Z",
+      "feature": "webhook",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:19:28.161Z",
+      "feature": "result",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:30:11.038Z",
+      "feature": "result",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-31T07:34:26.332Z",
+      "feature": "result",
       "phase": "do",
       "action": "updated"
     }

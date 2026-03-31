@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.css'
 import { createClient } from '@/lib/supabase/client'
+import { createPaymentRecord, checkAnyCompletedPayment } from './actions'
 
 const IconProgram = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -50,7 +51,24 @@ const NAV_ITEMS = [
   { id: 'agree',    icon: <IconAgree />,    label: '참가 동의' },
 ]
 
+const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
+  test_1000: { amount: 1000, display: '1,000원 (테스트 결제)' },
+  philippines_cebu_solo: { amount: 4500000, display: '4,500,000원 (신청비 10만원 별도)' },
+  usa_newjersey_solo: { amount: 9200000, display: '9,200,000원' },
+  canada_vancouver_solo: { amount: 0, display: '$9,750 (별도 문의)' },
+  uk_solo: { amount: 10650000, display: '10,650,000원' },
+  nz_auckland_solo: { amount: 8350000, display: '8,350,000원' },
+  nz_hamilton_solo_4w: { amount: 8000000, display: '8,000,000원' },
+  nz_hamilton_parent_4w: { amount: 6900000, display: '6,900,000원' },
+  nz_hamilton_solo_3w: { amount: 6000000, display: '6,000,000원' },
+  nz_hamilton_parent_3w: { amount: 5300000, display: '5,300,000원' },
+  nz_hamilton_solo_10w: { amount: 16000000, display: '16,000,000원' },
+  nz_hamilton_parent_10w: { amount: 12700000, display: '12,700,000원' },
+}
+
+
 const PROGRAM_OPTIONS = [
+  { value: 'test_1000', label: '🧪 테스트 결제 (1,000원)' },
   { value: 'philippines_cebu_solo', label: '필리핀 세부 나홀로' },
   { value: 'usa_newjersey_solo', label: '미국 뉴저지 나홀로' },
   { value: 'canada_vancouver_solo', label: '캐나다 밴쿠버-써리 나홀로' },
@@ -144,6 +162,11 @@ const SECTION_ORDER = ['program', 'basic', 'passport', 'guardian', 'homestay', '
 
 export default function ApplyPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [step, setStep] = useState<'payment' | 'form'>('payment')
+  const [paymentProgram, setPaymentProgram] = useState('')
+  const [paymentPhone, setPaymentPhone] = useState('')
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false)
   const [active, setActive] = useState('program')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
@@ -164,10 +187,15 @@ export default function ApplyPage() {
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
   const submittedRef = useRef(false)
   const isRestoringRef = useRef(false)
+  const stepRef = useRef<'payment' | 'form'>('payment')
 
-  // 페이지 이탈 시 경고
+  // step 변경 시 ref 동기화
+  useEffect(() => { stepRef.current = step }, [step])
+
+  // 페이지 이탈 시 경고 (신청서 작성 중일 때만)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (stepRef.current !== 'form') return
       if (submittedRef.current) return
       e.preventDefault()
       e.returnValue = ''
@@ -187,6 +215,30 @@ export default function ApplyPage() {
       clearError(field)
     }
   }
+
+  // 마운트 시 결제 완료 여부 + 프로필 전화번호 확인
+  useEffect(() => {
+    const isReturnFromPayment = searchParams.get('payment') === 'success'
+    const check = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('phone')
+          .eq('id', user.id)
+          .single()
+        if (profile?.phone) setPaymentPhone(profile.phone)
+      }
+      if (isReturnFromPayment) await new Promise(r => setTimeout(r, 1500))
+      const paid = await checkAnyCompletedPayment()
+      if (paid) {
+        setStep('form')
+        setProgramValue(paid.program)
+      }
+    }
+    check()
+  }, [])
 
   // 마운트 시 DB에서 임시저장 확인
   useEffect(() => {
@@ -509,6 +561,123 @@ export default function ApplyPage() {
     } else {
       new window.daum.Postcode({ oncomplete: (data) => setAddress(data.address) }).open()
     }
+  }
+
+  const handlePaymentSubmit = async () => {
+    if (!paymentProgram) { alert('프로그램을 선택해주세요.'); return }
+    if (paymentProgram === 'canada_vancouver_solo') {
+      window.open('https://pf.kakao.com/_xkRxoxbn/chat', '_blank')
+      return
+    }
+    const price = PROGRAM_PRICES[paymentProgram]
+    if (!price || price.amount === 0) { alert('해당 프로그램은 별도 문의가 필요합니다.'); return }
+    const rawPhone = paymentPhone.replace(/-/g, '')
+
+    setIsPaymentLoading(true)
+    try {
+      // 1. DB에 pending 레코드 생성
+      const orderId = await createPaymentRecord(paymentProgram, price.amount)
+      const goodName = PROGRAM_OPTIONS.find(o => o.value === paymentProgram)?.label ?? '유학 프로그램'
+
+      // 2. 서버에서 PayApp API 호출 → payurl 받기
+      const res = await fetch('/api/payments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, goodname: goodName, price: price.amount, recvphone: rawPhone, var1: orderId }),
+      })
+      const data = await res.json()
+
+      if (!res.ok || !data.data?.payurl) {
+        alert(data.error || '결제 요청에 실패했습니다.')
+        return
+      }
+
+      // 3. 모바일/데스크톱 분기
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      if (isMobile) {
+        window.location.href = data.data.payurl
+      } else {
+        const popup = window.open(data.data.payurl, 'payapp_payment', 'width=800,height=900,left=200,top=100')
+        if (!popup) {
+          // 팝업 차단된 경우 새 탭으로
+          window.open(data.data.payurl, '_blank')
+        }
+      }
+    } catch (e) {
+      alert('결제 처리 중 오류가 발생했습니다.')
+      console.error(e)
+    } finally {
+      setIsPaymentLoading(false)
+    }
+  }
+
+  if (step === 'payment') {
+    const selectedPrice = paymentProgram ? PROGRAM_PRICES[paymentProgram] : null
+    const selectedLabel = PROGRAM_OPTIONS.find(o => o.value === paymentProgram)?.label
+    return (
+      <>
+      <div className={styles.container}>
+        {/* 사이드바 */}
+        <aside className={styles.sidebar}>
+          <p className={styles.sidebar_title}>참가 신청</p>
+          <nav className={styles.sidebar_nav}>
+            {NAV_ITEMS.map((item) => (
+              <div key={item.id} className={styles.nav_item_disabled}>
+                <span className={styles.nav_icon}>{item.icon}</span>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </nav>
+        </aside>
+
+        {/* 콘텐츠 */}
+        <div className={styles.content}>
+          {/* 안내 배너 */}
+          <div className={styles.banner}>
+            프로그램 선택 후, 결제를 진행해주시면 신청서 작성이 가능합니다.
+          </div>
+
+          {/* 결제 섹션 */}
+          <section className={styles.section}>
+            <h2 className={styles.section_title}>안내받으신 프로그램을 선택 후, 결제를 진행해주세요!</h2>
+
+            <div className={styles.field}>
+              <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
+              <p className={styles.field_desc}>신청하실 유학 프로그램을 선택해주세요.</p>
+              <CustomSelect
+                options={PROGRAM_OPTIONS}
+                value={paymentProgram}
+                onSelect={setPaymentProgram}
+                placeholder="선택해주세요."
+              />
+            </div>
+
+
+            {selectedPrice && (
+              <div className={styles.price_box}>
+                <p className={styles.price_program}>{selectedLabel}</p>
+                <p className={styles.price_value}>{selectedPrice.display}</p>
+              </div>
+            )}
+
+            {paymentProgram === 'canada_vancouver_solo' ? (
+              <button className={styles.btn_consult} onClick={handlePaymentSubmit} disabled={isPaymentLoading}>
+                상담 신청하기
+              </button>
+            ) : (
+              <button
+                className={styles.btn_pay}
+                onClick={handlePaymentSubmit}
+                disabled={!paymentProgram || isPaymentLoading}
+              >
+                {isPaymentLoading ? '처리 중...' : '결제하기'}
+              </button>
+            )}
+          </section>
+        </div>
+      </div>
+      </>
+    )
   }
 
   return (

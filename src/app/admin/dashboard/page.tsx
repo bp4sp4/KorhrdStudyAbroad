@@ -34,11 +34,17 @@ export default async function AdminDashboardPage() {
     .select('*')
     .order('created_at', { ascending: false })
 
+  const { data: payments } = await adminSupabase
+    .from('payments')
+    .select('*, profiles(full_name)')
+    .order('created_at', { ascending: false })
+
   return (
     <DashboardClient
       users={users ?? []}
       applications={applications ?? []}
       consultations={consultations ?? []}
+      payments={payments ?? []}
       adminEmail={profile.email ?? ''}
     />
   )

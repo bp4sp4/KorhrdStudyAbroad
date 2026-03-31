@@ -612,6 +612,180 @@ line-height: 31.2px; /* 120% */
   background: #003FCC;
 }
 
+/* ── 영수증 모달 ── */
+.receipt_modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 36px 32px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
+}
+
+.receipt_icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #0051FF;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.receipt_title {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #010101;
+  margin: 0 0 24px;
+}
+
+.receipt_rows {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #F8F9FB;
+  margin-bottom: 24px;
+}
+
+.receipt_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.receipt_label {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #9CA3AF;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.receipt_value {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #111827;
+  font-weight: 600;
+  text-align: right;
+}
+
+.receipt_amount {
+  font-size: 15px;
+  color: #0051FF;
+}
+
+.receipt_mono {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: #6B7280;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+/* ── 결제 스텝 ── */
+.nav_item_disabled {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  gap: 6px;
+  align-self: stretch;
+  border-radius: 6px;
+  border: 1px solid #E4E4E4;
+  background: #F5F6FA;
+  color: #B2B2B2;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.2px;
+  cursor: default;
+}
+
+.price_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 24px 0;
+}
+
+.price_program {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #3D3D3D;
+  margin: 0;
+}
+
+.price_value {
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0051FF;
+  margin: 0;
+}
+
+.btn_pay {
+  display: flex;
+  padding: 14px 22px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: #0051FF;
+  color: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.btn_pay:hover:not(:disabled) {
+  background: #003FCC;
+}
+
+.btn_pay:disabled {
+  background: #B2B2B2;
+  cursor: not-allowed;
+}
+
+.btn_consult {
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: #fff;
+  color: #0051FF;
+  border: 2px solid #0051FF;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+}
+
+.btn_consult:hover {
+  background: #0051FF;
+  color: #fff;
+}
+
 /* ── 1399px 이하 ── */
 @media (max-width: 1399px) {
   .container {
