@@ -217,7 +217,7 @@ function ApplyPageInner() {
     }
   }
 
-  // PayApp 팝업에서 결제완료 메시지 수신
+  // PayApp 팝업에서 결제완료 메시지 수신 (postMessage fallback)
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       if (e.data?.type === 'PAYMENT_COMPLETE') {
@@ -227,6 +227,19 @@ function ApplyPageInner() {
     window.addEventListener('message', handleMessage)
     return () => window.removeEventListener('message', handleMessage)
   }, [])
+
+  // 결제 스텝에서 DB 폴링 — postMessage 실패 대비
+  useEffect(() => {
+    if (step !== 'payment') return
+    const interval = setInterval(async () => {
+      const paid = await checkAnyCompletedPayment()
+      if (paid) {
+        clearInterval(interval)
+        setShowPaymentDoneModal(true)
+      }
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [step])
 
   // 마운트 시 결제 완료 여부 + 프로필 전화번호 확인
   useEffect(() => {
