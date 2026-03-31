@@ -163,7 +163,7 @@ const SECTION_ORDER = ['program', 'basic', 'passport', 'guardian', 'homestay', '
 function ApplyPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [step, setStep] = useState<'payment' | 'form'>('payment')
+  const [step, setStep] = useState<'loading' | 'payment' | 'form'>('loading')
   const [paymentProgram, setPaymentProgram] = useState('')
   const [paymentPhone, setPaymentPhone] = useState('')
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
@@ -188,7 +188,7 @@ function ApplyPageInner() {
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
   const submittedRef = useRef(false)
   const isRestoringRef = useRef(false)
-  const stepRef = useRef<'payment' | 'form'>('payment')
+  const stepRef = useRef<'loading' | 'payment' | 'form'>('loading')
   const paymentPopupRef = useRef<Window | null>(null)
   const paymentCompletedRef = useRef(false)
 
@@ -292,6 +292,8 @@ function ApplyPageInner() {
       if (paid) {
         setStep('form')
         setProgramValue(paid.program)
+      } else {
+        setStep('payment')
       }
     }
     check()
@@ -671,6 +673,14 @@ function ApplyPageInner() {
     } finally {
       setIsPaymentLoading(false)
     }
+  }
+
+  if (step === 'loading') {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <p style={{ color: '#666', fontSize: '15px' }}>로딩 중...</p>
+      </div>
+    )
   }
 
   if (step === 'payment') {
