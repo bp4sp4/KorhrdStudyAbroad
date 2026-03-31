@@ -1,0 +1,41 @@
+.doc_title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #191F28;
+  margin: 0 0 28px;
+  letter-spacing: -0.3px;
+}
+
+.section {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #F2F4F6;
+}
+
+.section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.section_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333D4B;
+  margin: 0 0 10px;
+}
+
+.section_content {
+  font-size: 15px;
+  color: #6B7684;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.effective_date {
+  font-size: 13px;
+  font-weight: 500;
+  color: #8B95A1;
+  text-align: right;
+  margin-top: 8px;
+}

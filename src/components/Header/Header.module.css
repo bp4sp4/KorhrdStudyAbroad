@@ -1,0 +1,113 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--unit-6, 20px) 10px;
+}
+
+.inner {
+  display: flex;
+  width: var(--inner-width, 1260px);
+  max-width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 1400px 이하 (노트북) */
+@media (max-width: 1400px) {
+  .inner {
+    width: 100%;
+  }
+}
+
+.logo {
+  display: block;
+  width: 200px;
+  height: 46px;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+}
+
+.btn_login {
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0051FF;
+  border: 1.5px solid #0051FF;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.btn_login:hover {
+  background: #c2d5ff;
+  color: #0051FF;
+}
+
+.btn_mypage {
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: var(--Atomic-Mono-900, #010101);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn_mypage:hover {
+  opacity: 0.6;
+}
+
+.btn_logout {
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  color: var(--Atomic-Mono-900, #010101);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn_logout:hover {
+  opacity: 0.6;
+}
+
+.user_email {
+  font-size: 14px;
+  color: #6b7280;
+}

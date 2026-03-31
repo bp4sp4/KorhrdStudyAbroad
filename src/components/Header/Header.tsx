@@ -1,0 +1,37 @@
+import { createClient } from '@/lib/supabase/server'
+import { logout } from '@/app/auth/actions'
+import styles from './Header.module.css'
+
+export default async function Header() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  return (
+    <header className={styles.header}>
+      <div className={styles.inner}>
+        
+          <a href="/">
+            <span className={styles.logo}>
+              <img src="/logo.png" alt="한평생 유학" />
+            </span>
+          </a>
+        
+
+        <nav className={styles.nav}>
+          <a href="/program" className={styles.btn_mypage}>프로그램</a>
+          {user ? (
+            <>
+              <a href="/mypage" className={styles.btn_mypage}>마이페이지</a>
+              <a href="/apply" className={styles.btn_mypage}>참가신청</a>
+              <form action={logout}>
+                <button type="submit" className={styles.btn_logout}>로그아웃</button>
+              </form>
+            </>
+          ) : (
+            <a href="/login" className={styles.btn_login}>로그인/회원가입</a>
+          )}
+        </nav>
+      </div>
+    </header>
+  )
+}

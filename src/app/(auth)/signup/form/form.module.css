@@ -1,0 +1,116 @@
+.container {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.inner {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 120px 0 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #191919;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.desc {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 36px;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.input {
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #191919;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  border-color: #3182F6;
+}
+
+.input_error {
+  border-color: #ef4444 !important;
+}
+
+.error {
+  font-size: 13px;
+  color: #ef4444;
+  margin-top: 6px;
+}
+
+.btn {
+  width: 100%;
+  height: 56px;
+  background: #e5e7eb;
+  color: #9ca3af;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: not-allowed;
+  transition: all 0.2s;
+  margin-top: 12px;
+  letter-spacing: -0.2px;
+}
+
+.btn:not(:disabled) {
+  background: #3182F6;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn:not(:disabled):hover {
+  background: #1c6fd4;
+}
+
+.login_link {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 20px;
+}
+
+.login_link a {
+  color: #3182F6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login_link a:hover {
+  text-decoration: underline;
+}
