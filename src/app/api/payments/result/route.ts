@@ -1,46 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-const CLOSE_SCRIPT = `
-  try { localStorage.setItem('payment_complete', Date.now().toString()); } catch(e){}
-  if(window.opener){ try{ window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*'); }catch(e){} }
-  window.close();
-`
+const CLOSE_FN = `<script>function done(){try{localStorage.setItem('payment_complete',Date.now().toString())}catch(e){}if(window.opener){try{window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*')}catch(e){}}window.close()}</script>`
 
-function buildSuccessHtml(csturl: string | null) {
-  // 영수증이 있으면 iframe으로 바로 표시, 없으면 완료 카드
-  if (csturl) {
-    return `<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>결제 영수증</title>
-    <style>
-      *{margin:0;padding:0;box-sizing:border-box}
-      html,body{height:100%;display:flex;flex-direction:column;font-family:-apple-system,sans-serif;background:#f5f5f5}
-      .toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0051FF;color:#fff;flex-shrink:0}
-      .toolbar_title{font-size:15px;font-weight:700}
-      .btn_confirm{background:#fff;color:#0051FF;border:none;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:700;cursor:pointer}
-      iframe{flex:1;border:none;width:100%}
-    </style>
-  </head>
-  <body>
-    <div class="toolbar">
-      <span class="toolbar_title">결제 영수증</span>
-      <button class="btn_confirm" onclick="${CLOSE_SCRIPT}">확인</button>
-    </div>
-    <iframe src="${csturl}"></iframe>
-  </body>
-</html>`
-  }
-
+function buildSuccessHtml(_csturl: string | null) {
   return `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>결제 완료</title>
+    ${CLOSE_FN}
     <style>
       *{margin:0;padding:0;box-sizing:border-box}
       body{font-family:-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#4C85FF 0%,#0051FF 100%);padding:20px}
@@ -60,7 +30,7 @@ function buildSuccessHtml(csturl: string | null) {
       </div>
       <h1>결제가 완료되었습니다!</h1>
       <p>아래 버튼을 눌러 창을 닫아주세요</p>
-      <button class="btn" onclick="${CLOSE_SCRIPT}">확인</button>
+      <button class="btn" onclick="done()">확인</button>
     </div>
   </body>
 </html>`
