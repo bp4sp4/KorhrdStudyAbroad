@@ -36,7 +36,7 @@ function buildSuccessHtml(csturl: string | null) {
       <p>영수증을 확인 후 창을 닫아주세요</p>
       <div class="btns">
         ${receiptBtn}
-        <button class="btn btn_close" onclick="window.close()">닫기</button>
+        <button class="btn btn_close" onclick="if(window.opener){window.opener.postMessage({type:'PAYMENT_COMPLETE'},'*');} window.close();">닫기</button>
       </div>
     </div>
   </body>

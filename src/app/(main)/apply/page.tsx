@@ -237,7 +237,7 @@ function ApplyPageInner() {
         clearInterval(interval)
         setShowPaymentDoneModal(true)
       }
-    }, 3000)
+    }, 2000)
     return () => clearInterval(interval)
   }, [step])
 
