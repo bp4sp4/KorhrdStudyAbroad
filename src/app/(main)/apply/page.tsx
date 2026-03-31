@@ -382,42 +382,30 @@ function ApplyPageInner() {
     isRestoringRef.current = false
     setShouldRestore(false)
 
-    // 임시저장 데이터에서 첫 번째 비어있는 필드의 섹션으로 스크롤
+    // 임시저장 데이터에서 첫 번째 비어있는 섹션으로 스크롤
     setTimeout(() => {
-      const requiredFields = [
-        { dbCol: 'name', section: 'basic' },
-        { dbCol: 'birth_date', section: 'basic' },
-        { dbCol: 'birth_city', section: 'basic' },
-        { dbCol: 'email', section: 'basic' },
-        { dbCol: 'phone', section: 'basic' },
-        { dbCol: 'school', section: 'basic' },
-        { dbCol: 'school_grade', section: 'basic' },
-        { dbCol: 'gender', section: 'basic' },
-        { dbCol: 'passport_name', section: 'passport' },
-        { dbCol: 'passport_number', section: 'passport' },
-        { dbCol: 'passport_expiry', section: 'passport' },
-        { dbCol: 'passport_file_url', section: 'passport' },
-        { dbCol: 'id_photo_url', section: 'passport' },
-        { dbCol: 'guardian_name', section: 'guardian' },
-        { dbCol: 'guardian_phone', section: 'guardian' },
-        { dbCol: 'guardian_email', section: 'guardian' },
-        { dbCol: 'guardian_birth_city', section: 'guardian' },
-        { dbCol: 'english_level', section: 'homestay' },
-        { dbCol: 'swim_level', section: 'homestay' },
-        { dbCol: 'agreed_terms', section: 'agree' },
-        { dbCol: 'agreed_privacy', section: 'agree' },
-        { dbCol: 'agreed_media', section: 'agree' },
-        { dbCol: 'participant_sig_url', section: 'agree' },
-        { dbCol: 'guardian_sig_url', section: 'agree' },
+      // 섹션별로 필수 필드 그룹화 — 섹션 내 모든 필드가 비어있으면 해당 섹션으로 이동
+      const sectionFields: { section: string; cols: string[] }[] = [
+        { section: 'basic', cols: ['name', 'gender'] },
+        { section: 'passport', cols: ['passport_name', 'passport_number'] },
+        { section: 'guardian', cols: ['guardian_name', 'guardian_phone', 'guardian_email'] },
+        { section: 'homestay', cols: ['english_level', 'swim_level'] },
+        { section: 'agree', cols: ['agreed_terms', 'agreed_privacy', 'agreed_media'] },
       ]
 
-      for (const field of requiredFields) {
-        const val = d[field.dbCol]
-        if (!val || (typeof val === 'string' && !val.trim())) {
-          const sectionEl = sectionRefs.current[field.section]
+      for (const { section, cols } of sectionFields) {
+        const hasEmpty = cols.some(col => {
+          const val = d[col]
+          if (val === null || val === undefined) return true
+          if (typeof val === 'string' && !val.trim()) return true
+          if (typeof val === 'boolean' && !val) return true
+          return false
+        })
+        if (hasEmpty) {
+          const sectionEl = sectionRefs.current[section]
           if (sectionEl) {
             sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            setActive(field.section)
+            setActive(section)
           }
           return
         }
