@@ -98,6 +98,7 @@ export default function DashboardClient({
 }) {
   const router = useRouter()
   const [tab, setTab] = useState('users')
+  const [loadingId, setLoadingId] = useState<string | null>(null)
 
   return (
     <div className={styles.container}>
@@ -226,17 +227,25 @@ export default function DashboardClient({
                   ) : applications.map(a => (
                     <tr
                       key={a.id}
-                      className={styles.tr_clickable}
-                      onClick={() => router.push(`/admin/applications/${a.id}`)}
+                      className={`${styles.tr_clickable} ${loadingId === a.id ? styles.tr_loading : ''}`}
+                      onClick={() => {
+                        if (loadingId) return
+                        setLoadingId(a.id)
+                        router.push(`/admin/applications/${a.id}`)
+                      }}
                     >
                       <td>{a.name ?? '-'}</td>
                       <td className={styles.td_muted}>{a.phone ?? '-'}</td>
                       <td className={styles.td_muted}>{a.email ?? '-'}</td>
                       <td>{PROGRAM_LABEL[a.program ?? ''] ?? a.program ?? '-'}</td>
                       <td>
-                        <span className={styles[STATUS_CLASS[a.status] ?? 'badge_draft']}>
-                          {STATUS_LABEL[a.status] ?? a.status}
-                        </span>
+                        {loadingId === a.id ? (
+                          <span className={styles.badge_loading}>이동 중...</span>
+                        ) : (
+                          <span className={styles[STATUS_CLASS[a.status] ?? 'badge_draft']}>
+                            {STATUS_LABEL[a.status] ?? a.status}
+                          </span>
+                        )}
                       </td>
                       <td className={styles.td_date}>{new Date(a.created_at).toLocaleDateString('ko-KR')}</td>
                     </tr>

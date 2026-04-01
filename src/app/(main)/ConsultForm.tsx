@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef } from 'react'
 import { submitConsultation } from './actions'
 import styles from './page.module.css'
 
@@ -16,38 +16,42 @@ export default function ConsultForm() {
   const [result, setResult] = useState<{ success?: boolean; error?: string } | null>(null)
   const [phone, setPhone] = useState('')
 
+  const formRef = useRef<HTMLFormElement>(null)
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     startTransition(async () => {
       const res = await submitConsultation(formData)
       setResult(res)
-      if (res.success) { e.currentTarget?.reset(); setPhone('') }
+      if (res.success) { formRef.current?.reset(); setPhone('') }
     })
   }
 
-  if (result?.success) {
-    return (
-      <div className={styles.system_form_wrap}>
-        <div className={styles.consult_success}>
-          <p className={styles.consult_success_title}>신청이 완료되었습니다!</p>
-          <p className={styles.consult_success_desc}>빠른 시일 내에 연락드리겠습니다.</p>
-          <button
-            type="button"
-            className={styles.form_submit}
-            onClick={() => setResult(null)}
-          >
-            다시 신청하기
-          </button>
-        </div>
-      </div>
-    )
+  function handleClose() {
+    setResult(null)
   }
 
   return (
+    <>
+    {result?.success && (
+      <div className={styles.consult_overlay} onClick={handleClose}>
+        <div className={styles.consult_popup} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.consult_popup_icon}>✓</div>
+          <h3 className={styles.consult_popup_title}>신청되었습니다!</h3>
+          <p className={styles.consult_popup_desc}>
+            무료 상담 신청이 완료되었습니다.<br />
+            빠른 시일 내에 연락드리겠습니다.
+          </p>
+          <button className={styles.consult_popup_btn} onClick={handleClose}>
+            확인
+          </button>
+        </div>
+      </div>
+    )}
     <div className={styles.system_form_wrap}>
       <h3 className={styles.system_form_heading}>간편상담</h3>
-      <form className={styles.system_form} onSubmit={handleSubmit}>
+      <form className={styles.system_form} ref={formRef} onSubmit={handleSubmit}>
         <div className={styles.form_field}>
           <label className={styles.form_label}>이름 <span className={styles.form_required}>*</span></label>
           <input name="name" className={styles.form_input} type="text" placeholder="예) 홍길동" required />
@@ -110,5 +114,6 @@ export default function ConsultForm() {
         </button>
       </form>
     </div>
+    </>
   )
 }

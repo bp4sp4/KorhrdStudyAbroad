@@ -845,7 +845,7 @@ function ApplyPageInner() {
 
       {/* ── 왼쪽 사이드바 ── */}
       <aside className={styles.sidebar}>
-        <p className={styles.sidebar_title}>참가 신청서</p>
+        <p className={styles.sidebar_title}>참가 신청</p>
         <nav className={styles.sidebar_nav}>
           {NAV_ITEMS.map((item) => (
             <button
@@ -877,7 +877,7 @@ function ApplyPageInner() {
           <h2 className={styles.section_title}>어떤 프로그램으로 참가하시나요?</h2>
           <div className={styles.field}>
             <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>신청하실 유학 프로그램을 선택해주세요.</p>
+            <p className={styles.field_desc}>결제하신 프로그램이 맞는지 확인해주세요.</p>
             <CustomSelect options={PROGRAM_OPTIONS} value={programValue} onSelect={(v) => { setProgramValue(v); clearError('program') }} disabled={step === 'form'} />
             {hasError('program') && <p className={styles.error_msg}>프로그램을 선택해주세요.</p>}
           </div>
