@@ -61,7 +61,7 @@
 .info_title {
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard;
-  font-size: 42px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 700;
   line-height: 50.4px;
@@ -165,7 +165,7 @@
 .reason_title {
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard;
-  font-size: 42px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 700;
   line-height: 50.4px;
@@ -209,7 +209,7 @@ color: var(--Atomic-Mono-800, #1D1D1D);
 
 /* Headline 2/Bold */
 font-family: Pretendard;
-font-size: 36px;
+font-size: 28px;
 font-style: normal;
 font-weight: 700;
 line-height: 43.2px; /* 120% */
@@ -241,7 +241,7 @@ line-height: 25.2px; /* 140% */
   color: var(--Atomic-Mono-900, #010101);
   text-align: center;
   font-family: Pretendard;
-  font-size: 42px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 700;
   line-height: 50.4px;
