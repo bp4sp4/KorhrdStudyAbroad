@@ -54,6 +54,8 @@
   font-size: clamp(48px, calc(3.083vw + 4.81px), 64px);
   font-weight: 700;
   line-height: 1.4;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.70);
+
 }
 
 /* Right — CTA 카드 */
