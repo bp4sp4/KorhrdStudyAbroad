@@ -343,11 +343,13 @@ export default function MyPage() {
         {active === 'payment' && (
           <div className={styles.card}>
             <h2 className={styles.section_title}>결제 내역</h2>
+            <div className={styles.divider} />
             {loadingPayments ? (
               <p className={styles.empty_text}>불러오는 중...</p>
             ) : payments.length === 0 ? (
               <div className={styles.empty_state}>
-                <p className={styles.empty_text}>결제 내역이 없습니다.</p>
+                <img src="/emptypay.png" alt="결제 내역 없음" className={styles.empty_img_pay} />
+                <p className={styles.empty_label}>결제하신 내역이 없습니다.</p>
               </div>
             ) : (
               <ul className={styles.history_list}>
@@ -384,11 +386,26 @@ export default function MyPage() {
         {active === 'history' && (
           <div className={styles.card}>
             <h2 className={styles.section_title}>프로그램 신청 내역</h2>
+            <div className={styles.divider} />
             {loadingApplications ? (
               <p className={styles.empty_text}>불러오는 중...</p>
             ) : applications.length === 0 ? (
               <div className={styles.empty_state}>
-                <p className={styles.empty_text}>신청 내역이 없습니다.</p>
+                <img src="/emptyprogram.png" alt="신청 내역 없음" className={styles.empty_img_program} />
+                <p className={styles.empty_label}>프로그램 신청 내역이 없어요. 신청하러 가볼까요?</p>
+                <a href="/apply" className={styles.empty_apply_btn}>
+                  참가 신청하러 가기
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <g clipPath="url(#clip0_264_72)">
+                      <path d="M1.4033 7.10263H12.3215L8.27595 3.24975C7.90793 2.89925 7.90793 2.33113 8.27595 1.98064C8.64397 1.63015 9.2405 1.63015 9.60851 1.98064L15.2627 7.36557L15.3271 7.43393C15.629 7.78644 15.6077 8.30609 15.2627 8.63467L9.60851 14.0196C9.2405 14.3701 8.64397 14.3701 8.27595 14.0196C7.90793 13.6691 7.90793 13.101 8.27595 12.7505L12.3215 8.89761L1.4033 8.89761C0.882849 8.89761 0.460937 8.49579 0.460938 8.00012C0.460938 7.50445 0.882849 7.10263 1.4033 7.10263Z" fill="white"/>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_264_72">
+                        <rect width="16" height="16" fill="white"/>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </a>
               </div>
             ) : (
               <ul className={styles.history_list}>

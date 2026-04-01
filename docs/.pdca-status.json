@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-01T02:18:39.905Z",
+  "lastUpdated": "2026-04-01T03:11:43.660Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -428,7 +428,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:14:10.664Z",
-        "lastUpdated": "2026-04-01T02:02:07.226Z"
+        "lastUpdated": "2026-04-01T03:11:43.660Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/mypage/page.tsx"
     },
@@ -532,7 +532,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-01T02:18:39.905Z"
+    "lastActivity": "2026-04-01T03:11:43.660Z"
   },
   "history": [
     {
@@ -3706,6 +3706,30 @@
     {
       "timestamp": "2026-04-01T02:18:39.905Z",
       "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T03:09:01.579Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T03:09:05.077Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T03:11:31.519Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-01T03:11:43.660Z",
+      "feature": "mypage",
       "phase": "do",
       "action": "updated"
     }

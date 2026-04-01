@@ -330,11 +330,14 @@ background: var(--Atomic-Common-White, #FFF);
   background: #e5e5e5;
 }
 
-/* ── 프로그램 신청 내역 ── */
+/* ── 빈 상태 ── */
 .empty_state {
-  padding: 48px 0;
+  width: 100%;
+  padding: 0px 32px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .empty_text {
@@ -342,6 +345,58 @@ background: var(--Atomic-Common-White, #FFF);
   font-family: Pretendard, -apple-system, sans-serif;
   font-size: 14px;
   text-align: center;
+}
+
+.empty_img_pay {
+  width: 160px;
+  height: 160px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+.empty_img_program {
+  width: 300px;
+  height: 300px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+.empty_label {
+  color: var(--Atomic-Mono-500, #919191);
+  text-align: center;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21.6px;
+  margin: 0;
+}
+
+.empty_apply_btn {
+  display: flex;
+  width: 100%;
+  max-width: 920px;
+  height: 48px;
+  padding: 14px 22px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  background: var(--Atomic-Blue-500, #0051FF);
+  color: var(--Atomic-Common-White, #FFF);
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.2px;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: opacity 0.15s;
+  margin-top: 30px;
+}
+
+.empty_apply_btn:hover {
+  opacity: 0.88;
 }
 
 .history_list {
