@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { logout } from '@/app/auth/actions'
+import ApplyButton from './ApplyButton'
 import styles from './Header.module.css'
 
 export default async function Header() {
@@ -19,9 +20,9 @@ export default async function Header() {
 
         <nav className={styles.nav}>
           <a href="/program" className={styles.btn_mypage}>프로그램</a>
+          <ApplyButton isLoggedIn={!!user} />
           {user ? (
             <>
-              <a href="/apply" className={styles.btn_mypage}>참가신청</a>
               <a href="/mypage" className={styles.btn_mypage}>마이페이지</a>
               <form action={logout}>
                 <button type="submit" className={styles.btn_logout}>로그아웃</button>

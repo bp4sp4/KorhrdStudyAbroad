@@ -46,6 +46,7 @@
   justify-content: center;
   align-items: center;
   align-self: stretch;
+  gap : 10px
 }
 
 .btn_login {
@@ -117,4 +118,70 @@ line-height: 21.6px; /* 120% */
 .user_email {
   font-size: 14px;
   color: #6b7280;
+}
+
+.btn_apply {
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: var(--Atomic-Mono-900, #010101);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn_apply:hover {
+  opacity: 0.6;
+}
+
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(100, 100, 100, 0.60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px 20px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal_text {
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.modal_btn_confirm {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #3B4EFF;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal_btn_confirm:hover {
+  background: #2a3bdd;
 }
