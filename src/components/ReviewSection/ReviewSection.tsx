@@ -26,9 +26,9 @@ const BG_IMAGES = [
   '/main/review/review_background_03.png',
 ]
 
-// 카드 높이 425px + gap 24px = 449px/행, 2행 = 898px/그룹
+// 카드 높이 425px + gap 24px = 449px/행, 1.5행 = 673px/그룹
 const CARD_ROW_HEIGHT = 425 + 24
-const GROUP_HEIGHT = CARD_ROW_HEIGHT * 2 // 4카드(2열×2행) = 898px
+const GROUP_HEIGHT = CARD_ROW_HEIGHT * 1.5 // 약 673px마다 배경 변경
 
 const LEFT  = REVIEWS.filter((_, i) => i % 2 === 0) // 6개
 const RIGHT = REVIEWS.filter((_, i) => i % 2 === 1) // 6개
@@ -36,6 +36,7 @@ const RIGHT = REVIEWS.filter((_, i) => i % 2 === 1) // 6개
 export default function ReviewSection() {
   const [bgIndex, setBgIndex] = useState(0)
   const [visible, setVisible] = useState(false)
+  const [gradientVisible, setGradientVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -45,6 +46,8 @@ export default function ReviewSection() {
       const rect = section.getBoundingClientRect()
       const inView = rect.top < window.innerHeight && rect.bottom > 0
       setVisible(inView)
+      // 섹션 끝이 화면 밖에 있을 때만 그라디언트 표시
+      setGradientVisible(rect.top < window.innerHeight && rect.bottom > window.innerHeight)
       const scrolled = Math.max(0, -rect.top)
       const idx = Math.min(Math.floor(scrolled / GROUP_HEIGHT), BG_IMAGES.length - 1)
       setBgIndex(idx)
@@ -55,7 +58,7 @@ export default function ReviewSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className={styles.review}>
+    <section ref={sectionRef} className={`${styles.review}${gradientVisible ? ` ${styles.review_visible}` : ''}`}>
       {visible && BG_IMAGES.map((img, i) => (
         <div
           key={img}
@@ -66,8 +69,6 @@ export default function ReviewSection() {
           }}
         />
       ))}
-      {visible && <div className={styles.review_gradient} />}
-
       <h2 className={styles.review_title}>
         소중한 경험,<br />한평생유학에서만<br />가능합니다.
       </h2>
