@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-01T03:11:43.660Z",
+  "lastUpdated": "2026-04-02T03:42:03.015Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -181,9 +181,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T06:04:25.249Z",
-        "lastUpdated": "2026-04-01T02:18:39.905Z"
+        "lastUpdated": "2026-04-02T03:42:03.015Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/ConsultForm.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/page.tsx"
     },
     "AlertModal": {
       "phase": "do",
@@ -415,7 +415,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:08:53.194Z",
-        "lastUpdated": "2026-03-31T09:43:25.779Z"
+        "lastUpdated": "2026-04-02T03:37:58.556Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/apply/page.tsx"
     },
@@ -454,7 +454,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-31T01:59:02.501Z",
-        "lastUpdated": "2026-03-31T03:47:54.305Z"
+        "lastUpdated": "2026-04-02T03:37:54.554Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/program/ConsultForm.tsx"
     },
@@ -532,7 +532,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-01T03:11:43.660Z"
+    "lastActivity": "2026-04-02T03:42:03.015Z"
   },
   "history": [
     {
@@ -3730,6 +3730,78 @@
     {
       "timestamp": "2026-04-01T03:11:43.660Z",
       "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:33:26.321Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:34:42.881Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:34:45.804Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:34:49.168Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:34:57.032Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:36:13.922Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:36:19.258Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:37:50.140Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:37:54.554Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:37:58.556Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:41:51.853Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-02T03:42:03.015Z",
+      "feature": "(main)",
       "phase": "do",
       "action": "updated"
     }

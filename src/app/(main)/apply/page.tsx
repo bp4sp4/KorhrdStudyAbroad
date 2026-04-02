@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.css'
 import { createClient } from '@/lib/supabase/client'
 import { createPaymentRecord, checkAnyCompletedPayment } from './actions'
+import ConsultFormModal from '@/app/(main)/program/ConsultForm'
 
 const IconProgram = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -186,6 +187,7 @@ function ApplyPageInner() {
   const [shouldRestore, setShouldRestore] = useState(false)
   const [draftId, setDraftId] = useState<string | null>(null)
   const [existingFileUrls, setExistingFileUrls] = useState<Record<string, string | null>>({})
+  const [showConsultModal, setShowConsultModal] = useState(false)
 
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({})
   const submittedRef = useRef(false)
@@ -743,6 +745,14 @@ function ApplyPageInner() {
     const selectedLabel = PROGRAM_OPTIONS.find(o => o.value === paymentProgram)?.label
     return (
       <>
+      {showConsultModal && (
+        <div className={styles.consult_modal_overlay} onClick={() => setShowConsultModal(false)}>
+          <div className={styles.consult_modal_inner} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.consult_modal_close} onClick={() => setShowConsultModal(false)}>✕</button>
+            <ConsultFormModal onClose={() => setShowConsultModal(false)} />
+          </div>
+        </div>
+      )}
       <div className={styles.container}>
         {/* 사이드바 */}
         <aside className={styles.sidebar}>
@@ -766,7 +776,10 @@ function ApplyPageInner() {
 
           {/* 결제 섹션 */}
           <section className={styles.section}>
-            <h2 className={styles.section_title}>안내받으신 프로그램을 선택 후, 결제를 진행해주세요!</h2>
+            <div className={styles.section_title_row}>
+              <h2 className={styles.section_title}>상담 후 안내받으신 프로그램을 선택하고, 결제를 진행해주세요!</h2>
+              <button type="button" className={styles.consult_btn} onClick={() => setShowConsultModal(true)}>상담받지 않으셨나요?</button>
+            </div>
 
             <div className={styles.field}>
               <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
@@ -841,6 +854,14 @@ function ApplyPageInner() {
 
   return (
     <>
+    {showConsultModal && (
+      <div className={styles.consult_modal_overlay} onClick={() => setShowConsultModal(false)}>
+        <div className={styles.consult_modal_inner} onClick={(e) => e.stopPropagation()}>
+          <button className={styles.consult_modal_close} onClick={() => setShowConsultModal(false)}>✕</button>
+          <ConsultFormModal />
+        </div>
+      </div>
+    )}
     <div className={styles.container}>
 
       {/* ── 왼쪽 사이드바 ── */}

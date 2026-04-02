@@ -5,7 +5,7 @@ import Link from 'next/link'
 import styles from './ConsultForm.module.css'
 import { submitConsultation } from './actions'
 
-export default function ConsultForm() {
+export default function ConsultForm({ onClose }: { onClose?: () => void } = {}) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -49,6 +49,7 @@ export default function ConsultForm() {
   const handleClose = () => {
     setSuccess(false)
     setFormData({ name: '', phone: '', region: '', startDate: '', inquiry: '', privacyAgree: false })
+    onClose?.()
   }
 
   return (

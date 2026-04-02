@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import styles from './page.module.css'
 import ProgramSwiper from '@/components/ProgramSwiper/ProgramSwiper'
 import ReviewSection from '@/components/ReviewSection/ReviewSection'
@@ -57,12 +58,12 @@ export default function Home() {
           <p className={styles.hero_cta_title}>
             나에게 딱맞는<br />유학 프로그램은?
           </p>
-          <button className={styles.hero_cta_btn}>
-            맞춤 테스트 하러가기
+          <Link href="/program" className={styles.hero_cta_btn}>
+            프로그램 알아보기
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M1.40355 7.10268H12.3217L8.27619 3.24979C7.90818 2.8993 7.90818 2.33118 8.27619 1.98069C8.64421 1.6302 9.24074 1.6302 9.60876 1.98069L15.263 7.36562L15.3274 7.43398C15.6293 7.78649 15.608 8.30614 15.263 8.63472L9.60876 14.0196C9.24074 14.3701 8.64421 14.3701 8.27619 14.0196C7.90818 13.6692 7.90818 13.101 8.27619 12.7505L12.3217 8.89766L1.40355 8.89766C0.883093 8.89766 0.461182 8.49584 0.461182 8.00017C0.461182 7.5045 0.883093 7.10268 1.40355 7.10268Z" fill="#1D1D1D"/>
             </svg>
-          </button>
+          </Link>
         </div>
       </section>
 
