@@ -414,16 +414,13 @@ background: var(--Atomic-Common-White, #FFF);
   flex-direction: column;
   gap: 14px;
   padding: 20px 24px;
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid #E5E7EB;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   transition: box-shadow 0.15s;
 }
 
-.history_item:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-}
 
 .history_top {
   display: flex;
