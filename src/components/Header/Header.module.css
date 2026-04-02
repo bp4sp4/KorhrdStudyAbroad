@@ -49,14 +49,21 @@
 }
 
 .btn_login {
-  padding: 8px 18px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #0051FF;
-  border: 1.5px solid #0051FF;
-  border-radius: 6px;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
+display: flex;
+padding: 14px 22px;
+justify-content: center;
+align-items: center;
+gap: 6px;
+border-radius: 6px;
+background: var(--Atomic-Blue-500, #0051FF);
+color: var(--Atomic-Common-White, #FFF);
+
+/* Body 1/Normal - Bold */
+font-family: Pretendard;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 21.6px; /* 120% */
 }
 
 .btn_login:hover {

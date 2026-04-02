@@ -79,7 +79,7 @@ export default function ReviewSection() {
           {LEFT.map((r) => (
             <div key={r.id} className={styles.review_card}>
               <div className={styles.review_image_wrap}>
-                <Image src={r.image} alt={r.author} fill sizes="424px" loading="eager" className={styles.review_image} />
+                <Image src={r.image} alt={r.author} fill sizes="424px" loading="lazy" className={styles.review_image} />
               </div>
               <div className={styles.review_card_top}>
                 <p className={styles.review_text}>{r.text}</p>
@@ -99,7 +99,7 @@ export default function ReviewSection() {
           {RIGHT.map((r) => (
             <div key={r.id} className={styles.review_card}>
               <div className={styles.review_image_wrap}>
-                <Image src={r.image} alt={r.author} fill sizes="424px" loading="eager" className={styles.review_image} />
+                <Image src={r.image} alt={r.author} fill sizes="424px" loading="lazy" className={styles.review_image} />
               </div>
               <div className={styles.review_card_top}>
                 <p className={styles.review_text}>{r.text}</p>
