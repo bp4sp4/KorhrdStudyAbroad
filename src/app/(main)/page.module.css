@@ -46,6 +46,13 @@
   z-index: 0;
 }
 
+.hero_video_overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(36, 105, 255, 0.90) 20%, rgba(36, 105, 255, 0.10) 70%, rgba(36, 105, 255, 0.00) 100%);
+  z-index: 1;
+}
+
 .hero_title {
   position: relative;
   z-index: 1;
@@ -54,7 +61,7 @@
   font-size: 42px;
   font-weight: 700;
   line-height: 1.4;
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.70);
+  z-index: 2;
 
 }
 
