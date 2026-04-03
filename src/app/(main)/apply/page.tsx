@@ -53,7 +53,6 @@ const NAV_ITEMS = [
 ]
 
 const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
-  test_1000: { amount: 1000, display: '1,000원 (테스트 결제)' },
   philippines_cebu_solo: { amount: 4500000, display: '4,500,000원 (신청비 10만원 별도)' },
   usa_newjersey_solo: { amount: 9200000, display: '9,200,000원' },
   canada_vancouver_solo: { amount: 0, display: '$9,750 (별도 문의)' },
@@ -69,7 +68,6 @@ const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
 
 
 const PROGRAM_OPTIONS = [
-  { value: 'test_1000', label: '🧪 테스트 결제 (1,000원)' },
   { value: 'philippines_cebu_solo', label: '필리핀 세부 나홀로' },
   { value: 'usa_newjersey_solo', label: '미국 뉴저지 나홀로' },
   { value: 'canada_vancouver_solo', label: '캐나다 밴쿠버-써리 나홀로' },
