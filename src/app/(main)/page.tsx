@@ -49,6 +49,7 @@ export default function Home() {
             playsInline
             preload="auto"
           />
+          <div className={styles.hero_video_overlay} />
           <p className={styles.hero_title}>
             유학은<br />한평생에서
           </p>
