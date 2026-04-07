@@ -42,7 +42,7 @@ export default function Home() {
         <div className={styles.hero_card_video}>
           <video
             className={styles.hero_video}
-            src="https://pub-953bd72af6024bfdb14d041984863dfb.r2.dev/main_viedo.mp4"
+            src="https://pub-953bd72af6024bfdb14d041984863dfb.r2.dev/main_viedo_compressed.mp4"
             autoPlay
             muted
             loop
