@@ -87,7 +87,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.19~26.08.15(4주)</span></div>
             <div className={styles.td}>초1~중3</div>
             <div className={styles.td}>800만원<br />*부모동반 690만원</div>
-            <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>홈스테이 + 현지 원장님 부부 동행 + 주말문화탐방여행</div>
+            <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>현지 공립학교 수업 참여 + 엄선된 현지인 가정 홈스테이 + 방과후 활동들 + 주말문화탐방여행</div>
 
             {/* ── Row 7: 뉴질랜드 해밀턴 3주 ── */}
             <div className={styles.td}>뉴질랜드</div>
@@ -96,7 +96,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.26~26.08.15(3주)</span></div>
             <div className={styles.td}>초1~중3</div>
             <div className={styles.td}>600만원<br />*부모동반 530만원</div>
-            <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>홈스테이 + 현지 원장님 부부 동행 + 주말문화탐방여행</div>
+            <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>현지 공립학교 수업 참여 + 엄선된 현지인 가정 홈스테이 + 방과후 활동들 + 주말문화탐방여행</div>
 
             {/* ── Row 8: 뉴질랜드 해밀턴 10주 ── */}
             <div className={`${styles.td} ${styles.td_no_bottom}`}>뉴질랜드</div>
@@ -105,7 +105,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_schedule} ${styles.td_no_bottom}`}><span>26.07.19~26.09.26(10주)</span></div>
             <div className={`${styles.td} ${styles.td_no_bottom}`}>초1~중3</div>
             <div className={`${styles.td} ${styles.td_no_bottom}`}>1,600만원<br />*부모동반 1,270만원</div>
-            <div className={`${styles.td} ${styles.td_last_col} ${styles.td_no_bottom} ${styles.td_left}`}>홈스테이 + 현지 원장님 부부 동행 + 주말문화탐방여행</div>
+            <div className={`${styles.td} ${styles.td_last_col} ${styles.td_no_bottom} ${styles.td_left}`}>현지 공립학교 수업 참여 + 엄선된 현지인 가정 홈스테이 + 방과후 활동들 + 주말문화탐방여행</div>
 
           </div>
         </div>
