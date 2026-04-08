@@ -185,3 +185,159 @@ line-height: 21.6px; /* 120% */
 .modal_btn_confirm:hover {
   background: #2a3bdd;
 }
+
+/* ── 모바일 햄버거 + 드로어 (기본 숨김) ── */
+.hamburger_btn {
+  display: none;
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile_drawer {
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease, visibility 0.4s;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.mobile_drawer_open {
+  max-height: 500px;
+  
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.mobile_drawer_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.mobile_drawer_logo {
+  display: block;
+  width: 120px;
+  height: 28px;
+}
+
+.mobile_drawer_logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mobile_close_btn {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile_nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+
+.mobile_nav_link {
+  display: block;
+  padding: 18px 20px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 600;
+  color: #010101;
+  text-decoration: none;
+  border-top: 1px solid #f0f0f0;
+}
+
+.mobile_nav_link_btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 18px 20px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 600;
+  color: #010101;
+  background: none;
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.mobile_nav > *:first-child,
+.mobile_nav > *:first-child .mobile_nav_link,
+.mobile_nav > *:first-child .mobile_nav_link_btn {
+  border-top: none;
+}
+
+.mobile_call_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px;
+  border-radius: 999px;
+  background: #fff;
+  color: #0051FF;
+  border: 1.5px solid #0051FF;
+  font-family: Pretendard;
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ── 1023px 이하 (모바일/태블릿) ── */
+@media (max-width: 1023px) {
+  .header {
+    padding: 20px;
+    height: 68px;
+    background: #fff;
+    border-bottom: none;
+  }
+
+  .inner {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    width: 120px;
+    height: 28px;
+    aspect-ratio: 30 / 7;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .hamburger_btn {
+    display: flex;
+  }
+}

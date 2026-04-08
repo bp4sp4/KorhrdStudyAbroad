@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { logout } from '@/app/auth/actions'
 import ApplyButton from './ApplyButton'
+import MobileMenu from './MobileMenu'
 import styles from './Header.module.css'
 
 export default async function Header() {
@@ -17,6 +18,8 @@ export default async function Header() {
             </span>
           </a>
         
+
+        <MobileMenu isLoggedIn={!!user} />
 
         <nav className={styles.nav}>
           <a href="/program" className={styles.btn_mypage}>프로그램</a>
