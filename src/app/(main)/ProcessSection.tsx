@@ -72,7 +72,10 @@ const ArrowIcon = () => (
 export default function ProcessSection() {
   return (
     <section className={styles.process}>
-      <h2 className={styles.process_title}>유학 과정, 이렇게 진행됩니다</h2>
+      <div className={styles.process_heading}>
+        <h2 className={styles.process_title}>유학 진행 과정</h2>
+        <p className={styles.process_subtitle}>첫 안내부터 현지 도착까지 안전하게</p>
+      </div>
       <div className={styles.process_steps}>
         {STEPS.map((step, idx) => (
           <Fragment key={step.id}>
