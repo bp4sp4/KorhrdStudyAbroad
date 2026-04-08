@@ -1,5 +1,5 @@
 import styles from './page.module.css'
-import ConsultForm from './ConsultForm'
+import HeroConsultButton from '../HeroConsultButton'
 
 export default function ProgramPage() {
   return (
@@ -159,10 +159,13 @@ export default function ProgramPage() {
           </div>
         </div>
       </section>
-      {/* 무료 상담 섹션 */}
-      <section className={styles.consult_section}>
-        <h2 className={styles.consult_title}>무료로 상담 받아보세요!</h2>
-        <ConsultForm />
+      {/* CTA 섹션 */}
+      <section className={styles.cta_section}>
+        <div className={styles.cta_top}>
+          <img src="/main/cta/white_logo.png" alt="한평생유학" className={styles.cta_logo} />
+          <p className={styles.cta_title}>아이가 잘 지내는 유학, 지금 경험해보세요.</p>
+        </div>
+        <HeroConsultButton variant="cta" />
       </section>
     </main>
   )

@@ -103,7 +103,7 @@
   position: absolute;
   inset: 0;
   border-radius: 12px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.00) 50.05%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.80) 30.03%, rgba(0, 0, 0, 0.00) 65.07%);
   pointer-events: none;
 }
 
