@@ -6,7 +6,7 @@
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
-  background: url('/program/program_01.png') lightgray right center / cover no-repeat;
+  background: url('/program/program_01.jpg') lightgray right center / cover no-repeat;
 }
 
 .hero_title {
