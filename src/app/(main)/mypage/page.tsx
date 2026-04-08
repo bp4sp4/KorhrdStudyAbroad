@@ -84,6 +84,7 @@ const STATUS_LABEL: Record<string, string> = {
 export default function MyPage() {
   const router = useRouter()
   const [active, setActive] = useState('info')
+  const [mobileShowContent, setMobileShowContent] = useState(false)
   const [email, setEmail] = useState('')
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
@@ -181,7 +182,7 @@ export default function MyPage() {
   const isPasswordMatch = password === passwordConfirm
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${mobileShowContent ? styles.mobile_show_content : styles.mobile_show_menu}`}>
 
       {toast && (
         <div className={styles.toast}>{toast}</div>
@@ -195,7 +196,7 @@ export default function MyPage() {
             <button
               key={item.id}
               className={`${styles.nav_item} ${active === item.id ? styles.nav_active : ''}`}
-              onClick={() => setActive(item.id)}
+              onClick={() => { setActive(item.id); setMobileShowContent(true) }}
             >
               <span className={styles.nav_icon}>{item.icon}</span>
               <span>{item.label}</span>
@@ -208,9 +209,20 @@ export default function MyPage() {
       <div className={styles.content}>
         {active === 'info' && (
           <div className={styles.card}>
+            <button
+              type="button"
+              className={styles.mobile_back_btn}
+              onClick={() => setMobileShowContent(false)}
+              aria-label="뒤로"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M16.4217 7.99046H4.13874L8.68998 3.65596C9.104 3.26166 9.104 2.62252 8.68998 2.22822C8.27596 1.83392 7.60487 1.83392 7.19085 2.22822L0.829877 8.28627L0.757405 8.36318C0.417782 8.75975 0.441735 9.34435 0.829877 9.71401L7.19085 15.7721C7.60487 16.1664 8.27596 16.1664 8.68998 15.7721C9.104 15.3778 9.104 14.7386 8.68998 14.3443L4.13874 10.0098H16.4217C17.0072 10.0098 17.4819 9.55776 17.4819 9.00014C17.4819 8.44251 17.0072 7.99046 16.4217 7.99046Z" fill="#919191"/>
+              </svg>
+              <span>내 정보</span>
+            </button>
 
             {/* 로그인 정보 */}
-            <h2 className={styles.section_title}>로그인 정보</h2>
+            <h2 className={`${styles.section_title} ${styles.section_title_login}`}>로그인 정보</h2>
 
             <div className={styles.divider} />
 
@@ -296,10 +308,10 @@ export default function MyPage() {
               </div>
             </div>
 
-            <div className={styles.divider} />
-
             {/* 회원 정보 */}
             <h2 className={styles.section_title}>회원 정보</h2>
+
+            <div className={styles.divider} />
 
             <div className={styles.field}>
               <label className={styles.label}>
@@ -342,6 +354,17 @@ export default function MyPage() {
 
         {active === 'payment' && (
           <div className={styles.card}>
+            <button
+              type="button"
+              className={styles.mobile_back_btn}
+              onClick={() => setMobileShowContent(false)}
+              aria-label="뒤로"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M16.4217 7.99046H4.13874L8.68998 3.65596C9.104 3.26166 9.104 2.62252 8.68998 2.22822C8.27596 1.83392 7.60487 1.83392 7.19085 2.22822L0.829877 8.28627L0.757405 8.36318C0.417782 8.75975 0.441735 9.34435 0.829877 9.71401L7.19085 15.7721C7.60487 16.1664 8.27596 16.1664 8.68998 15.7721C9.104 15.3778 9.104 14.7386 8.68998 14.3443L4.13874 10.0098H16.4217C17.0072 10.0098 17.4819 9.55776 17.4819 9.00014C17.4819 8.44251 17.0072 7.99046 16.4217 7.99046Z" fill="#919191"/>
+              </svg>
+              <span>결제 내역</span>
+            </button>
             <h2 className={styles.section_title}>결제 내역</h2>
             <div className={styles.divider} />
             {loadingPayments ? (
@@ -385,6 +408,17 @@ export default function MyPage() {
 
         {active === 'history' && (
           <div className={styles.card}>
+            <button
+              type="button"
+              className={styles.mobile_back_btn}
+              onClick={() => setMobileShowContent(false)}
+              aria-label="뒤로"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M16.4217 7.99046H4.13874L8.68998 3.65596C9.104 3.26166 9.104 2.62252 8.68998 2.22822C8.27596 1.83392 7.60487 1.83392 7.19085 2.22822L0.829877 8.28627L0.757405 8.36318C0.417782 8.75975 0.441735 9.34435 0.829877 9.71401L7.19085 15.7721C7.60487 16.1664 8.27596 16.1664 8.68998 15.7721C9.104 15.3778 9.104 14.7386 8.68998 14.3443L4.13874 10.0098H16.4217C17.0072 10.0098 17.4819 9.55776 17.4819 9.00014C17.4819 8.44251 17.0072 7.99046 16.4217 7.99046Z" fill="#919191"/>
+              </svg>
+              <span>프로그램 신청 내역</span>
+            </button>
             <h2 className={styles.section_title}>프로그램 신청 내역</h2>
             <div className={styles.divider} />
             {loadingApplications ? (

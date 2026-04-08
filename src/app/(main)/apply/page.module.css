@@ -1,3 +1,14 @@
+.divider {
+  display: none;
+}
+
+.container,
+.container *,
+.container *::before,
+.container *::after {
+  box-sizing: border-box;
+}
+
 .container {
   display: flex;
   padding: 100px clamp(24px, calc((100vw - 1320px) / 2), 300px);
@@ -881,5 +892,214 @@ line-height: 31.2px; /* 120% */
 
   .nav_item {
     width: auto;
+  }
+}
+
+/* ── 1023px 이하 (모바일/태블릿) ── */
+@media (max-width: 1023px) {
+  .container {
+    padding: 30px 24px;
+    gap: 24px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .content {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .section,
+  .banner {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+    gap: 30px;
+  }
+
+  .banner {
+display: flex;
+padding: 32px;
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+align-self: stretch;
+color: var(--Atomic-Common-White, #FFF);
+
+/* Title 3/Bold */
+font-family: Pretendard;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: 24px; /* 120% */
+  }
+
+  .section {
+    padding: 32px 20px;
+    gap: 40px;
+  }
+
+  .section_title_row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    border: none;
+    padding: 0;
+  }
+
+  .section_title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .consult_btn {
+    align-self: flex-end;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .label {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.2px;
+  }
+
+  .required {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.2px;
+  }
+
+  .field_desc {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 19.6px;
+  }
+
+  .price_program {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #3D3D3D;
+    text-align: right;
+  }
+
+  .price_value {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 31.2px;
+    text-align: right;
+  }
+
+  .price_amount {
+    color: #0051FF;
+  }
+
+  .price_unit {
+    color: #010101;
+  }
+
+  .price_box {
+    gap: 10px;
+    padding: 0;
+  }
+
+  .price_note {
+    display: block;
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #010101;
+    text-align: right;
+  }
+
+  .divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border: none;
+    background: #F2F2F2;
+    margin: 0;
+  }
+
+  .btn_pay {
+    display: flex;
+    padding: 14px 22px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    align-self: stretch;
+    border-radius: 6px;
+    background: #0051FF;
+    color: #FFF;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19.2px;
+  }
+  .input{
+    height: 44px;
+  }
+
+  .agree_text{
+    color: var(--Atomic-Mono-500, #919191);
+
+/* Label 1/Medium */
+font-family: Pretendard;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 19.6px; /* 140% */
+  }
+}
+
+/* ── 480px 이하 (소형 모바일 ~375px) ── */
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+
+  .section {
+    padding: 24px 16px;
+    gap: 32px;
+  }
+
+  .banner {
+    padding: 24px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .section_title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .price_value {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .price_program,
+  .price_note {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .btn_pay {
+    width: 100%;
   }
 }
