@@ -1,12 +1,14 @@
 .hero {
   display: flex;
   height: 700px;
-  padding: 108px 300px;
+  padding: 200px 300px;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
   align-self: stretch;
-  background: url('/program/program_01.jpg') lightgray right center / cover no-repeat;
+  background:
+    linear-gradient(270deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.80) 100%),
+    url('/program/program_01.jpg') lightgray right center / cover no-repeat;
 }
 
 .hero_title {
@@ -75,7 +77,7 @@
 
 .table_grid {
   display: grid;
-  grid-template-columns: 105px 130px 110px 245px 125px 200px 1fr;
+  grid-template-columns: 125px 130px 125px 245px 125px 200px 1fr;
   border-radius: 12px;
   border: 1px solid var(--Atomic-Blue-100, #B2CAFF);
   overflow: hidden;
@@ -107,6 +109,7 @@
 
 .td {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: 20px;
@@ -151,6 +154,16 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+}
+
+.td_note {
+  color: var(--Atomic-Mono-600, #656565);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19.6px;
 }
 
 .reason_section {

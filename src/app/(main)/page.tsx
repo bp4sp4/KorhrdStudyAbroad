@@ -5,6 +5,33 @@ import HeroConsultButton from './HeroConsultButton'
 import ProcessSection from './ProcessSection'
 import { PROGRAMS } from '@/data/programs'
 
+const REASONS = [
+  {
+    id: 1,
+    img: '/main/reason/reason_01.png',
+    title: '현지 담당자 연결',
+    desc: '도착 후부터 귀국까지\n실시간으로 대응합니다.',
+  },
+  {
+    id: 2,
+    img: '/main/reason/reason_02.png',
+    title: '매일매일 밀착사진',
+    desc: '아이의 생활 모습과 적응 상태를\n부모님께 공유합니다.',
+  },
+  {
+    id: 3,
+    img: '/main/reason/reason_03.png',
+    title: '출국 전 준비체크',
+    desc: '필수 준비사항을 단계별로 안내하고\n출국 전까지 함께 점검합니다.',
+  },
+  {
+    id: 4,
+    img: '/main/reason/reason_04.png',
+    title: '검증된 학교 추천',
+    desc: '운영 기준을 통과한 학교 중에서\n학생에게 맞는 곳을 선별합니다.',
+  },
+]
+
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -36,12 +63,41 @@ export default function Home() {
 
       {/* ── 한평생만의 전문 유학 프로그램 ── */}
       <section className={styles.program}>
-        <h2 className={styles.program_title}>한평생만의 전문 유학 프로그램</h2>
+        <div className={styles.program_heading}>
+          <h2 className={styles.program_title}>전문 유학 프로그램</h2>
+          <p className={styles.program_subtitle}>검증된 명문학교부터 신나는 액티비티까지</p>
+        </div>
         <ProgramSwiper programs={PROGRAMS} />
+      </section>
+
+      {/* ── 한평생유학을 선택하는 이유 ── */}
+      <section className={styles.reason}>
+        <div className={styles.reason_heading}>
+          <h2 className={styles.reason_title}>한평생유학을 선택하는 이유</h2>
+          <p className={styles.reason_subtitle}>한평생만의 체계적인 시스템으로 높은 만족도</p>
+        </div>
+        <div className={styles.reason_cards}>
+          {REASONS.map((item) => (
+            <div key={item.id} className={styles.reason_card}>
+              <p className={styles.reason_card_title}>{item.title}</p>
+              <img src={item.img} alt={item.title} className={styles.reason_card_img} />
+              <p className={styles.reason_card_desc}>{item.desc}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── 후기 ── */}
       <ReviewSection />
+
+      {/* ── CTA ── */}
+      <section className={styles.cta}>
+        <div className={styles.cta_top}>
+          <img src="/main/cta/white_logo.png" alt="한평생유학" className={styles.cta_logo} />
+          <p className={styles.cta_title}>아이가 잘 지내는 유학, 지금 경험해보세요.</p>
+        </div>
+        <HeroConsultButton variant="cta" />
+      </section>
 
     </div>
   )
