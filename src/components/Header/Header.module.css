@@ -15,17 +15,10 @@
 
 .inner {
   display: flex;
-  width: var(--inner-width, 1260px);
-  max-width: 100%;
+  width: 100%;
+  max-width: var(--inner-width, 1260px);
   justify-content: space-between;
   align-items: center;
-}
-
-/* 1400px 이하 (노트북) */
-@media (max-width: 1400px) {
-  .inner {
-    width: 100%;
-  }
 }
 
 .logo {

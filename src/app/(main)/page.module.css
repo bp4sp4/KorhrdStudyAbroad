@@ -282,6 +282,7 @@
   .process_card_desc {
     font-size: 14px;
     line-height: 19.6px;
+    white-space: normal;
   }
 
   .process_arrow {
@@ -663,6 +664,7 @@
   align-items: center;
   gap: 20px;
   align-self: stretch;
+  flex-wrap: wrap;
 }
 
 .reason_card {

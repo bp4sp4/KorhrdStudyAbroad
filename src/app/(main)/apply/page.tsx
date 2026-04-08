@@ -55,7 +55,7 @@ const NAV_ITEMS = [
 const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
   philippines_cebu_solo: { amount: 4500000, display: '4,500,000원 (신청비 10만원 별도)' },
   usa_newjersey_solo: { amount: 9200000, display: '9,200,000원' },
-  canada_vancouver_solo: { amount: 0, display: '$9,750 (별도 문의)' },
+  canada_vancouver_solo: { amount: 14400000, display: '14,400,000원' },
   uk_solo: { amount: 10650000, display: '10,650,000원' },
   nz_auckland_solo: { amount: 8350000, display: '8,350,000원' },
   nz_hamilton_solo_4w: { amount: 8000000, display: '8,000,000원' },
@@ -681,12 +681,8 @@ function ApplyPageInner() {
 
   const handlePaymentSubmit = async () => {
     if (!paymentProgram) { alert('프로그램을 선택해주세요.'); return }
-    if (paymentProgram === 'canada_vancouver_solo') {
-      window.open('https://pf.kakao.com/_xkRxoxbn/chat', '_blank')
-      return
-    }
     const price = PROGRAM_PRICES[paymentProgram]
-    if (!price || price.amount === 0) { alert('해당 프로그램은 별도 문의가 필요합니다.'); return }
+    if (!price || price.amount === 0) { alert('가격 정보가 없습니다.'); return }
     const rawPhone = paymentPhone.replace(/-/g, '')
 
     setIsPaymentLoading(true)
@@ -781,6 +777,8 @@ function ApplyPageInner() {
               <button type="button" className={styles.consult_btn} onClick={() => setShowConsultModal(true)}>상담받지 않으셨나요?</button>
             </div>
 
+            <hr className={styles.divider} />
+
             <div className={styles.field}>
               <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
               <p className={styles.field_desc}>신청하실 유학 프로그램을 선택해주세요.</p>
@@ -792,27 +790,38 @@ function ApplyPageInner() {
               />
             </div>
 
+            <hr className={styles.divider} />
 
             {selectedPrice && (
               <div className={styles.price_box}>
                 <p className={styles.price_program}>{selectedLabel}</p>
-                <p className={styles.price_value}>{selectedPrice.display}</p>
+                <p className={styles.price_value}>
+                  {(() => {
+                    const m = selectedPrice.display.match(/^([\d,]+)원\s*(\(.*\))?$/)
+                    if (m) {
+                      return (
+                        <>
+                          <span className={styles.price_amount}>{m[1]}</span>
+                          <span className={styles.price_unit}>원</span>
+                          {m[2] && (
+                            <span className={styles.price_note}>{m[2]}</span>
+                          )}
+                        </>
+                      )
+                    }
+                    return selectedPrice.display
+                  })()}
+                </p>
               </div>
             )}
 
-            {paymentProgram === 'canada_vancouver_solo' ? (
-              <button className={styles.btn_consult} onClick={handlePaymentSubmit} disabled={isPaymentLoading}>
-                상담 신청하기
-              </button>
-            ) : (
-              <button
-                className={styles.btn_pay}
-                onClick={handlePaymentSubmit}
-                disabled={!paymentProgram || isPaymentLoading}
-              >
-                {isPaymentLoading ? '처리 중...' : '결제하기'}
-              </button>
-            )}
+            <button
+              className={styles.btn_pay}
+              onClick={handlePaymentSubmit}
+              disabled={!paymentProgram || isPaymentLoading}
+            >
+              {isPaymentLoading ? '처리 중...' : '결제하기'}
+            </button>
           </section>
         </div>
       </div>
