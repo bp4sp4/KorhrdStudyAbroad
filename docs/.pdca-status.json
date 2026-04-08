@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-08T05:35:49.492Z",
+  "lastUpdated": "2026-04-08T07:14:17.847Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -38,7 +38,8 @@
     "webhook",
     "payments",
     "result",
-    "check"
+    "check",
+    "FloatingBanner"
   ],
   "primaryFeature": "supabase",
   "features": {
@@ -181,9 +182,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T06:04:25.249Z",
-        "lastUpdated": "2026-04-08T05:17:16.759Z"
+        "lastUpdated": "2026-04-08T06:11:36.350Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/HeroConsultButton.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/ConsultModal.tsx"
     },
     "AlertModal": {
       "phase": "do",
@@ -376,7 +377,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:56:43.335Z",
-        "lastUpdated": "2026-04-02T06:12:16.309Z"
+        "lastUpdated": "2026-04-08T06:15:26.863Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ReviewSection/ReviewSection.tsx"
     },
@@ -415,7 +416,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:08:53.194Z",
-        "lastUpdated": "2026-04-03T03:07:08.338Z"
+        "lastUpdated": "2026-04-08T07:14:09.773Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/apply/page.tsx"
     },
@@ -454,7 +455,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-31T01:59:02.501Z",
-        "lastUpdated": "2026-04-08T05:35:49.492Z"
+        "lastUpdated": "2026-04-08T07:14:17.847Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/program/page.tsx"
     },
@@ -522,6 +523,19 @@
         "lastUpdated": "2026-03-31T09:38:36.977Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/payments/check/route.ts"
+    },
+    "FloatingBanner": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-08T06:07:41.074Z",
+        "lastUpdated": "2026-04-08T06:15:39.048Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/FloatingBanner/FloatingBanner.tsx"
     }
   },
   "pipeline": {
@@ -532,7 +546,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-08T05:35:49.492Z"
+    "lastActivity": "2026-04-08T07:14:17.847Z"
   },
   "history": [
     {
@@ -4113,6 +4127,120 @@
     },
     {
       "timestamp": "2026-04-08T05:35:49.492Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T05:53:28.945Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T05:53:34.087Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:07:41.074Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:07:56.102Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:10:13.430Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:10:17.412Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:11:31.093Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:11:36.350Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:12:42.314Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:15:26.863Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:15:30.338Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T06:15:39.048Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:12:10.108Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:12:18.700Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:12:25.379Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:14:06.211Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:14:09.773Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:14:14.021Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-08T07:14:17.847Z",
       "feature": "program",
       "phase": "do",
       "action": "updated"

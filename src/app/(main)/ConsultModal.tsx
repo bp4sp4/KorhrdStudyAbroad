@@ -13,9 +13,10 @@ function formatPhone(value: string) {
 
 interface Props {
   onClose: () => void
+  title?: string
 }
 
-export default function ConsultModal({ onClose }: Props) {
+export default function ConsultModal({ onClose, title = '간편상담신청' }: Props) {
   const [isPending, startTransition] = useTransition()
   const [result, setResult] = useState<{ success?: boolean; error?: string } | null>(null)
   const [phone, setPhone] = useState('')
@@ -50,7 +51,7 @@ export default function ConsultModal({ onClose }: Props) {
         ) : (
           <>
             <div className={styles.modal_header}>
-              <h2 className={styles.modal_title}>간편상담신청</h2>
+              <h2 className={styles.modal_title}>{title}</h2>
               <button className={styles.modal_close} onClick={onClose}>×</button>
             </div>
 

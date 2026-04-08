@@ -177,7 +177,7 @@
 }
 
 .reason_title {
-  color: var(--Atomic-Mono-900, #010101);
+  color: var(--Atomic-Common-White, #FFF);
   font-family: Pretendard;
   font-size: 36px;
   font-style: normal;
@@ -240,25 +240,42 @@ font-weight: 500;
 line-height: 25.2px; /* 140% */
 }
 
-.consult_section {
+.cta_section {
   display: flex;
-  height: 987px;
-  padding: 100px 300px;
+  height: 600px;
+  padding: 200px clamp(100px, calc(38.462vw - 438.46px), 300px);
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 60px;
   align-self: stretch;
-  background: var(--Atomic-Blue-50, #E5EDFF);
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%),
+    url('/program/banner_bottom.jpg') lightgray 50% / cover no-repeat;
 }
 
-.consult_title {
-  color: var(--Atomic-Mono-900, #010101);
-  text-align: center;
+.cta_top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cta_logo {
+  width: 296.5px;
+  height: 85.5px;
+  aspect-ratio: 215 / 62;
+  object-fit: contain;
+}
+
+.cta_title {
+  color: #FFF;
   font-family: Pretendard;
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
-  line-height: 50.4px;
+  line-height: 43.2px;
+  text-align: center;
   margin: 0;
 }
 
@@ -273,4 +290,43 @@ line-height: 25.2px; /* 140% */
   .hero_title {
     font-size: 28px;
   }
+}
+
+.test_pay_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 20px;
+  background: #f5f8ff;
+  border: 1px dashed #2469ff;
+  border-radius: 12px;
+}
+
+.test_pay_label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2469ff;
+}
+
+.test_pay_btn {
+  padding: 12px 24px;
+  background: #2469ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.test_pay_btn:hover:not(:disabled) {
+  background: #1a52cc;
+}
+
+.test_pay_btn:disabled {
+  background: #9aa5b1;
+  cursor: not-allowed;
 }

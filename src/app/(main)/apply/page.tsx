@@ -64,6 +64,7 @@ const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
   nz_hamilton_parent_3w: { amount: 5300000, display: '5,300,000원' },
   nz_hamilton_solo_10w: { amount: 16000000, display: '16,000,000원' },
   nz_hamilton_parent_10w: { amount: 12700000, display: '12,700,000원' },
+  test_1000: { amount: 1000, display: '1,000원 (결제 테스트)' },
 }
 
 
@@ -79,6 +80,7 @@ const PROGRAM_OPTIONS = [
   { value: 'nz_hamilton_parent_3w', label: '뉴질랜드 해밀턴 부모동반 3주' },
   { value: 'nz_hamilton_solo_10w', label: '뉴질랜드 해밀턴 나홀로 10주' },
   { value: 'nz_hamilton_parent_10w', label: '뉴질랜드 해밀턴 부모동반 10주' },
+  { value: 'test_1000', label: '[테스트] 1,000원 결제' },
 ]
 
 function CustomSelect({ options, placeholder = '선택해주세요.', onSelect, value, disabled }: {
