@@ -50,10 +50,10 @@ export default function FloatingBanner() {
         </button>
       </div>
       {modal === 'consult' && (
-        <ConsultModal title="간편상담신청" onClose={() => setModal(null)} />
+        <ConsultModal title="간편상담신청" type="consult" onClose={() => setModal(null)} />
       )}
       {modal === 'estimate' && (
-        <ConsultModal title="견적요청신청" onClose={() => setModal(null)} />
+        <ConsultModal title="견적요청신청" type="estimate" onClose={() => setModal(null)} />
       )}
     </>
   )

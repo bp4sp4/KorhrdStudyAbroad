@@ -327,7 +327,7 @@ function ApplyPageInner() {
         .eq('status', 'draft')
         .order('updated_at', { ascending: false })
         .limit(1)
-        .single()
+        .maybeSingle()
       if (draft) {
         setDraftId(draft.id)
         setDraftToRestore(draft)
@@ -984,14 +984,6 @@ function ApplyPageInner() {
             ))}
           </nav>
         </aside>
-        <div className={styles.account_card}>
-          <p className={styles.account_label}>입금 계좌</p>
-          <div className={styles.account_bank_row}>
-            <img src="/bank.png" alt="신한은행" className={styles.account_bank_img} />
-            <p className={styles.account_number}>140-015-773620</p>
-          </div>
-          <p className={styles.account_holder}>예금주 : 한평생그룹</p>
-        </div>
       </div>
 
       {/* ── 오른쪽 콘텐츠 ── */}
@@ -1177,13 +1169,13 @@ function ApplyPageInner() {
             <div className={styles.date_select_group}>
               <select
                 className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
-                data-field="passport_expiry_y"
+                data-field="passport_expiry_d"
                 defaultValue=""
                 onChange={() => clearError('passport_expiry')}
               >
-                <option value="" disabled>년</option>
-                {Array.from({ length: 21 }, (_, i) => new Date().getFullYear() + i).map(y => (
-                  <option key={y} value={y}>{y}년</option>
+                <option value="" disabled>일</option>
+                {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                  <option key={d} value={String(d).padStart(2, '0')}>{d}</option>
                 ))}
               </select>
               <select
@@ -1193,19 +1185,19 @@ function ApplyPageInner() {
                 onChange={() => clearError('passport_expiry')}
               >
                 <option value="" disabled>월</option>
-                {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
-                  <option key={m} value={String(m).padStart(2, '0')}>{m}월</option>
+                {['January','February','March','April','May','June','July','August','September','October','November','December'].map((name, i) => (
+                  <option key={name} value={String(i + 1).padStart(2, '0')}>{name}</option>
                 ))}
               </select>
               <select
                 className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
-                data-field="passport_expiry_d"
+                data-field="passport_expiry_y"
                 defaultValue=""
                 onChange={() => clearError('passport_expiry')}
               >
-                <option value="" disabled>일</option>
-                {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                  <option key={d} value={String(d).padStart(2, '0')}>{d}일</option>
+                <option value="" disabled>년도</option>
+                {Array.from({ length: 21 }, (_, i) => new Date().getFullYear() + i).map(y => (
+                  <option key={y} value={y}>{y}</option>
                 ))}
               </select>
             </div>

@@ -13,6 +13,7 @@ export async function submitConsultation(formData: FormData) {
   const desired_start = formData.get('desired_start') as string
   const message       = formData.get('message') as string
   const privacy_agreed = formData.get('privacy_agreed') === 'on'
+  const type          = (formData.get('type') as string) || 'consult'
 
   if (!name || !phone || !region || !desired_start || !message) {
     return { error: '모든 항목을 입력해주세요.' }
@@ -29,6 +30,7 @@ export async function submitConsultation(formData: FormData) {
     desired_start,
     message,
     privacy_agreed,
+    type,
   })
 
   if (error) return { error: '신청 중 오류가 발생했습니다.' }
