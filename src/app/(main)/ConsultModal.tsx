@@ -14,9 +14,10 @@ function formatPhone(value: string) {
 interface Props {
   onClose: () => void
   title?: string
+  type?: 'consult' | 'estimate'
 }
 
-export default function ConsultModal({ onClose, title = '간편상담신청' }: Props) {
+export default function ConsultModal({ onClose, title = '간편상담신청', type = 'consult' }: Props) {
   const [isPending, startTransition] = useTransition()
   const [result, setResult] = useState<{ success?: boolean; error?: string } | null>(null)
   const [phone, setPhone] = useState('')
@@ -56,6 +57,7 @@ export default function ConsultModal({ onClose, title = '간편상담신청' }: 
             </div>
 
             <form className={styles.modal_form} ref={formRef} onSubmit={handleSubmit}>
+              <input type="hidden" name="type" value={type} />
               <div className={styles.form_field}>
                 <label className={styles.form_label}>이름 <span className={styles.form_required}>*</span></label>
                 <input name="name" className={styles.form_input} type="text" placeholder="예) 홍길동" required />
