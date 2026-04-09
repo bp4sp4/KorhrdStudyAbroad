@@ -437,11 +437,26 @@ line-height: 31.2px; /* 120% */
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+.school_row > *:first-child {
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
 .input_school {
-  flex: 1;
+  flex: 1 1 200px;
+  min-width: 0;
   max-width: 460px;
+}
+
+@media (max-width: 768px) {
+  .school_row > * {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .radio_group {
