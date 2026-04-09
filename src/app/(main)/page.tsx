@@ -65,7 +65,10 @@ export default function Home() {
       <section className={styles.program}>
         <div className={styles.program_heading}>
           <h2 className={styles.program_title}>전문 유학 프로그램</h2>
-          <p className={styles.program_subtitle}>검증된 명문학교부터 신나는 액티비티까지</p>
+          <p className={styles.program_subtitle}>
+            <span className={styles.program_subtitle_desktop}>검증된 명문학교부터 신나는 액티비티까지</span>
+            <span className={styles.program_subtitle_mobile}>첫 안내부터 현지 도착까지 안전하게</span>
+          </p>
         </div>
         <ProgramSwiper programs={PROGRAMS} />
       </section>
@@ -94,7 +97,7 @@ export default function Home() {
       <section className={styles.cta}>
         <div className={styles.cta_top}>
           <img src="/main/cta/white_logo.png" alt="한평생유학" className={styles.cta_logo} />
-          <p className={styles.cta_title}>아이가 잘 지내는 유학, 지금 경험해보세요.</p>
+          <p className={styles.cta_title}>아이가 잘 지내는 유학,<br className={styles.cta_title_br} /> 지금 경험해보세요.</p>
         </div>
         <HeroConsultButton variant="cta" />
       </section>

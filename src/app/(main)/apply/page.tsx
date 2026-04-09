@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './page.module.css'
 import { createClient } from '@/lib/supabase/client'
-import { createPaymentRecord, checkAnyCompletedPayment } from './actions'
+import { createPaymentRecord, createBankTransferRequest, checkAnyCompletedPayment } from './actions'
 import ConsultFormModal from '@/app/(main)/program/ConsultForm'
 
 const IconProgram = () => (
@@ -82,6 +82,16 @@ const PROGRAM_OPTIONS = [
   { value: 'nz_hamilton_parent_10w', label: '뉴질랜드 해밀턴 부모동반 10주' },
   { value: 'test_1000', label: '[테스트] 1,000원 결제' },
 ]
+
+// 계좌이체 신청으로 처리할 프로그램 (PayApp 대신 어드민 수동 승인)
+const BANK_TRANSFER_PROGRAMS = new Set([
+  'nz_hamilton_solo_4w',
+  'nz_hamilton_parent_4w',
+  'nz_hamilton_solo_3w',
+  'nz_hamilton_parent_3w',
+  'nz_hamilton_solo_10w',
+  'nz_hamilton_parent_10w',
+])
 
 function CustomSelect({ options, placeholder = '선택해주세요.', onSelect, value, disabled }: {
   options: { value: string; label: string }[]
@@ -171,6 +181,7 @@ function ApplyPageInner() {
   const [paymentPhone, setPaymentPhone] = useState('')
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
   const [showPaymentDoneModal, setShowPaymentDoneModal] = useState(false)
+  const [showBankRequestModal, setShowBankRequestModal] = useState(false)
   const [active, setActive] = useState('program')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
@@ -595,7 +606,12 @@ function ApplyPageInner() {
         address_detail: addressDetail,
         passport_name: getValue('passport_name'),
         passport_number: getValue('passport_number'),
-        passport_expiry: getValue('passport_expiry') || null,
+        passport_expiry: (() => {
+          const y = getValue('passport_expiry_y')
+          const m = getValue('passport_expiry_m')
+          const d = getValue('passport_expiry_d')
+          return (y && m && d) ? `${y}-${m}-${d}` : null
+        })(),
         passport_file_url: passportFileUrl,
         id_photo_url: idPhotoUrl,
         guardian_name: getValue('guardian_name'),
@@ -679,8 +695,32 @@ function ApplyPageInner() {
     }
   }
 
+  const handleBankTransferRequest = async () => {
+    if (!paymentProgram) { alert('프로그램을 선택해주세요.'); return }
+    const price = PROGRAM_PRICES[paymentProgram]
+    if (!price || price.amount === 0) { alert('가격 정보가 없습니다.'); return }
+
+    setIsPaymentLoading(true)
+    try {
+      await createBankTransferRequest(paymentProgram, price.amount)
+      setShowBankRequestModal(true)
+    } catch (e) {
+      alert('계좌이체 신청 중 오류가 발생했습니다.')
+      console.error(e)
+    } finally {
+      setIsPaymentLoading(false)
+    }
+  }
+
   const handlePaymentSubmit = async () => {
     if (!paymentProgram) { alert('프로그램을 선택해주세요.'); return }
+
+    // 계좌이체 대상 프로그램은 별도 플로우
+    if (BANK_TRANSFER_PROGRAMS.has(paymentProgram)) {
+      await handleBankTransferRequest()
+      return
+    }
+
     const price = PROGRAM_PRICES[paymentProgram]
     if (!price || price.amount === 0) { alert('가격 정보가 없습니다.'); return }
     const rawPhone = paymentPhone.replace(/-/g, '')
@@ -751,17 +791,27 @@ function ApplyPageInner() {
       )}
       <div className={styles.container}>
         {/* 사이드바 */}
-        <aside className={styles.sidebar}>
-          <p className={styles.sidebar_title}>참가 신청</p>
-          <nav className={styles.sidebar_nav}>
-            {NAV_ITEMS.map((item) => (
-              <div key={item.id} className={styles.nav_item_disabled}>
-                <span className={styles.nav_icon}>{item.icon}</span>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </nav>
-        </aside>
+        <div className={styles.sidebar_col}>
+          <aside className={styles.sidebar}>
+            <p className={styles.sidebar_title}>참가 신청</p>
+            <nav className={styles.sidebar_nav}>
+              {NAV_ITEMS.map((item) => (
+                <div key={item.id} className={styles.nav_item_disabled}>
+                  <span className={styles.nav_icon}>{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </nav>
+          </aside>
+          <div className={`${styles.account_card} ${styles.account_card_desktop}`}>
+            <p className={styles.account_label}>입금 계좌</p>
+            <div className={styles.account_bank_row}>
+              <img src="/bank.png" alt="신한은행" className={styles.account_bank_img} />
+              <p className={styles.account_number}>140-015-773620</p>
+            </div>
+            <p className={styles.account_holder}>예금주 : 한평생그룹</p>
+          </div>
+        </div>
 
         {/* 콘텐츠 */}
         <div className={styles.content}>
@@ -820,11 +870,55 @@ function ApplyPageInner() {
               onClick={handlePaymentSubmit}
               disabled={!paymentProgram || isPaymentLoading}
             >
-              {isPaymentLoading ? '처리 중...' : '결제하기'}
+              {isPaymentLoading
+                ? '처리 중...'
+                : BANK_TRANSFER_PROGRAMS.has(paymentProgram)
+                  ? '계좌이체 신청'
+                  : '결제하기'}
             </button>
           </section>
+
+          <div className={`${styles.account_card} ${styles.account_card_mobile}`}>
+            <p className={styles.account_label}>입금 계좌</p>
+            <div className={styles.account_bank_row}>
+              <img src="/bank.png" alt="신한은행" className={styles.account_bank_img} />
+              <p className={styles.account_number}>140-015-773620</p>
+            </div>
+            <p className={styles.account_holder}>예금주 : 한평생그룹</p>
+          </div>
         </div>
       </div>
+
+      {showBankRequestModal && (
+        <div className={styles.modal_overlay}>
+          <div className={styles.modal}>
+            <p className={styles.modal_title}>신청이 완료되었습니다.</p>
+            <p className={styles.modal_desc}>
+              아래 계좌로 입금 후, 확인되면 신청서 작성이 가능합니다.
+            </p>
+            <div className={styles.bank_info_box}>
+              <p className={styles.bank_info_label}>입금 계좌</p>
+              <div className={styles.bank_info_row}>
+                <img src="/bank.png" alt="신한은행" className={styles.bank_info_img} />
+                <p className={styles.bank_info_number}>140-015-773620</p>
+              </div>
+              <p className={styles.bank_info_holder}>예금주 : 한평생그룹</p>
+            </div>
+            <div className={styles.modal_buttons}>
+              <button
+                type="button"
+                className={styles.modal_btn_primary}
+                onClick={() => {
+                  setShowBankRequestModal(false)
+                  router.push('/mypage')
+                }}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showPaymentDoneModal && (
         <div className={styles.modal_overlay}>
@@ -874,21 +968,31 @@ function ApplyPageInner() {
     <div className={styles.container}>
 
       {/* ── 왼쪽 사이드바 ── */}
-      <aside className={styles.sidebar}>
-        <p className={styles.sidebar_title}>참가 신청</p>
-        <nav className={styles.sidebar_nav}>
-          {NAV_ITEMS.map((item) => (
-            <button
-              key={item.id}
-              className={`${styles.nav_item} ${active === item.id ? styles.nav_active : ''}`}
-              onClick={() => scrollToSection(item.id)}
-            >
-              <span className={styles.nav_icon}>{item.icon}</span>
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
+      <div className={styles.sidebar_col}>
+        <aside className={styles.sidebar}>
+          <p className={styles.sidebar_title}>참가 신청</p>
+          <nav className={styles.sidebar_nav}>
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.id}
+                className={`${styles.nav_item} ${active === item.id ? styles.nav_active : ''}`}
+                onClick={() => scrollToSection(item.id)}
+              >
+                <span className={styles.nav_icon}>{item.icon}</span>
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </nav>
+        </aside>
+        <div className={styles.account_card}>
+          <p className={styles.account_label}>입금 계좌</p>
+          <div className={styles.account_bank_row}>
+            <img src="/bank.png" alt="신한은행" className={styles.account_bank_img} />
+            <p className={styles.account_number}>140-015-773620</p>
+          </div>
+          <p className={styles.account_holder}>예금주 : 한평생그룹</p>
+        </div>
+      </div>
 
       {/* ── 오른쪽 콘텐츠 ── */}
       <div className={styles.content}>
@@ -1069,9 +1173,43 @@ function ApplyPageInner() {
 
           <div className={styles.field}>
             <label className={styles.label}>여권만료일 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>여권 만료일을 정확하게 입력해주세요.</p>
-            <input className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`} type="text" placeholder="예) 24 Jan 2030" data-field="passport_expiry" onChange={() => clearError('passport_expiry')} />
-            {hasError('passport_expiry') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
+            <p className={styles.field_desc}>여권 만료일을 선택해주세요.</p>
+            <div className={styles.date_select_group}>
+              <select
+                className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
+                data-field="passport_expiry_y"
+                defaultValue=""
+                onChange={() => clearError('passport_expiry')}
+              >
+                <option value="" disabled>년</option>
+                {Array.from({ length: 21 }, (_, i) => new Date().getFullYear() + i).map(y => (
+                  <option key={y} value={y}>{y}년</option>
+                ))}
+              </select>
+              <select
+                className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
+                data-field="passport_expiry_m"
+                defaultValue=""
+                onChange={() => clearError('passport_expiry')}
+              >
+                <option value="" disabled>월</option>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                  <option key={m} value={String(m).padStart(2, '0')}>{m}월</option>
+                ))}
+              </select>
+              <select
+                className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
+                data-field="passport_expiry_d"
+                defaultValue=""
+                onChange={() => clearError('passport_expiry')}
+              >
+                <option value="" disabled>일</option>
+                {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                  <option key={d} value={String(d).padStart(2, '0')}>{d}일</option>
+                ))}
+              </select>
+            </div>
+            {hasError('passport_expiry') && <p className={styles.error_msg}>여권 만료일을 선택해주세요.</p>}
           </div>
 
           <div className={styles.field}>

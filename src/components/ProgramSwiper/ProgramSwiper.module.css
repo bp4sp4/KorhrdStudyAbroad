@@ -65,3 +65,20 @@
   font-weight: 700;
   line-height: 16.8px;
 }
+
+@media (max-width: 1023px) {
+  .slide {
+    width: 324px !important;
+    height: 216px;
+  }
+
+  .card {
+    width: 324px;
+    height: 216px;
+  }
+
+  .card_title {
+    font-size: 24px;
+    line-height: 26.4px;
+  }
+}

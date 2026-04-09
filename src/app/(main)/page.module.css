@@ -280,20 +280,20 @@
   }
 
   .process_card_desc {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 19.6px;
     white-space: normal;
   }
 
   .process_arrow {
     align-self: center;
-    width: 18px;
-    height: 21px;
+
   }
 
   .process_arrow svg {
-    width: 18px;
-    height: 21px;
+width: 36px;
+height: 36px;
+aspect-ratio: 1/1;
     transform: rotate(90deg);
   }
 }
@@ -549,6 +549,47 @@
   line-height: 28.8px;
 }
 
+.program_subtitle_mobile {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .program {
+    display: flex;
+    padding: 100px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 26px;
+    align-self: stretch;
+  }
+
+  .program_title {
+    color: var(--Atomic-Mono-900, #010101);
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28.8px;
+  }
+
+  .program_subtitle {
+    color: var(--Atomic-Mono-900, #010101);
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 19.6px;
+  }
+
+  .program_subtitle_desktop {
+    display: none;
+  }
+
+  .program_subtitle_mobile {
+    display: inline;
+  }
+}
+
 .program_grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -708,6 +749,40 @@
   white-space: pre-line;
 }
 
+@media (max-width: 1023px) {
+  .reason {
+    display: flex;
+    padding: 100px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+    background: var(--Atomic-Blue-50, #E5EDFF);
+  }
+
+  .reason_title {
+    font-size: 24px;
+    line-height: 28.8px;
+  }
+
+  .reason_subtitle {
+    font-size: 14px;
+    line-height: 19.6px;
+    font-weight: 500;
+  }
+
+  .reason_cards {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .reason_card {
+    width: 100%;
+    flex: none;
+  }
+}
+
 /* ════════════════════════════════
    ── CTA Section ──
    ════════════════════════════════ */
@@ -751,6 +826,10 @@
   text-align: center;
 }
 
+.cta_title_br {
+  display: none;
+}
+
 .cta_btn {
   display: flex;
   padding: 26px 32px;
@@ -772,6 +851,39 @@
 
 .cta_btn:hover {
   opacity: 0.88;
+}
+
+/* ── CTA 1023px 이하 (모바일/태블릿) ── */
+@media (max-width: 1023px) {
+  .cta {
+    height: 480px;
+    padding: 60px 24px;
+    gap: 60px;
+  }
+
+  .cta_logo {
+    width: 240px;
+    height: 69px;
+    aspect-ratio: 80 / 23;
+  }
+
+  .cta_title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 28.8px;
+  }
+
+  .cta_title_br {
+    display: inline;
+  }
+
+  .cta_btn {
+    padding: 24px 32px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    width: 100%;
+  }
 }
 
 /* 간편상담 성공 팝업 */
