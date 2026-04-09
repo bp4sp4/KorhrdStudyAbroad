@@ -19,21 +19,30 @@
   ;
 }
 
+/* ── 왼쪽 사이드바 컬럼 (sidebar + 계좌카드 묶음) ── */
+.sidebar_col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 312px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
+
 /* ── 왼쪽 사이드바 ── */
 .sidebar {
   display: flex;
-  width: 312px;
+  width: 100%;
   padding: 32px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 24px;
-  flex-shrink: 0;
   border-radius: 12px;
   background: #fff;
-  position: sticky;
-  top: 100px;
-  align-self: flex-start;
+  box-sizing: border-box;
 }
 
 .sidebar_title {
@@ -663,6 +672,68 @@ line-height: 31.2px; /* 120% */
   gap: 8px;
 }
 
+.date_select_group {
+  display: flex;
+  gap: 8px;
+}
+
+.date_select_group > select {
+  flex: 1;
+  min-width: 0;
+}
+
+.bank_info_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 12px;
+  background: #E5EDFF;
+  margin-bottom: 16px;
+}
+
+.bank_info_label {
+  color: #010101;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.6px;
+  margin: 0;
+}
+
+.bank_info_row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bank_info_img {
+  width: 80px;
+  height: 21px;
+  aspect-ratio: 80 / 21;
+  object-fit: contain;
+}
+
+.bank_info_number {
+  color: #010101;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21.6px;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.bank_info_holder {
+  color: #919191;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.8px;
+  margin: 0;
+}
+
 .modal_btn_secondary {
   flex: 1;
   padding: 14px;
@@ -1101,5 +1172,119 @@ line-height: 19.6px; /* 140% */
 
   .btn_pay {
     width: 100%;
+  }
+}
+
+/* ── 입금 계좌 안내 카드 ── */
+.account_card {
+  display: flex;
+  width: 100%;
+  padding: 32px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  background: #E5EDFF;
+  box-sizing: border-box;
+  
+}
+
+.account_card_mobile {
+  display: none;
+}
+
+.account_bank_row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.account_bank_img {
+  width: 120px;
+  height: 31px;
+  aspect-ratio: 120 / 31;
+  object-fit: contain;
+}
+
+.account_label {
+  color: #010101;
+  text-align: center;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 31.2px;
+  margin-bottom: 20px;
+
+}
+
+.account_number {
+  color: #010101;
+  text-align: center;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 31.2px;
+  
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+
+.account_holder {
+  color: #919191;
+  text-align: center;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21.6px;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .account_card_desktop {
+    display: none;
+  }
+
+  .account_card_mobile {
+    display: flex;
+    
+  }
+
+  .account_card {
+    width: 100%;
+    padding: 32px;
+    gap: 12px;
+    align-self: stretch;
+  }
+
+  .account_label {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 0;
+  }
+
+  .account_bank_row {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .account_bank_img {
+    width: 80px;
+    height: 21px;
+    aspect-ratio: 80 / 21;
+  }
+
+  .account_number {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 0;
+  }
+
+  .account_holder {
+    font-size: 16px;
+    line-height: 19.2px;
   }
 }

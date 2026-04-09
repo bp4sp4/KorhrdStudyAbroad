@@ -156,6 +156,16 @@
   line-height: 16.8px;
 }
 
+/* 데스크탑에서는 트랙 래퍼는 영향 없음 */
+.review_track {
+  display: contents;
+}
+
+/* 데스크탑에서는 모바일 마퀴 클론 숨김 */
+.review_card_clone {
+  display: none;
+}
+
 /* ── 1399px 이하 ── */
 @media (max-width: 1399px) {
   .review {
@@ -175,5 +185,85 @@
 
   .review_col_right {
     margin-top: 0;
+  }
+}
+
+/* ── 1023px 이하: 모바일 마퀴 ── */
+@media (max-width: 1023px) {
+  .review {
+    display: flex;
+    padding: 100px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    align-self: stretch;
+  }
+
+  .review_title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .review_cols {
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .review_col {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .review_track {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: max-content;
+    gap: 24px;
+    animation: marquee_left 40s linear infinite;
+  }
+
+  .review_col.review_col_right {
+    margin-top: 0;
+  }
+
+  .review_col.review_col_right .review_track {
+    animation: marquee_right 40s linear infinite;
+  }
+
+
+
+  .review_card,
+  .review_card_clone {
+    display: flex;
+    width: 320px;
+    height: 320px;
+    flex-shrink: 0;
+  }
+
+  .review_text {
+color: var(--Atomic-Common-White, #FFF);
+
+/* Body 1/Reading - Bold */
+font-family: Pretendard;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 25.2px; /* 140% */
+  }
+
+  .review_col_paused .review_track {
+    animation-play-state: paused !important;
+  }
+
+  @keyframes marquee_left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee_right {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
   }
 }
