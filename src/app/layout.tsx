@@ -22,6 +22,11 @@ export const metadata: Metadata = {
     description: '유학 홈페이지',
     images: ['/og-image.png'],
   },
+  verification: {
+    other: {
+      'naver-site-verification': '5f8123cb0afcc68776ccf389d9d15b198cc2277e',
+    },
+  },
 }
 
 export default function RootLayout({
