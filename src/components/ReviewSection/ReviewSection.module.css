@@ -188,6 +188,77 @@
   }
 }
 
+/* ── 태블릿 (1024px ~ 1399px): 마퀴 적용 ── */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .review {
+    flex-direction: column;
+    padding: 100px 60px;
+    gap: 24px;
+  }
+
+  .review_title {
+    position: static;
+    width: 100%;
+    font-size: 28px;
+    line-height: 33.6px;
+  }
+
+  .review_title_br {
+    display: none;
+  }
+
+  .review_cols {
+    flex-direction: column;
+    gap: 24px;
+    width: calc(100% + 120px);
+    margin: 0 -60px;
+    overflow: hidden;
+  }
+
+  .review_col {
+    width: 100%;
+  }
+
+  .review_col_right {
+    margin-top: 0;
+  }
+
+  .review_track {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: max-content;
+    gap: 24px;
+    animation: marquee_left_t 40s linear infinite;
+  }
+
+  .review_col.review_col_right .review_track {
+    animation: marquee_right_t 40s linear infinite;
+  }
+
+  .review_card,
+  .review_card_clone {
+    display: flex;
+    width: 360px;
+    height: 360px;
+    flex-shrink: 0;
+  }
+
+  .review_col_paused .review_track {
+    animation-play-state: paused !important;
+  }
+
+  @keyframes marquee_left_t {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee_right_t {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+}
+
 /* ── 1023px 이하: 모바일 마퀴 ── */
 @media (max-width: 1023px) {
   .review {
@@ -200,8 +271,8 @@
   }
 
   .review_title {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 26px;
+    line-height: 31.2px;
   }
 
   .review_cols {
@@ -247,10 +318,10 @@ color: var(--Atomic-Common-White, #FFF);
 
 /* Body 1/Reading - Bold */
 font-family: Pretendard;
-font-size: 18px;
+font-size: 16px;
 font-style: normal;
 font-weight: 700;
-line-height: 25.2px; /* 140% */
+line-height: 22.4px; /* 140% */
   }
 
   .review_col_paused .review_track {

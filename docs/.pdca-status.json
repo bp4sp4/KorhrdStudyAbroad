@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-09T03:57:04.981Z",
+  "lastUpdated": "2026-04-10T03:06:10.940Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -67,9 +67,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:15.814Z",
-        "lastUpdated": "2026-03-30T08:31:34.737Z"
+        "lastUpdated": "2026-04-09T06:04:32.298Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/proxy.ts"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/layout.tsx"
     },
     "auth": {
       "phase": "do",
@@ -184,9 +184,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T06:04:25.249Z",
-        "lastUpdated": "2026-04-09T03:57:00.101Z"
+        "lastUpdated": "2026-04-10T02:29:25.989Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/ConsultModal.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/page.tsx"
     },
     "AlertModal": {
       "phase": "do",
@@ -379,7 +379,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:56:43.335Z",
-        "lastUpdated": "2026-04-08T09:20:28.687Z"
+        "lastUpdated": "2026-04-09T08:41:29.898Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ReviewSection/ReviewSection.tsx"
     },
@@ -392,7 +392,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T05:16:03.514Z",
-        "lastUpdated": "2026-03-31T03:25:26.741Z"
+        "lastUpdated": "2026-04-09T05:44:50.484Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/Footer/Footer.tsx"
     },
@@ -418,7 +418,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:08:53.194Z",
-        "lastUpdated": "2026-04-09T03:47:28.410Z"
+        "lastUpdated": "2026-04-10T03:06:10.940Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/apply/page.tsx"
     },
@@ -457,7 +457,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-31T01:59:02.501Z",
-        "lastUpdated": "2026-04-08T07:14:17.847Z"
+        "lastUpdated": "2026-04-09T08:53:26.638Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/program/page.tsx"
     },
@@ -535,7 +535,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-04-08T06:07:41.074Z",
-        "lastUpdated": "2026-04-09T03:57:04.981Z"
+        "lastUpdated": "2026-04-10T01:15:50.068Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/FloatingBanner/FloatingBanner.tsx"
     },
@@ -574,7 +574,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-09T03:57:04.981Z"
+    "lastActivity": "2026-04-10T03:06:10.940Z"
   },
   "history": [
     {
@@ -4690,6 +4690,294 @@
     {
       "timestamp": "2026-04-09T03:57:04.981Z",
       "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:34:15.517Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:34:46.425Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:34:52.433Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:38:01.486Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:42:58.444Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:43:30.301Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:44:09.191Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:44:50.484Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:50:36.939Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:52:17.700Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:52:23.278Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:53:39.983Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T05:53:47.455Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T06:02:24.257Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T06:02:46.785Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T06:02:51.361Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T06:04:32.298Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T08:41:29.898Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T08:53:26.638Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T09:35:20.856Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T09:49:43.868Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-09T09:50:14.112Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T01:10:34.878Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T01:15:50.068Z",
+      "feature": "FloatingBanner",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T01:39:30.461Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T01:49:11.282Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T01:49:37.501Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:17:48.928Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:17:57.045Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:18:01.459Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:18:05.234Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:18:10.697Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:18:14.864Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:29:25.989Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:57:26.189Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:58:56.085Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T02:59:02.334Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:01:38.025Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:01:41.649Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:01:48.809Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:01:54.047Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:02:00.874Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:02:07.508Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:05:19.781Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:05:38.722Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:05:51.856Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:06:02.831Z",
+      "feature": "apply",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-10T03:06:10.940Z",
+      "feature": "apply",
       "phase": "do",
       "action": "updated"
     }

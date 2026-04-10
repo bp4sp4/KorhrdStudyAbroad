@@ -89,7 +89,7 @@ export default function ReviewSection() {
         />
       ))}
       <h2 className={styles.review_title}>
-        소중한 경험,<br />한평생유학에서만<br />가능합니다.
+        소중한 경험,<br />한평생유학에서만<br className={styles.review_title_br} />가능합니다.
       </h2>
 
       <div className={styles.review_cols}>

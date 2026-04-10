@@ -114,7 +114,7 @@ export default function ProgramPage() {
       {/* 선택하는 이유 섹션 */}
       <section className={styles.reason_section}>
         <h2 className={styles.reason_title}>
-          한평생 유학을<br />선택하는 이유!
+          한평생 유학을<br className={styles.reason_title_br} /> 선택하는 이유!
         </h2>
 
         <div className={styles.reason_cards}>

@@ -345,10 +345,9 @@ function ApplyPageInner() {
     // DB 컬럼명 → data-field 매핑
     const fieldMap: Record<string, string> = {
       name: 'korean_name', english_name: 'english_name',
-      birth_date: 'birth_date', birth_city: 'birth_city',
+      birth_city: 'birth_city',
       email: 'email', school_grade: 'grade', school: 'school_name',
       passport_name: 'passport_name', passport_number: 'passport_number',
-      passport_expiry: 'passport_expiry',
       guardian_name: 'guardian_name', guardian_email: 'guardian_email',
       guardian_birth_city: 'guardian_birth_city',
     }
@@ -356,6 +355,32 @@ function ApplyPageInner() {
       const el = document.querySelector<HTMLInputElement>(`[data-field="${dataField}"]`)
       if (el && d[dbCol]) el.value = d[dbCol] as string
     })
+
+    // 생년월일 select 복원 (YYYY-MM-DD 형식)
+    if (d['birth_date']) {
+      const parts = (d['birth_date'] as string).split('-')
+      if (parts.length === 3) {
+        const selY = document.querySelector<HTMLSelectElement>('[data-field="birth_date_y"]')
+        const selM = document.querySelector<HTMLSelectElement>('[data-field="birth_date_m"]')
+        const selD = document.querySelector<HTMLSelectElement>('[data-field="birth_date_d"]')
+        if (selY) { selY.value = parts[0]; selY.classList.add(styles.select_has_value) }
+        if (selM) { selM.value = parts[1]; selM.classList.add(styles.select_has_value) }
+        if (selD) { selD.value = parts[2]; selD.classList.add(styles.select_has_value) }
+      }
+    }
+
+    // 여권만료일 select 복원 (YYYY-MM-DD 형식)
+    if (d['passport_expiry']) {
+      const parts = (d['passport_expiry'] as string).split('-')
+      if (parts.length === 3) {
+        const selY = document.querySelector<HTMLSelectElement>('[data-field="passport_expiry_y"]')
+        const selM = document.querySelector<HTMLSelectElement>('[data-field="passport_expiry_m"]')
+        const selD = document.querySelector<HTMLSelectElement>('[data-field="passport_expiry_d"]')
+        if (selY) { selY.value = parts[0]; selY.classList.add(styles.select_has_value) }
+        if (selM) { selM.value = parts[1]; selM.classList.add(styles.select_has_value) }
+        if (selD) { selD.value = parts[2]; selD.classList.add(styles.select_has_value) }
+      }
+    }
 
     const radioMap: Record<string, string> = {
       gender: 'gender', blood_type: 'blood', english_level: 'english_level', swim_level: 'swim_level',
@@ -399,7 +424,7 @@ function ApplyPageInner() {
     setTimeout(() => {
       const fields = [
         { col: 'name', section: 'basic', field: 'korean_name' },
-        { col: 'birth_date', section: 'basic', field: 'birth_date' },
+        { col: 'birth_date', section: 'basic', field: 'birth_date_y' },
         { col: 'birth_city', section: 'basic', field: 'birth_city' },
         { col: 'gender', section: 'basic', field: 'gender' },
         { col: 'email', section: 'basic', field: 'email' },
@@ -409,7 +434,7 @@ function ApplyPageInner() {
         { col: 'address', section: 'basic', field: 'address' },
         { col: 'passport_name', section: 'passport', field: 'passport_name' },
         { col: 'passport_number', section: 'passport', field: 'passport_number' },
-        { col: 'passport_expiry', section: 'passport', field: 'passport_expiry' },
+        { col: 'passport_expiry', section: 'passport', field: 'passport_expiry_y' },
         { col: 'passport_file_url', section: 'passport', field: 'passport_file' },
         { col: 'id_photo_url', section: 'passport', field: 'id_photo_file' },
         { col: 'guardian_name', section: 'guardian', field: 'guardian_name' },
@@ -451,6 +476,7 @@ function ApplyPageInner() {
 
   // IntersectionObserver: 스크롤 위치에 따라 active 업데이트
   useEffect(() => {
+    if (step !== 'form') return
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -468,7 +494,7 @@ function ApplyPageInner() {
     })
     return () => observer.disconnect()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [step])
 
   const scrollToSection = (id: string) => {
     const el = sectionRefs.current[id]
@@ -484,13 +510,21 @@ function ApplyPageInner() {
 
       if (!programValue) newErrors.add('program')
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
       const basicSec = sectionRefs.current['basic']
       if (basicSec) {
         basicSec.querySelectorAll<HTMLInputElement>('[data-field]').forEach(input => {
           const f = input.getAttribute('data-field')!
           if (['text', 'email', 'tel'].includes(input.type) && !input.value.trim()) newErrors.add(f)
         })
+        const emailEl = basicSec.querySelector<HTMLInputElement>('[data-field="email"]')
+        if (emailEl && emailEl.value.trim() && !emailRegex.test(emailEl.value.trim())) newErrors.add('email')
         if (!basicSec.querySelector('input[name="gender"]:checked')) newErrors.add('gender')
+        const by = (basicSec.querySelector<HTMLSelectElement>('[data-field="birth_date_y"]')?.value ?? '')
+        const bm = (basicSec.querySelector<HTMLSelectElement>('[data-field="birth_date_m"]')?.value ?? '')
+        const bd = (basicSec.querySelector<HTMLSelectElement>('[data-field="birth_date_d"]')?.value ?? '')
+        if (!by || !bm || !bd) newErrors.add('birth_date')
       }
 
       const passSec = sectionRefs.current['passport']
@@ -509,6 +543,8 @@ function ApplyPageInner() {
           const f = input.getAttribute('data-field')!
           if (['text', 'email', 'tel'].includes(input.type) && !input.value.trim()) newErrors.add(f)
         })
+        const guardEmailEl = guardSec.querySelector<HTMLInputElement>('[data-field="guardian_email"]')
+        if (guardEmailEl && guardEmailEl.value.trim() && !emailRegex.test(guardEmailEl.value.trim())) newErrors.add('guardian_email')
       }
 
       const homestSec = sectionRefs.current['homestay']
@@ -532,8 +568,14 @@ function ApplyPageInner() {
 
       if (newErrors.size > 0) {
         for (const id of SECTION_ORDER) {
-          if ([...newErrors].some(f => FIELD_SECTION[f] === id)) {
-            scrollToSection(id)
+          const firstField = [...newErrors].find(f => FIELD_SECTION[f] === id)
+          if (firstField) {
+            const el = document.querySelector<HTMLElement>(`[data-field="${firstField}"], input[name="${firstField}"], select[name="${firstField}"]`)
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            } else {
+              scrollToSection(id)
+            }
             break
           }
         }
@@ -593,7 +635,12 @@ function ApplyPageInner() {
         program: programValue,
         name: getValue('korean_name'),
         english_name: getValue('english_name') || null,
-        birth_date: getValue('birth_date') || null,
+        birth_date: (() => {
+          const y = getValue('birth_date_y')
+          const m = getValue('birth_date_m')
+          const d = getValue('birth_date_d')
+          return (y && m && d) ? `${y}-${m}-${d}` : null
+        })(),
         blood_type: getRadio('blood') || null,
         gender: getRadio('gender'),
         birth_city: getValue('birth_city'),
@@ -817,17 +864,15 @@ function ApplyPageInner() {
         <div className={styles.content}>
           {/* 안내 배너 */}
           <div className={styles.banner}>
-            프로그램 선택 후, 결제를 진행해주시면 신청서 작성이 가능합니다.
+            상담받으신 프로그램 결제 후 신청서 작성이 가능합니다.
           </div>
 
           {/* 결제 섹션 */}
           <section className={styles.section}>
             <div className={styles.section_title_row}>
-              <h2 className={styles.section_title}>상담 후 안내받으신 프로그램을 선택하고, 결제를 진행해주세요!</h2>
+              <h2 className={styles.section_title}>프로그램 결제</h2>
               <button type="button" className={styles.consult_btn} onClick={() => setShowConsultModal(true)}>상담받지 않으셨나요?</button>
             </div>
-
-            <hr className={styles.divider} />
 
             <div className={styles.field}>
               <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
@@ -991,7 +1036,7 @@ function ApplyPageInner() {
 
         {/* 안내 배너 */}
         <div className={styles.banner}>
-          입력하신 정보는 프로그램 진행에 사용되며, 동의하지 않을 시 진행이 어렵습니다.
+          입력하신 정보는 프로그램 진행에 사용되며,동의하지 않을 시 진행이 어렵습니다.
         </div>
 
         {/* 프로그램 선택 */}
@@ -1001,6 +1046,7 @@ function ApplyPageInner() {
           ref={el => { sectionRefs.current['program'] = el }}
         >
           <h2 className={styles.section_title}>어떤 프로그램으로 참가하시나요?</h2>
+          <hr className={styles.section_title_divider} />
           <div className={styles.field}>
             <label className={styles.label}>유학 프로그램 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>결제하신 프로그램이 맞는지 확인해주세요.</p>
@@ -1016,7 +1062,7 @@ function ApplyPageInner() {
           ref={el => { sectionRefs.current['basic'] = el }}
         >
           <h2 className={styles.section_title}>참가자의 기본정보를 알려주세요.</h2>
-
+          <hr className={styles.section_title_divider} />
           <div className={styles.field}>
             <label className={styles.label}>한국 이름 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>한글로 입력해주세요.</p>
@@ -1058,9 +1104,49 @@ function ApplyPageInner() {
 
           <div className={styles.field}>
             <label className={styles.label}>생년월일 <span className={styles.required}>*</span></label>
-            <p className={styles.field_desc}>생년월일을 입력해주세요.</p>
-            <input className={`${styles.input} ${hasError('birth_date') ? styles.input_error : ''}`} type="text" placeholder="YYYY/MM/DD" data-field="birth_date" onChange={() => clearError('birth_date')} />
-            {hasError('birth_date') && <p className={styles.error_msg}>필수 항목을 입력해주세요.</p>}
+            <p className={styles.field_desc}>생년월일을 선택해주세요.</p>
+            <div className={styles.date_select_group}>
+              <div className={styles.select_wrap}>
+                <select
+                  className={`${styles.select_native} ${hasError('birth_date') ? styles.input_error : ''}`}
+                  data-field="birth_date_y"
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) e.target.classList.add(styles.select_has_value); clearError('birth_date') }}
+                >
+                  <option value="" disabled>년도</option>
+                  {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.select_wrap}>
+                <select
+                  className={`${styles.select_native} ${hasError('birth_date') ? styles.input_error : ''}`}
+                  data-field="birth_date_m"
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) e.target.classList.add(styles.select_has_value); clearError('birth_date') }}
+                >
+                  <option value="" disabled>월</option>
+                  {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
+                    <option key={m} value={String(m).padStart(2, '0')}>{m}월</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.select_wrap}>
+                <select
+                  className={`${styles.select_native} ${hasError('birth_date') ? styles.input_error : ''}`}
+                  data-field="birth_date_d"
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) e.target.classList.add(styles.select_has_value); clearError('birth_date') }}
+                >
+                  <option value="" disabled>일</option>
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                    <option key={d} value={String(d).padStart(2, '0')}>{d}일</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {hasError('birth_date') && <p className={styles.error_msg}>생년월일을 선택해주세요.</p>}
           </div>
 
           <div className={styles.field}>
@@ -1148,6 +1234,7 @@ function ApplyPageInner() {
           ref={el => { sectionRefs.current['passport'] = el }}
         >
           <h2 className={styles.section_title}>해외 출국시에 꼭 필요한 정보를 알려주세요.</h2>
+          <hr className={styles.section_title_divider} />
 
           <div className={styles.field}>
             <label className={styles.label}>여권상 영문 이름 <span className={styles.required}>*</span></label>
@@ -1167,39 +1254,45 @@ function ApplyPageInner() {
             <label className={styles.label}>여권만료일 <span className={styles.required}>*</span></label>
             <p className={styles.field_desc}>여권 만료일을 선택해주세요.</p>
             <div className={styles.date_select_group}>
-              <select
-                className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
-                data-field="passport_expiry_d"
-                defaultValue=""
-                onChange={() => clearError('passport_expiry')}
-              >
-                <option value="" disabled>일</option>
-                {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                  <option key={d} value={String(d).padStart(2, '0')}>{d}</option>
-                ))}
-              </select>
-              <select
-                className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
-                data-field="passport_expiry_m"
-                defaultValue=""
-                onChange={() => clearError('passport_expiry')}
-              >
-                <option value="" disabled>월</option>
-                {['January','February','March','April','May','June','July','August','September','October','November','December'].map((name, i) => (
-                  <option key={name} value={String(i + 1).padStart(2, '0')}>{name}</option>
-                ))}
-              </select>
-              <select
-                className={`${styles.input} ${hasError('passport_expiry') ? styles.input_error : ''}`}
-                data-field="passport_expiry_y"
-                defaultValue=""
-                onChange={() => clearError('passport_expiry')}
-              >
-                <option value="" disabled>년도</option>
-                {Array.from({ length: 21 }, (_, i) => new Date().getFullYear() + i).map(y => (
-                  <option key={y} value={y}>{y}</option>
-                ))}
-              </select>
+              <div className={styles.select_wrap}>
+                <select
+                  className={`${styles.select_native} ${hasError('passport_expiry') ? styles.input_error : ''}`}
+                  data-field="passport_expiry_d"
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) e.target.classList.add(styles.select_has_value); clearError('passport_expiry') }}
+                >
+                  <option value="" disabled>일</option>
+                  {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                    <option key={d} value={String(d).padStart(2, '0')}>{d}일</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.select_wrap}>
+                <select
+                  className={`${styles.select_native} ${hasError('passport_expiry') ? styles.input_error : ''}`}
+                  data-field="passport_expiry_m"
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) e.target.classList.add(styles.select_has_value); clearError('passport_expiry') }}
+                >
+                  <option value="" disabled>월</option>
+                  {['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'].map((name, i) => (
+                    <option key={name} value={String(i + 1).padStart(2, '0')}>{name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.select_wrap}>
+                <select
+                  className={`${styles.select_native} ${hasError('passport_expiry') ? styles.input_error : ''}`}
+                  data-field="passport_expiry_y"
+                  defaultValue=""
+                  onChange={(e) => { if (e.target.value) e.target.classList.add(styles.select_has_value); clearError('passport_expiry') }}
+                >
+                  <option value="" disabled>년도</option>
+                  {Array.from({ length: 21 }, (_, i) => new Date().getFullYear() + i).map(y => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             {hasError('passport_expiry') && <p className={styles.error_msg}>여권 만료일을 선택해주세요.</p>}
           </div>
@@ -1243,6 +1336,7 @@ function ApplyPageInner() {
           ref={el => { sectionRefs.current['guardian'] = el }}
         >
           <h2 className={styles.section_title}>보호자 정보를 알려주세요.</h2>
+          <hr className={styles.section_title_divider} />
 
           <div className={styles.field}>
             <label className={styles.label}>보호자 이름 <span className={styles.required}>*</span></label>
@@ -1316,6 +1410,7 @@ function ApplyPageInner() {
           ref={el => { sectionRefs.current['homestay'] = el }}
         >
           <h2 className={styles.section_title}>딱 맞는 매칭을 위한 홈스테이 관련 정보를 알려주세요.</h2>
+          <hr className={styles.section_title_divider} />
 
           <div className={styles.field}>
             <label className={styles.label}>영어 수준 <span className={styles.required}>*</span></label>
@@ -1430,6 +1525,7 @@ function ApplyPageInner() {
           ref={el => { sectionRefs.current['agree'] = el }}
         >
           <h2 className={styles.section_title}>마지막으로 동의를 진행해주세요!</h2>
+          <hr className={styles.section_title_divider} />
 
       
 
