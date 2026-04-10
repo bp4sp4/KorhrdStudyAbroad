@@ -14,10 +14,10 @@
 .hero_title {
   color: var(--Atomic-Common-White, #FFF);
   font-family: Pretendard;
-  font-size: 64px;
+  font-size: 52px;
   font-style: normal;
   font-weight: 700;
-  line-height: 89.6px;
+  line-height: 120%;
   margin: 0;
 }
 
