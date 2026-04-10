@@ -58,7 +58,7 @@
   z-index: 2;
   color: #FFF;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 500;
   line-height: 28.8px;
@@ -192,19 +192,19 @@
 .process_title {
   color: var(--Atomic-Common-White, #FFF);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
-  line-height: 43.2px;
+  line-height: 120%;
 }
 
 .process_subtitle {
   color: var(--Atomic-Common-White, #FFF);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 500;
-  line-height: 28.8px;
+  line-height: 24px;
 }
 
 .process_steps {
@@ -624,18 +624,18 @@ aspect-ratio: 1/1;
 .program_title {
   color: #010101;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  line-height: 43.2px;
+  line-height: 120%;
 }
 
 .program_subtitle {
-  color: var(--Atomic-Mono-900, #010101);
+  color: var(--Atomic-Mono-900, #1D1D1D);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 500;
-  line-height: 28.8px;
+  line-height: 24px;
 }
 
 .program_subtitle_mobile {
@@ -804,18 +804,18 @@ aspect-ratio: 1/1;
 .reason_title {
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  line-height: 43.2px;
+  line-height: 130%;
 }
 
 .reason_subtitle {
-  color: var(--Atomic-Mono-900, #010101);
+  color: var(--Atomic-Mono-900, #1D1D1D);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 500;
-  line-height: 28.8px;
+  line-height: 24px;
 }
 
 .reason_cards {
@@ -1026,10 +1026,10 @@ aspect-ratio: 1/1;
 .cta_title {
   color: #FFF;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 28px;
   font-style: normal;
-  font-weight: 700;
-  line-height: 43.2px;
+  font-weight: 500;
+  line-height: 33.6px;
   text-align: center;
 }
 
@@ -1047,10 +1047,10 @@ aspect-ratio: 1/1;
   background: var(--Atomic-Mono-50, #FAFAFA);
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 700;
-  line-height: 43.2px;
+  line-height: 28.8px;
   border: none;
   cursor: pointer;
   transition: opacity 0.15s;
