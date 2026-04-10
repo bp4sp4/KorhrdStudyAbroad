@@ -305,6 +305,25 @@ line-height: 21.6px; /* 120% */
   text-decoration: none;
 }
 
+/* ── 태블릿 (1024px ~ 1399px) ── */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .header {
+    padding: var(--unit-6, 20px) 60px;
+    background: var(--Atomic-Common-White, #FFF);
+    backdrop-filter: blur(5px);
+  }
+
+  .inner {
+    max-width: 100%;
+  }
+
+  .logo {
+    width: 200px;
+    height: 46px;
+    aspect-ratio: 100 / 23;
+  }
+}
+
 /* ── 1023px 이하 (모바일/태블릿) ── */
 @media (max-width: 1023px) {
   .header {

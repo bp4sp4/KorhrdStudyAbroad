@@ -41,6 +41,10 @@ html, body {
 }
 
 body {
+  overflow-x: clip;
+}
+
+body {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #171717;
   background: #ffffff;

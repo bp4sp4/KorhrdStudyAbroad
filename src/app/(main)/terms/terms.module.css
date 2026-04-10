@@ -39,3 +39,25 @@
   text-align: right;
   margin-top: 8px;
 }
+
+@media (max-width: 1023px) {
+  .doc_title {
+    font-size: 18px;
+    margin: 0 0 20px;
+  }
+  .section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+  .section_title {
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+  .section_content {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .effective_date {
+    font-size: 12px;
+  }
+}

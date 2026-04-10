@@ -49,10 +49,10 @@ export default function Home() {
           preload="auto"
         />
         <p className={styles.hero_title}>
-          잘 보내는 것보다,<br />잘 적응하는 유학이 중요합니다
+          잘 보내는 것보다,<br />잘 적응하는 유학이<br className={styles.hero_title_br_mobile}/> 중요합니다
         </p>
         <p className={styles.hero_subtitle}>
-          아이 성향에 맞는 프로그램부터<br />현지 생활 적응까지 함께 관리합니다
+          아이 성향에 맞는 프로그램부터<br className={styles.hero_title_br_mobile}/> 현지 생활 적응까지 함께 관리합니다
         </p>
         <HeroConsultButton />
       </section>
@@ -82,8 +82,8 @@ export default function Home() {
         <div className={styles.reason_cards}>
           {REASONS.map((item) => (
             <div key={item.id} className={styles.reason_card}>
-              <p className={styles.reason_card_title}>{item.title}</p>
               <img src={item.img} alt={item.title} className={styles.reason_card_img} />
+              <p className={styles.reason_card_title}>{item.title}</p>
               <p className={styles.reason_card_desc}>{item.desc}</p>
             </div>
           ))}

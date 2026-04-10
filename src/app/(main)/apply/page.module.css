@@ -49,7 +49,7 @@
   align-self: stretch;
   color: #010101;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 26px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: 31.2px;
@@ -161,6 +161,14 @@ line-height: 31.2px; /* 120% */
   font-style: normal;
   font-weight: 700;
   line-height: 31.2px;
+}
+
+.section_title_divider {
+  width: 100%;
+  height: 1px;
+  border: none;
+  background: #F2F2F2;
+  margin: 0;
 }
 
 .consult_btn {
@@ -692,9 +700,56 @@ line-height: 31.2px; /* 120% */
   gap: 8px;
 }
 
-.date_select_group > select {
+/* ── 커스텀 스타일 native select ── */
+.select_wrap {
+  position: relative;
   flex: 1;
   min-width: 0;
+}
+
+.select_wrap::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M14.3578 4.46454C14.1703 4.27707 13.916 4.17175 13.6508 4.17175C13.3857 4.17175 13.1314 4.27707 12.9438 4.46454L7.99383 9.41454L3.04383 4.46454C2.85523 4.28238 2.60263 4.18159 2.34043 4.18386C2.07823 4.18614 1.82742 4.29131 1.64201 4.47672C1.45661 4.66213 1.35144 4.91294 1.34916 5.17514C1.34688 5.43733 1.44767 5.68994 1.62983 5.87854L7.28683 11.5355C7.47436 11.723 7.72867 11.8283 7.99383 11.8283C8.259 11.8283 8.5133 11.723 8.70083 11.5355L14.3578 5.87854C14.5453 5.69101 14.6506 5.4367 14.6506 5.17154C14.6506 4.90638 14.5453 4.65207 14.3578 4.46454Z' fill='%23D0D0D0'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.select_native {
+  width: 100%;
+  padding: 12px;
+  padding-right: 36px;
+  border-radius: 6px;
+  border: 1px solid #D0D0D0;
+  background: #fff;
+  font-family: Pretendard, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+  color: #B2B2B2;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.select_native.select_has_value {
+  color: #010101;
+}
+
+.select_native:focus {
+  border-color: #0051FF;
+}
+
+.select_native.input_error {
+  border-color: #FF3B30 !important;
 }
 
 .bank_info_box {
@@ -960,28 +1015,124 @@ line-height: 31.2px; /* 120% */
 }
 
 /* ── 1399px 이하 ── */
-@media (max-width: 1399px) {
+/* ── 태블릿 (1024px ~ 1399px) ── */
+@media (min-width: 1024px) and (max-width: 1399px) {
   .container {
-    flex-direction: column;
-    padding: 40px 24px;
+    display: flex;
+    width: 100%;
+    padding: 100px 60px;
+    align-items: flex-start;
+    gap: 24px;
+    background: var(--Atomic-Mono-50, #FAFAFA);
+  }
+
+  .sidebar_col {
+    flex: 0 0 312px;
+    width: 312px;
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
   }
 
   .sidebar {
+    display: flex;
     width: 100%;
+    padding: 32px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border-radius: 12px;
+    background: var(--Atomic-Common-White, #FFF);
     position: static;
+    box-sizing: border-box;
+  }
+
+  .content {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .sidebar_title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 31.2px;
   }
 
   .sidebar_nav {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .nav_item {
-    width: auto;
+    width: 100%;
+  }
+
+  .nav_item_disabled {
+    width: 100%;
+  }
+
+  .banner {
+    display: flex;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: var(--Atomic-Blue-300, #4C85FF);
+    color: var(--Atomic-Common-White, #FFF);
+    font-family: Pretendard;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.8px;
+  }
+
+  .section {
+    padding: 48px 32px;
+    gap: 40px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: var(--Atomic-Common-White, #FFF);
+  }
+
+  .divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    border: none;
+    background: #E4E4E4;
+    margin: 0;
+  }
+
+  .section_title_row {
+    align-items: flex-end;
+    gap: 14px;
+  }
+
+  .section_title {
+    align-self: flex-start;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    white-space: nowrap;
+  }
+
+  .agree_text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 25.2px;
+  }
+
+    .consult_btn {
+    align-self: flex-end;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 6px;
   }
 }
 
-/* ── 1023px 이하 (모바일/태블릿) ── */
+/* ── 1023px 이하 (모바일) ── */
 @media (max-width: 1023px) {
   .container {
     padding: 30px 24px;
@@ -1004,6 +1155,21 @@ line-height: 31.2px; /* 120% */
     max-width: 100%;
   }
 
+  .sidebar_col {
+    position: static;
+    width: 100%;
+    flex-shrink: 1;
+  }
+
+  .sidebar_nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .nav_item {
+    width: auto;
+  }
+
   .sidebar {
     display: none;
   }
@@ -1024,7 +1190,7 @@ color: var(--Atomic-Common-White, #FFF);
 
 /* Title 3/Bold */
 font-family: Pretendard;
-font-size: 20px;
+font-size: 16px;
 font-style: normal;
 font-weight: 700;
 line-height: 24px; /* 120% */
@@ -1036,7 +1202,7 @@ line-height: 24px; /* 120% */
   }
 
   .section_title_row {
-    flex-direction: column;
+    
     align-items: flex-start;
     gap: 20px;
     border: none;
@@ -1151,44 +1317,6 @@ line-height: 19.6px; /* 140% */
   }
 }
 
-/* ── 480px 이하 (소형 모바일 ~375px) ── */
-@media (max-width: 480px) {
-  .container {
-    padding: 20px 16px;
-    gap: 16px;
-  }
-
-  .section {
-    padding: 24px 16px;
-    gap: 32px;
-  }
-
-  .banner {
-    padding: 24px;
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .section_title {
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .price_value {
-    font-size: 22px;
-    line-height: 26px;
-  }
-
-  .price_program,
-  .price_note {
-    font-size: 16px;
-    line-height: 20px;
-  }
-
-  .btn_pay {
-    width: 100%;
-  }
-}
 
 /* ── 입금 계좌 안내 카드 ── */
 .account_card {
@@ -1258,7 +1386,7 @@ line-height: 19.6px; /* 140% */
   margin: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .account_card_desktop {
     display: none;
   }
