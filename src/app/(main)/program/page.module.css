@@ -63,10 +63,10 @@
 .info_title {
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard;
-  font-size: 36px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
-  line-height: 50.4px;
+  line-height: 120%;
   margin: 0;
 }
 
@@ -179,10 +179,10 @@
 .reason_title {
   color: var(--Atomic-Common-White, #FFF);
   font-family: Pretendard;
-  font-size: 36px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
-  line-height: 50.4px;
+  line-height: 130%;
   margin: 0;
   flex-shrink: 0;
   white-space: nowrap;
@@ -271,9 +271,9 @@ line-height: 25.2px; /* 140% */
   background: var(--Atomic-Mono-50, #FAFAFA);
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 700;
-  line-height: 43.2px;
+  line-height: 28.8px;
   border: none;
   cursor: pointer;
   transition: opacity 0.15s;
@@ -294,10 +294,10 @@ line-height: 25.2px; /* 140% */
 .cta_title {
   color: #FFF;
   font-family: Pretendard;
-  font-size: 36px;
+  font-size: 28px;
   font-style: normal;
-  font-weight: 700;
-  line-height: 43.2px;
+  font-weight: 500;
+  line-height: 33.6px;
   text-align: center;
   margin: 0;
 }

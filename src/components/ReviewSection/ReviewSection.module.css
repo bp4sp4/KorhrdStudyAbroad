@@ -36,9 +36,9 @@
 .review_title {
   color: #fff;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  line-height: 50.4px;
+  line-height: 130%;
   flex-shrink: 0;
   width: 424px;
   position: sticky;
