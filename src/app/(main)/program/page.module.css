@@ -454,9 +454,9 @@ line-height: 25.2px; /* 140% */
   }
 
   .table_grid {
-  max-width: 926px;
-    overflow: scroll;
-    grid-template-columns: 95px 85px 85px 160px 120px 175px 300px;
+  width: 926px;
+    
+    grid-template-columns: 95px 85px 85px 160px 120px 175px 200px;
   }
 
   .td{
