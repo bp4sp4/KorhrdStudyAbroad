@@ -341,7 +341,7 @@ line-height: 21.6px; /* 120% */
 
   .logo {
     width: 120px;
-    height: 28px;
+    /* height: 48px; */
     aspect-ratio: 30 / 7;
   }
 
