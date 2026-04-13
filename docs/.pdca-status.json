@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-13T01:18:42.374Z",
+  "lastUpdated": "2026-04-13T03:44:08.031Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -185,7 +185,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T06:04:25.249Z",
-        "lastUpdated": "2026-04-10T02:29:25.989Z"
+        "lastUpdated": "2026-04-13T03:44:08.030Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/page.tsx"
     },
@@ -354,7 +354,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:16:32.970Z",
-        "lastUpdated": "2026-04-08T05:05:16.305Z"
+        "lastUpdated": "2026-04-13T03:26:55.786Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/data/programs.ts"
     },
@@ -367,7 +367,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:16:40.610Z",
-        "lastUpdated": "2026-03-30T09:17:17.868Z"
+        "lastUpdated": "2026-04-13T03:14:44.807Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ProgramSwiper/ProgramSwiper.tsx"
     },
@@ -380,7 +380,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T03:56:43.335Z",
-        "lastUpdated": "2026-04-09T08:41:29.898Z"
+        "lastUpdated": "2026-04-13T03:29:12.134Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/ReviewSection/ReviewSection.tsx"
     },
@@ -458,7 +458,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-31T01:59:02.501Z",
-        "lastUpdated": "2026-04-09T08:53:26.638Z"
+        "lastUpdated": "2026-04-13T03:41:19.314Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/program/page.tsx"
     },
@@ -588,7 +588,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-13T01:18:42.374Z"
+    "lastActivity": "2026-04-13T03:44:08.031Z"
   },
   "history": [
     {
@@ -4998,6 +4998,90 @@
     {
       "timestamp": "2026-04-13T01:18:42.374Z",
       "feature": "FlagIcon",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:13:40.791Z",
+      "feature": "data",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:14:41.390Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:14:44.807Z",
+      "feature": "ProgramSwiper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:26:55.786Z",
+      "feature": "data",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:29:06.526Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:29:12.134Z",
+      "feature": "ReviewSection",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:41:02.742Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:41:06.152Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:41:09.483Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:41:12.505Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:41:16.281Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:41:19.314Z",
+      "feature": "program",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:42:32.007Z",
+      "feature": "(main)",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-13T03:44:08.030Z",
+      "feature": "(main)",
       "phase": "do",
       "action": "updated"
     }

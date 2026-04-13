@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import styles from './page.module.css'
 import HeroConsultButton from '../HeroConsultButton'
 
@@ -29,7 +30,7 @@ export default function ProgramPage() {
             <div className={`${styles.th} ${styles.th_last}`}>프로그램 구성</div>
 
             {/* ── Row 1: 필리핀 ── */}
-            <div className={styles.td}>🇵🇭 필리핀</div>
+            <div className={styles.td}><Image src="/main/program/philippines 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />필리핀</div>
             <div className={styles.td}>세부</div>
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}>
@@ -45,7 +46,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>1:1 수업 집중 + 소그룹 수업 + 아시아 학생 연합캠프 + 액티비티</div>
 
             {/* ── Row 2: 미국 ── */}
-            <div className={styles.td}>🇺🇸 미국</div>
+            <div className={styles.td}><Image src="/main/program/united-states 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />미국</div>
             <div className={styles.td}>뉴저지</div>
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.12~26.07.30(3주)</span></div>
@@ -54,7 +55,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>명문 공립학교 캠프 프로그램</div>
 
             {/* ── Row 3: 캐나다 ── */}
-            <div className={styles.td}>🇨🇦 캐나다</div>
+            <div className={styles.td}><Image src="/main/program/canada 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />캐나다</div>
             <div className={styles.td}>밴쿠버-써리</div>
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.19~26.08.13(4주)</span></div>
@@ -63,7 +64,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>명문 사립학교 캠프 + 현지학생과 버디 + 캐나다 로키 여행 + 홈스테이</div>
 
             {/* ── Row 4: 영국 ── */}
-            <div className={styles.td}>🇬🇧 영국</div>
+            <div className={styles.td}><Image src="/main/program/united-kingdom 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />영국</div>
             <div className={styles.td}>영국</div>
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.17~26.08.15(4주)</span></div>
@@ -72,7 +73,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>영국 보딩스쿨 캠프 + 유럽여행</div>
 
             {/* ── Row 5: 뉴질랜드 오클랜드 ── */}
-            <div className={styles.td}>🇳🇿 뉴질랜드</div>
+            <div className={styles.td}><Image src="/main/program/new-zealand 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />뉴질랜드</div>
             <div className={styles.td}>오클랜드</div>
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.17~26.08.15(4주)</span></div>
@@ -81,7 +82,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>뉴질랜드 공립 스쿨링 프로그램</div>
 
             {/* ── Row 6: 뉴질랜드 해밀턴 4주 ── */}
-            <div className={styles.td}>🇳🇿 뉴질랜드</div>
+            <div className={styles.td}><Image src="/main/program/new-zealand 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />뉴질랜드</div>
             <div className={styles.td}>해밀턴</div>
             <div className={styles.td}>🐥 나홀로<br />👫 부모동반</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.19~26.08.15(4주)</span></div>
@@ -90,7 +91,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>현지 공립학교 수업 참여 + 엄선된 현지인 가정 홈스테이 + 방과후 활동들 + 주말문화탐방여행</div>
 
             {/* ── Row 7: 뉴질랜드 해밀턴 3주 ── */}
-            <div className={styles.td}>🇳🇿 뉴질랜드</div>
+            <div className={styles.td}><Image src="/main/program/new-zealand 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />뉴질랜드</div>
             <div className={styles.td}>해밀턴</div>
             <div className={styles.td}>🐥나홀로<br />👫 부모동반</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.26~26.08.15(3주)</span></div>
@@ -99,7 +100,7 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>현지 공립학교 수업 참여 + 엄선된 현지인 가정 홈스테이 + 방과후 활동들 + 주말문화탐방여행</div>
 
             {/* ── Row 8: 뉴질랜드 해밀턴 10주 ── */}
-            <div className={`${styles.td} ${styles.td_no_bottom}`}>🇳🇿 뉴질랜드</div>
+            <div className={`${styles.td} ${styles.td_no_bottom}`}><Image src="/main/program/new-zealand 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />뉴질랜드</div>
             <div className={`${styles.td} ${styles.td_no_bottom}`}>해밀턴</div>
             <div className={`${styles.td} ${styles.td_no_bottom}`}>나홀로<br />👫 부모동반</div>
             <div className={`${styles.td} ${styles.td_schedule} ${styles.td_no_bottom}`}><span>26.07.19~26.09.26(10주)</span></div>
