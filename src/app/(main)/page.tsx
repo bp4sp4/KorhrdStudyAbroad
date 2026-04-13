@@ -61,13 +61,12 @@ export default function Home() {
       <ProcessSection />
 
 
-      {/* ── 한평생만의 전문 유학 프로그램 ── */}
+      {/* ── 전문 유학 프로그램 ── */}
       <section className={styles.program}>
         <div className={styles.program_heading}>
           <h2 className={styles.program_title}>전문 유학 프로그램</h2>
           <p className={styles.program_subtitle}>
-            <span className={styles.program_subtitle_desktop}>검증된 명문학교부터 신나는 액티비티까지</span>
-            <span className={styles.program_subtitle_mobile}>첫 안내부터 현지 도착까지 안전하게</span>
+            <span className={styles.program_subtitle}>검증된 명문학교부터 신나는 액티비티까지</span>
           </p>
         </div>
         <ProgramSwiper programs={PROGRAMS} />
