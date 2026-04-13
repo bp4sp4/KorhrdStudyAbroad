@@ -455,8 +455,7 @@ line-height: 25.2px; /* 140% */
 
   .table_grid {
   width: 926px;
-    
-    grid-template-columns: 95px 85px 85px 160px 120px 175px 200px;
+    grid-template-columns: 95px 85px 85px 160px 120px 175px auto;
   }
 
   .td{
