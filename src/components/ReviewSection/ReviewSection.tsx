@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import styles from './ReviewSection.module.css'
 
+
 const FLAG_MAP: Record<string, string> = {
   '🇳🇿': '/main/program/new-zealand 1.png',
   '🇵🇭': '/main/program/philippines 1.png',
@@ -47,25 +48,6 @@ export default function ReviewSection() {
   const [gradientVisible, setGradientVisible] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
-  const makeColPauseHandlers = () => {
-    let timer: ReturnType<typeof setTimeout> | null = null
-    const pause = (e: React.PointerEvent<HTMLDivElement>) => {
-      const el = e.currentTarget
-      if (timer) clearTimeout(timer)
-      el.classList.add(styles.review_col_paused)
-    }
-    const resume = (e: React.PointerEvent<HTMLDivElement>) => {
-      const el = e.currentTarget
-      if (timer) clearTimeout(timer)
-      timer = setTimeout(() => {
-        el.classList.remove(styles.review_col_paused)
-      }, 2000)
-    }
-    return { onPointerDown: pause, onPointerUp: resume, onPointerLeave: resume, onPointerCancel: resume }
-  }
-  const leftHandlers = makeColPauseHandlers()
-  const rightHandlers = makeColPauseHandlers()
-
   useEffect(() => {
     const handleScroll = () => {
       const section = sectionRef.current
@@ -102,7 +84,7 @@ export default function ReviewSection() {
 
       <div className={styles.review_cols}>
         {/* 왼쪽 열 */}
-        <div className={styles.review_col} {...leftHandlers}>
+        <div className={styles.review_col}>
          <div className={styles.review_track}>
           {[...LEFT, ...LEFT].map((r, idx) => (
             <div key={`l-${r.id}-${idx}`} className={`${styles.review_card} ${idx >= LEFT.length ? styles.review_card_clone : ''}`}>
@@ -132,7 +114,7 @@ export default function ReviewSection() {
         </div>
 
         {/* 오른쪽 열 — 160px 아래 offset */}
-        <div className={`${styles.review_col} ${styles.review_col_right}`} {...rightHandlers}>
+        <div className={`${styles.review_col} ${styles.review_col_right}`}>
          <div className={styles.review_track}>
           {[...RIGHT, ...RIGHT].map((r, idx) => (
             <div key={`r-${r.id}-${idx}`} className={`${styles.review_card} ${idx >= RIGHT.length ? styles.review_card_clone : ''}`}>
