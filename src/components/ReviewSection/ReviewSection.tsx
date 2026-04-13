@@ -4,6 +4,14 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import styles from './ReviewSection.module.css'
 
+const FLAG_MAP: Record<string, string> = {
+  '🇳🇿': '/main/program/new-zealand 1.png',
+  '🇵🇭': '/main/program/philippines 1.png',
+  '🇬🇧': '/main/program/united-kingdom 1.png',
+  '🇨🇦': '/main/program/canada 1.png',
+  '🇺🇸': '/main/program/united-states 1.png',
+}
+
 const REVIEWS = [
   { id: 1,  image: '/main/review/review_01.png', text: '통화했을때 이제 남은 시간이 얼마 없어서 매일 재밌게 즐겁게 보내는게 목표라고 하더라고요. 그 말을 듣는데 어찌나 기특하던지.. 캠프를 통해서 정서적으로 훌쩍 자란 것 같단 생각이 많이 들었습니다. ', author: '송*연', tags: ['🇳🇿 뉴질랜드 10주', '나홀로'] },
   { id: 2,  image: '/main/review/review_02.jpg', text: '아이들이 얼마나 즐겁고 편하게 지내는지, 사진 하나하나 밝고 개구진 표정들이 참 따뜻하고 감사하게 느껴집니다. 아이들에게는 오랫동안 기억에 남을 것 같아요.', author: '박*진', tags: ['🇳🇿 뉴질랜드 3주', '부모동반'] },
@@ -11,8 +19,8 @@ const REVIEWS = [
   { id: 4,  image: '/main/review/review_04.jpg', text: '뉴질랜드 어학캠프 보내고 나서 아이가 좀 달라졌어요… 처음엔 영어 때문에 힘들어했는데 점점 적응하더니 자신감이 붙더라고요. 현지 친구들이랑 어울리면서 영어회화도 많이 늘었어요^^', author: '오*영', tags: ['🇳🇿 뉴질랜드 4주', '나홀로'] },
   { id: 5,  image: '/main/review/review_05.jpg', text: '처음 접하는 낯선 환경 속에서 잘 적응할 수 있을지 걱정이 되었어요. 새로운 친구들과 어울리며 다양한 경험을 하고, 영어에 대한 자신감도 키워오는 모습을 보니 정말 뿌듯하네요ㅎㅎ', author: '강*은', tags: ['🇵🇭 필리핀 4주', '나홀로'] },
   { id: 6,  image: '/main/review/review_06.jpg', text: '필리핀 어학캠프는 관리형이라 생활이나 공부 둘 다 잡아줘서 마음이 편했어요… 영어회화 실력도 눈에 띄게 늘었고요. 가성비 생각하면 만족도 높은 영어캠프였던 것 같아요~', author: '지*훈', tags: ['🇵🇭 필리핀 4주', '나홀로'] },
-  { id: 7,  image: '/main/review/review_07.jpg', text: '좀 차분한 분위기라 보내기 괜찮았어요~ 수업이랑 문화체험이 같이 있어서 아이도 지루해하지 않았다고 하네요. 영어에 흥미 붙이기에는 좋은 환경인 것 같아요~', author: '신*라', tags: ['🇳🇿 영국 4주', '나홀로'] },
-  { id: 8,  image: '/main/review/review_08.jpg', text: '토론이나 발표 수업이 많아서 좀 부담스러울까 걱정했는데요… 그만큼 스피킹 실력은 확실히 늘었어요. 런던 같은 곳도 가보고 문화체험까지 해서 기억에 오래 남을 것 같아요 ㅎㅎ', author: '김*현', tags: ['🇳🇿 영국 4주', '나홀로'] },
+  { id: 7,  image: '/main/review/review_07.jpg', text: '좀 차분한 분위기라 보내기 괜찮았어요~ 수업이랑 문화체험이 같이 있어서 아이도 지루해하지 않았다고 하네요. 영어에 흥미 붙이기에는 좋은 환경인 것 같아요~', author: '신*라', tags: ['🇬🇧 영국 4주', '나홀로'] },
+  { id: 8,  image: '/main/review/review_08.jpg', text: '토론이나 발표 수업이 많아서 좀 부담스러울까 걱정했는데요… 그만큼 스피킹 실력은 확실히 늘었어요. 런던 같은 곳도 가보고 문화체험까지 해서 기억에 오래 남을 것 같아요 ㅎㅎ', author: '김*현', tags: ['🇬🇧 영국 4주', '나홀로'] },
   { id: 9,  image: '/main/review/review_09.jpg', text: '초등학생 영어캠프로 캐나다 선택했는데 잘한 것 같아요~ 자연환경도 좋고 아이가 편안하게 지냈다고 하더라고요. 홈스테이 가족도 잘 챙겨주셔서 영어에 대한 거부감이 많이 줄었어요^^', author: '이*정', tags: ['🇨🇦 캐나다 4주', '나홀로'] },
   { id: 10, image: '/main/review/review_010.jpg', text: '전반적으로 분위기가 안정적이라 마음 놓고 보낼 수 있었어요… 수업이랑 액티비티가 잘 섞여 있어서 영어실력향상에도 도움이 된 것 같고요. 무엇보다 아이가 적극적으로 변한 게 제일 만족스럽네요!', author: '최*영', tags: ['🇨🇦 캐나다 4주', '나홀로'] },
   { id: 11, image: '/main/review/review_011.jpg', text: '고민하다가 보내봤는데… 솔직히 처음엔 걱정 많았거든요. 근데 아이가 현지 학교 수업이랑 액티비티 하면서 영어로 말하는 게 자연스러워졌다고 해서 놀랐어요 ㅎㅎ 여름방학 영어캠프로 확실히 효과는 있었던 것 같아요.', author: '김*은', tags: ['🇺🇸 미국 3주', '나홀로'] },
@@ -106,9 +114,17 @@ export default function ReviewSection() {
                 <p className={styles.review_author}>{r.author}</p>
               </div>
               <div className={styles.review_tags}>
-                {r.tags.map((tag) => (
-                  <span key={tag} className={styles.review_tag}>{tag}</span>
-                ))}
+                {r.tags.map((tag) => {
+                  const emoji = Object.keys(FLAG_MAP).find(e => tag.startsWith(e))
+                  const flagSrc = emoji ? FLAG_MAP[emoji] : null
+                  const label = emoji ? tag.slice(emoji.length).trimStart() : tag
+                  return (
+                    <span key={tag} className={styles.review_tag}>
+                      {flagSrc && <Image src={flagSrc} alt="" width={18} height={18} style={{ objectFit: 'contain' }} />}
+                      {label}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           ))}
@@ -128,9 +144,17 @@ export default function ReviewSection() {
                 <p className={styles.review_author}>{r.author}</p>
               </div>
               <div className={styles.review_tags}>
-                {r.tags.map((tag) => (
-                  <span key={tag} className={styles.review_tag}>{tag}</span>
-                ))}
+                {r.tags.map((tag) => {
+                  const emoji = Object.keys(FLAG_MAP).find(e => tag.startsWith(e))
+                  const flagSrc = emoji ? FLAG_MAP[emoji] : null
+                  const label = emoji ? tag.slice(emoji.length).trimStart() : tag
+                  return (
+                    <span key={tag} className={styles.review_tag}>
+                      {flagSrc && <Image src={flagSrc} alt="" width={18} height={18} style={{ objectFit: 'contain' }} />}
+                      {label}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           ))}

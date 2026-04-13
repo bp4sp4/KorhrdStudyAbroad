@@ -40,8 +40,8 @@ export default function Home() {
       <section className={styles.hero}>
         <video
           className={styles.hero_video}
-          src="https://pub-953bd72af6024bfdb14d041984863dfb.r2.dev/freepik_video-upscale_2738133500_fast.mp4"
-          poster="https://pub-a1f3c3db5a6946daa21b9a8dc8f05251.r2.dev/hero_poster.jpg"
+          src="https://pub-953bd72af6024bfdb14d041984863dfb.r2.dev/youhak_hero_banner.mp4"
+          poster="https://pub-a1f3c3db5a6946daa21b9a8dc8f05251.r2.dev/youhak_hero_banner_thumb.jpg"
           autoPlay
           muted
           loop
