@@ -187,6 +187,7 @@
 
   .review_card {
     width: 100%;
+    padding: 24px;
   }
 
   .review_col_right {
@@ -321,12 +322,14 @@
 
   .review_text {
 color: var(--Atomic-Common-White, #FFF);
+text-align: justify;
 
-/* Body 1/Reading - Bold */
+
+/* Body 2/Reading - Medium */
 font-family: Pretendard;
 font-size: 16px;
 font-style: normal;
-font-weight: 700;
+font-weight: 500;
 line-height: 22.4px; /* 140% */
   }
 
