@@ -23,7 +23,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 57, 178, 0.80) 0%, rgba(0, 57, 178, 0.00) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 57, 178, 0.00) 100%);
 }
 
 .card_inner {

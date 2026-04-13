@@ -63,10 +63,10 @@
 .info_title {
   color: var(--Atomic-Mono-900, #010101);
   font-family: Pretendard;
-  font-size: 32px;
+  font-size: 26px;
   font-style: normal;
   font-weight: 700;
-  line-height: 120%;
+  line-height: 28.8px;
   margin: 0;
 }
 
@@ -402,6 +402,7 @@ line-height: 25.2px; /* 140% */
   }
 }
 
+
 @media (max-width: 1023px) {
   .hero {
     display: flex;
@@ -420,10 +421,10 @@ line-height: 25.2px; /* 140% */
   .hero_title {
     color: #FFF;
     font-family: Pretendard, sans-serif;
-    font-size: 36px;
+    font-size: 28px;
     font-style: normal;
     font-weight: 700;
-    line-height: 43.2px;
+    line-height: 33.6px;
   }
 
   .info_section {
@@ -492,10 +493,10 @@ line-height: 25.2px; /* 140% */
   .reason_title {
     color: #FFF;
     font-family: Pretendard, sans-serif;
-    font-size: 28px;
+    font-size: 26px;
     font-style: normal;
     font-weight: 700;
-    line-height: 33.6px;
+    line-height: 28.8px;
   }
 
   .reason_cards {
@@ -564,7 +565,7 @@ line-height: 25.2px; /* 140% */
     color: #FFF;
     text-align: center;
     font-family: Pretendard, sans-serif;
-    font-size: 24px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: 28.8px;
