@@ -236,20 +236,15 @@ function ApplyPageInner() {
 
   // localStorage 이벤트로 결제완료 수신 (팝업 → 부모창, COOP 우회)
   useEffect(() => {
-    const handleStorage = async (e: StorageEvent) => {
+    const handleStorage = (e: StorageEvent) => {
       if (e.key === 'payment_complete') {
         localStorage.removeItem('payment_complete')
         setShowPaymentDoneModal(true)
       }
-      // 모바일: 영수증 팝업 닫히면 자동으로 모달 닫고 폼으로 이동
+      // 모바일: 영수증 팝업 닫힌 후에 결제 완료 모달 표시
       if (e.key === 'payment_proceed') {
         localStorage.removeItem('payment_proceed')
-        setShowPaymentDoneModal(false)
-        const paid = await checkAnyCompletedPayment()
-        if (paid) {
-          setStep('form')
-          setProgramValue(paid.program)
-        }
+        setShowPaymentDoneModal(true)
       }
     }
     window.addEventListener('storage', handleStorage)
@@ -258,18 +253,13 @@ function ApplyPageInner() {
 
   // postMessage fallback
   useEffect(() => {
-    const handleMessage = async (e: MessageEvent) => {
+    const handleMessage = (e: MessageEvent) => {
       if (e.data?.type === 'PAYMENT_COMPLETE') {
         setShowPaymentDoneModal(true)
       }
-      // 모바일: 영수증 팝업 닫히면 자동으로 모달 닫고 폼으로 이동
+      // 모바일: 영수증 팝업 닫힌 후에 결제 완료 모달 표시
       if (e.data?.type === 'PAYMENT_PROCEED') {
-        setShowPaymentDoneModal(false)
-        const paid = await checkAnyCompletedPayment()
-        if (paid) {
-          setStep('form')
-          setProgramValue(paid.program)
-        }
+        setShowPaymentDoneModal(true)
       }
     }
     window.addEventListener('message', handleMessage)
@@ -286,9 +276,12 @@ function ApplyPageInner() {
         if (json.completed) {
           clearInterval(interval)
           paymentCompletedRef.current = true
-          // 팝업이 없거나(모바일/팝업차단) 이미 닫혔으면 바로 모달
+          // 팝업이 없거나 이미 닫혔으면 모달 — 단, 모바일은 영수증 팝업 닫힐 때까지 대기
           if (!paymentPopupRef.current || paymentPopupRef.current.closed) {
-            setShowPaymentDoneModal(true)
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+            if (!isMobile) {
+              setShowPaymentDoneModal(true)
+            }
           }
         }
       } catch (e) {}
