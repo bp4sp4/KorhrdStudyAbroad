@@ -456,11 +456,16 @@ line-height: 25.2px; /* 140% */
   .table_grid {
   max-width: 926px;
     overflow: scroll;
-    grid-template-columns: 120px 105px 105px 220px 110px 175px 300px;
+    grid-template-columns: 95px 85px 85px 160px 120px 175px 300px;
   }
 
   .td{
     padding: 12px;
+    font-size : 12px;
+  }
+
+  .th {
+    font-size: 14px;
   }
 
   .table_grid .td:last-child,
