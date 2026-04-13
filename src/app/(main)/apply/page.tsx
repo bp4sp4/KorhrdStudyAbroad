@@ -236,10 +236,20 @@ function ApplyPageInner() {
 
   // localStorage 이벤트로 결제완료 수신 (팝업 → 부모창, COOP 우회)
   useEffect(() => {
-    const handleStorage = (e: StorageEvent) => {
+    const handleStorage = async (e: StorageEvent) => {
       if (e.key === 'payment_complete') {
         localStorage.removeItem('payment_complete')
         setShowPaymentDoneModal(true)
+      }
+      // 모바일: 영수증 팝업 닫히면 자동으로 모달 닫고 폼으로 이동
+      if (e.key === 'payment_proceed') {
+        localStorage.removeItem('payment_proceed')
+        setShowPaymentDoneModal(false)
+        const paid = await checkAnyCompletedPayment()
+        if (paid) {
+          setStep('form')
+          setProgramValue(paid.program)
+        }
       }
     }
     window.addEventListener('storage', handleStorage)
@@ -248,9 +258,18 @@ function ApplyPageInner() {
 
   // postMessage fallback
   useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
+    const handleMessage = async (e: MessageEvent) => {
       if (e.data?.type === 'PAYMENT_COMPLETE') {
         setShowPaymentDoneModal(true)
+      }
+      // 모바일: 영수증 팝업 닫히면 자동으로 모달 닫고 폼으로 이동
+      if (e.data?.type === 'PAYMENT_PROCEED') {
+        setShowPaymentDoneModal(false)
+        const paid = await checkAnyCompletedPayment()
+        if (paid) {
+          setStep('form')
+          setProgramValue(paid.program)
+        }
       }
     }
     window.addEventListener('message', handleMessage)
