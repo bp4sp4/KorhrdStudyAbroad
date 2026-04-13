@@ -12,10 +12,14 @@ const CLOSE_HTML = `<!DOCTYPE html>
   <body>
     <script>
       try { localStorage.setItem('payment_complete', Date.now().toString()) } catch(e) {}
+      try { localStorage.setItem('payment_proceed', Date.now().toString()) } catch(e) {}
       if (window.opener) {
         try { window.opener.postMessage({ type: 'PAYMENT_COMPLETE' }, '*') } catch(e) {}
+        try { window.opener.postMessage({ type: 'PAYMENT_PROCEED' }, '*') } catch(e) {}
       }
       window.close();
+      // 모바일: window.close()가 동작하지 않으면 /apply로 리다이렉트
+      setTimeout(function() { window.location.href = '/apply'; }, 600);
     </script>
     <p style="text-align:center;margin-top:40px;font-family:sans-serif;color:#666">결제가 완료되었습니다. 이 창을 닫아주세요.</p>
   </body>
