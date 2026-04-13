@@ -53,7 +53,7 @@ const NAV_ITEMS = [
 ]
 
 const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
-  philippines_cebu_solo: { amount: 4500000, display: '4,500,000원 (신청비 10만원 별도)' },
+  philippines_cebu_solo: { amount: 4500000, display: '4,500,000원' },
   usa_newjersey_solo: { amount: 9200000, display: '9,200,000원' },
   canada_vancouver_solo: { amount: 14400000, display: '14,400,000원' },
   uk_solo: { amount: 10650000, display: '10,650,000원' },

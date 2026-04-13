@@ -164,7 +164,7 @@ export default function ProgramPage() {
       <section className={styles.cta_section}>
         <div className={styles.cta_top}>
           <img src="/main/cta/white_logo.png" alt="한평생유학" className={styles.cta_logo} />
-          <p className={styles.cta_title}>아이가 잘 지내는 유학,<br className={styles.cta_title_br} /> 지금 경험해보세요.</p>
+          <p className={styles.cta_title}>아이가 잘 지내는 유학,<br className={styles.mobile_br} /> 지금 경험해보세요.</p>
         </div>
         <HeroConsultButton variant="cta" />
       </section>
