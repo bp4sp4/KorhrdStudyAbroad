@@ -317,8 +317,16 @@ function ApplyPageInner() {
       // 이미 결제 완료된 유저가 재방문 시 바로 폼으로 이동
       const paid = await checkAnyCompletedPayment()
       if (paid) {
-        setStep('form')
-        setProgramValue(paid.program)
+        // 모바일: 영수증 확인 후 리다이렉트로 돌아온 경우 모달 표시
+        const paymentProceed = localStorage.getItem('payment_proceed')
+        if (paymentProceed) {
+          localStorage.removeItem('payment_proceed')
+          setStep('payment')
+          setShowPaymentDoneModal(true)
+        } else {
+          setStep('form')
+          setProgramValue(paid.program)
+        }
       } else {
         setStep('payment')
       }
