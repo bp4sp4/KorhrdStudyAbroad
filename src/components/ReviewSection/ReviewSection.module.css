@@ -119,15 +119,16 @@
   color: #fff;
   font-family: Pretendard, -apple-system, sans-serif;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 25.2px;
+  text-align: justify;
 }
 
 .review_author {
   color: #fff;
   font-family: Pretendard, -apple-system, sans-serif;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
   line-height: 25.2px;
   text-align: right;
 }
@@ -147,7 +148,7 @@
   padding: 6px 12px;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border-radius: 999px;
   background: #E5EDFF;
   color: #0051FF;
