@@ -47,25 +47,29 @@ export async function GET(request: NextRequest) {
     }
 
     const naverUser = userData.response
-    const userEmail = naverUser.email
-
-    if (!userEmail) {
-      return NextResponse.redirect(`${origin}/login?error=naver_no_email`)
-    }
+    // 이메일 없는 계정은 네이버 고유 ID로 가상 이메일 생성
+    const userEmail = naverUser.email || `naver_${naverUser.id}@naver.user`
 
     const supabaseAdmin = createAdminClient()
 
-    // profiles 테이블로 이메일 조회 (listUsers 전체 스캔 대신)
+    // profiles 테이블로 이메일 조회
     const { data: existingProfile } = await supabaseAdmin
       .from('profiles')
       .select('id')
       .eq('email', userEmail)
       .single()
 
-    let userId: string
-
     if (existingProfile) {
-      userId = existingProfile.id
+      // 기존 유저 phone_number 메타데이터 최신화
+      const { data: existingUser } = await supabaseAdmin.auth.admin.getUserById(existingProfile.id)
+      if (existingUser?.user && !existingUser.user.user_metadata?.phone_number && naverUser.mobile) {
+        await supabaseAdmin.auth.admin.updateUserById(existingProfile.id, {
+          user_metadata: {
+            ...existingUser.user.user_metadata,
+            phone_number: naverUser.mobile,
+          },
+        })
+      }
     } else {
       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
         email: userEmail,
@@ -74,21 +78,25 @@ export async function GET(request: NextRequest) {
           full_name: naverUser.name || naverUser.nickname,
           avatar_url: naverUser.profile_image,
           provider: 'naver',
+          phone_number: naverUser.mobile || '',
         },
       })
 
-      if (createError || !newUser.user) {
-        throw new Error(`Failed to create user: ${createError?.message}`)
+      if (createError) {
+        // auth.users에 이미 있는 경우 → 이메일로 매직링크 생성 가능, 계속 진행
+        if (!createError.message?.includes('already been registered')) {
+          throw new Error(`Failed to create user: ${createError.message}`)
+        }
+      } else if (!newUser.user) {
+        throw new Error('User creation returned empty')
       }
-
-      userId = newUser.user.id
     }
 
     // Supabase 매직링크로 세션 생성
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
       email: userEmail,
-      options: { redirectTo: `${origin}/auth/callback` },
+      options: { redirectTo: `${origin}/naver-callback` },
     })
 
     if (linkError || !linkData.properties?.action_link) {

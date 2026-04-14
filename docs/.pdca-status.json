@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-14T05:52:53.232Z",
+  "lastUpdated": "2026-04-14T08:58:20.437Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -42,7 +42,12 @@
     "FloatingBanner",
     "layout",
     "scripts",
-    "FlagIcon"
+    "FlagIcon",
+    "kakao-complete",
+    "kakao-phone",
+    "naver-phone",
+    "naver-callback",
+    "social-terms"
   ],
   "primaryFeature": "supabase",
   "features": {
@@ -68,9 +73,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:15.814Z",
-        "lastUpdated": "2026-04-09T06:04:32.298Z"
+        "lastUpdated": "2026-04-14T07:47:31.494Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/layout.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/proxy.ts"
     },
     "auth": {
       "phase": "do",
@@ -94,9 +99,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:30.834Z",
-        "lastUpdated": "2026-03-25T09:15:23.248Z"
+        "lastUpdated": "2026-04-14T08:27:09.479Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/auth/naver/callback/route.ts"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/auth/callback/route.ts"
     },
     "login": {
       "phase": "do",
@@ -107,7 +112,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:39.589Z",
-        "lastUpdated": "2026-04-14T01:42:26.392Z"
+        "lastUpdated": "2026-04-14T08:58:20.437Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/login/page.tsx"
     },
@@ -120,9 +125,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:46.801Z",
-        "lastUpdated": "2026-03-30T05:52:58.174Z"
+        "lastUpdated": "2026-04-14T07:47:01.840Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/signup/page.tsx"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/signup/page.tsx"
     },
     "dashboard": {
       "phase": "do",
@@ -393,7 +398,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T05:16:03.514Z",
-        "lastUpdated": "2026-04-14T05:52:53.232Z"
+        "lastUpdated": "2026-04-14T07:04:16.882Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/Footer/Footer.tsx"
     },
@@ -578,6 +583,71 @@
         "lastUpdated": "2026-04-13T01:18:42.374Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/components/FlagIcon/FlagIcon.tsx"
+    },
+    "kakao-complete": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T07:14:32.372Z",
+        "lastUpdated": "2026-04-14T08:04:59.317Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/auth/kakao-complete/route.ts"
+    },
+    "kakao-phone": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T07:14:59.737Z",
+        "lastUpdated": "2026-04-14T08:32:16.547Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/kakao-phone/page.tsx"
+    },
+    "naver-phone": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T07:23:54.469Z",
+        "lastUpdated": "2026-04-14T08:11:54.860Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/naver-phone/page.tsx"
+    },
+    "naver-callback": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T07:45:50.420Z",
+        "lastUpdated": "2026-04-14T08:27:21.828Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/naver-callback/page.tsx"
+    },
+    "social-terms": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T07:46:30.254Z",
+        "lastUpdated": "2026-04-14T07:46:30.254Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/social-terms/page.tsx"
     }
   },
   "pipeline": {
@@ -588,7 +658,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-14T05:52:53.232Z"
+    "lastActivity": "2026-04-14T08:58:20.437Z"
   },
   "history": [
     {
@@ -5244,6 +5314,288 @@
     {
       "timestamp": "2026-04-14T05:52:53.232Z",
       "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:02:25.393Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:03:19.399Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:04:16.882Z",
+      "feature": "Footer",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:14:11.514Z",
+      "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:14:19.448Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:14:32.372Z",
+      "feature": "kakao-complete",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:14:59.737Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:22:58.920Z",
+      "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:23:04.470Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:23:18.258Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:23:25.238Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:23:54.469Z",
+      "feature": "naver-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:45:50.420Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:45:59.083Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:46:05.031Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:46:30.254Z",
+      "feature": "social-terms",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:46:49.582Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:46:52.941Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:46:56.116Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:47:01.840Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:47:05.578Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:47:12.983Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:47:31.494Z",
+      "feature": "korhrdabroad",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:48:49.897Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:53:52.513Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:59:17.349Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T07:59:30.450Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:01:07.624Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:01:44.242Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:02:26.766Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:04:59.317Z",
+      "feature": "kakao-complete",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:11:36.701Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:11:39.772Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:11:44.661Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:11:47.956Z",
+      "feature": "naver-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:11:50.765Z",
+      "feature": "naver-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:11:54.860Z",
+      "feature": "naver-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:12:20.033Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:12:24.463Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:27:09.479Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:27:16.241Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:27:21.828Z",
+      "feature": "naver-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:31:57.161Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:32:02.554Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:32:11.409Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:32:16.547Z",
+      "feature": "kakao-phone",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T08:58:20.437Z",
+      "feature": "login",
       "phase": "do",
       "action": "updated"
     }

@@ -12,8 +12,9 @@ export default function Footer() {
   return (
     <footer className={styles.footer} data-bottom-bar={hasBottomBar ? 'true' : undefined}>
       <p className={styles.company}>한평생그룹</p>
-      <p className={styles.info}>대표 양병웅 ｜ 사업자등록번호 227-88-03196</p>
-      <p className={styles.info}>서울시 도봉구 창동 마들로13길 61 씨드큐브 905호</p>
+      <p className={styles.info}>대표 양병웅 ｜ 사업자등록번호 227-88-03196 ｜ 통신판매업 2024-서울도봉-0983</p>
+      <p className={styles.info}>서울특별시 도봉구 마들로13길 61, 씨드큐브 창동 B동 9층 905, 906호</p>
+      <p className={styles.info}>전자우편주소 : korhrdpartners@naver.com</p>
       <p className={styles.info}>
         <a href="/terms" className={styles.link}>이용약관</a>
         {' ｜ '}

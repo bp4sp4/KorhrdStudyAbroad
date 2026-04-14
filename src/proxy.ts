@@ -86,11 +86,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // 로그인한 사용자가 /login, /signup 접근 시
+  // 로그인한 사용자가 /login, /signup 접근 시 (소셜 약관동의 플로우 제외)
   const authRoutes = ['/login', '/signup']
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route))
+  const isSocialSignup = pathname === '/signup' && request.nextUrl.searchParams.has('provider')
 
-  if (isAuthRoute && user) {
+  if (isAuthRoute && user && !isSocialSignup) {
     const url = request.nextUrl.clone()
     url.pathname = '/'
     return NextResponse.redirect(url)
