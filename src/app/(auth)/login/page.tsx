@@ -56,20 +56,11 @@ export default function LoginPage() {
             type="button"
             onClick={handleKakaoLogin}
             className={styles.kakao_button}
-            style={{ display: 'none' }}
           >
             <KakaoIcon />
             카카오로 시작하기
           </button>
-          <button
-            type="button"
-            onClick={handleNaverLogin}
-            className={styles.naver_button}
-            style={{ display: 'none' }}
-          >
-            <NaverIcon />
-            네이버로 시작하기
-          </button>
+          {/* 네이버 로그인 임시 숨김 */}
           <Link href="/login/email" className={styles.email_button}>
             <EmailIcon />
             로그인

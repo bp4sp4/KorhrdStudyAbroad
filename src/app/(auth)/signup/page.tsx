@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './terms.module.css'
 import { termsData } from '../../(main)/terms/termsData'
 import { privacyData } from '../../(main)/privacy/privacyData'
@@ -39,8 +39,10 @@ const ChevronIcon = ({ up }: { up: boolean }) => (
   </svg>
 )
 
-export default function SignupTermsPage() {
+function SignupTermsForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const provider = searchParams.get('provider')
   const [checked, setChecked] = useState<Record<string, boolean>>({ service: false, privacy: false, age: false })
   const [expanded, setExpanded] = useState<Record<string, boolean>>({ service: false, privacy: false, age: false })
 
@@ -103,11 +105,23 @@ export default function SignupTermsPage() {
         <button
           className={styles.next_btn}
           disabled={!requiredChecked}
-          onClick={() => router.push('/signup/phone')}
+          onClick={() => {
+            if (provider === 'kakao') router.push('/kakao-phone')
+            else if (provider === 'naver') router.push('/naver-phone')
+            else router.push('/signup/phone')
+          }}
         >
           다음
         </button>
       </div>
     </div>
+  )
+}
+
+export default function SignupTermsPage() {
+  return (
+    <Suspense>
+      <SignupTermsForm />
+    </Suspense>
   )
 }

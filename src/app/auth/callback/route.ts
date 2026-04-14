@@ -10,6 +10,37 @@ export async function GET(request: Request) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
+      const { data: { user } } = await supabase.auth.getUser()
+
+      // 카카오 로그인
+      if (user?.app_metadata?.provider === 'kakao') {
+        // profiles 테이블에 phone이 있으면 가입 완료된 유저
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('phone')
+          .eq('id', user.id)
+          .single()
+
+        if (!profile?.phone) {
+          return NextResponse.redirect(`${origin}/signup?provider=kakao`)
+        }
+        return NextResponse.redirect(`${origin}/`)
+      }
+
+      // 네이버 로그인
+      if (user?.user_metadata?.provider === 'naver') {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('phone')
+          .eq('id', user.id)
+          .single()
+
+        if (!profile?.phone) {
+          return NextResponse.redirect(`${origin}/naver-phone`)
+        }
+        return NextResponse.redirect(`${origin}/`)
+      }
+
       return NextResponse.redirect(`${origin}${next}`)
     }
   }
