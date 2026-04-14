@@ -18,7 +18,7 @@ export default function PolicyLayout({ children }: PolicyLayoutProps) {
         <div className={styles.title_row}>
           <h1 className={styles.page_title}>서비스 정책</h1>
           <select className={styles.version_select} defaultValue="current">
-            <option value="current">2026.01.29 서비스 시행문서 (최신)</option>
+            <option value="current">2026.04.14 서비스 시행문서 (최신)</option>
           </select>
         </div>
 
