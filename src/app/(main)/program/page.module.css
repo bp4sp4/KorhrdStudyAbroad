@@ -307,6 +307,11 @@ line-height: 25.2px; /* 140% */
   display: none;
 }
 
+/* 모바일 카드 뷰 (기본: 숨김) */
+.mobile_cards {
+  display: none;
+}
+
 /* ── 태블릿 (1024px ~ 1399px) ── */
 @media (min-width: 1024px) and (max-width: 1399px) {
   .hero {
@@ -445,32 +450,177 @@ line-height: 25.2px; /* 140% */
   }
 
   .table_wrap {
+    display: none;
+  }
+
+  .mobile_cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
     width: 100%;
-    max-width: 100%;
+  }
+
+  .program_card {
+    display: flex;
+    width: 327px;
+    height: 327px;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-radius: 12px;
+    border: 1px solid var(--Atomic-Mono-200, #E4E4E4);
+    background: var(--Atomic-Common-White, #FFF);
+    box-sizing: border-box;
+  }
+
+  .card_title_area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card_title {
+    color: var(--Atomic-Mono-900, #010101);
+    font-family: Pretendard, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+  }
+
+  .card_top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
     align-self: stretch;
-    min-width: 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
-  .table_grid {
-  width: 926px;
-    grid-template-columns: 95px 85px 85px 160px 120px 175px auto;
+  .card_bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
   }
 
-  .td{
-    padding: 12px;
-    font-size : 12px;
+  .card_tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 
-  .th {
+  .card_tag {
+    display: flex;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 999px;
+    background: var(--Atomic-Blue-50, #E5EDFF);
+    color: var(--Atomic-Mono-900, #010101);
+    font-family: Pretendard, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16.8px;
+  }
+
+  .card_info_row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 8px;
+    align-self: stretch;
+  }
+
+  .card_info_price_box {
+    display: flex;
+    width: 120.5px;
+    min-height: 71px;
+    padding: 10px 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: var(--Atomic-Mono-100, #F2F2F2);
+  }
+
+  .card_info_schedule_box {
+    display: flex;
+    padding: 10px 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 1 0 0;
+    border-radius: 6px;
+    background: var(--Atomic-Mono-100, #F2F2F2);
+  }
+
+  .card_info_price {
+    color: var(--Atomic-Mono-800, #1D1D1D);
+    font-family: Pretendard, sans-serif;
     font-size: 14px;
+    font-weight: 700;
+    line-height: 19.6px;
   }
 
-  .table_grid .td:last-child,
-  .table_grid .td_last_col {
-    word-break: keep-all;
-    overflow-wrap: break-word;
+  .card_info_note {
+    color: var(--Atomic-Mono-600, #656565);
+    font-family: Pretendard, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16.8px;
+  }
+
+  .card_info_schedule {
+    color: var(--Atomic-Mono-800, #1D1D1D);
+    font-family: Pretendard, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
+  }
+
+  .card_composition_box {
+    display: flex;
+    padding: 10px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    border-radius: 6px;
+    background: #F4F8FF;
+  }
+
+  .card_composition_title {
+    color: var(--Atomic-Mono-900, #010101);
+    font-family: Pretendard, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19.6px;
+    margin-bottom: 2px;
+  }
+
+  .card_composition_item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .card_composition_item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .card_composition_text {
+    color: var(--Atomic-Mono-800, #1D1D1D);
+    font-family: Pretendard, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16.8px;
   }
 
   .reason_section {

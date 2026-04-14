@@ -2,6 +2,94 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import HeroConsultButton from '../HeroConsultButton'
 
+type ProgramCard = {
+  flag: string
+  title: string
+  tags: string[]
+  price: string
+  priceNote?: string
+  schedules: string[]
+  composition: string[]
+}
+
+const PROGRAM_CARDS: ProgramCard[] = [
+  {
+    flag: '/main/program/philippines 1.png',
+    title: '필리핀 세부 4주',
+    tags: ['초2~중3', '🐥 나홀로'],
+    price: '450만원',
+    priceNote: '신청비 10만원',
+    schedules: ['26.06.08~26.07.03(4주)', '26.07.06~26.07.31(4주)', '26.08.03~26.08.28(4주)'],
+    composition: ['1:1 수업 집중', '소그룹 수업', '아시아 학생 연합캠프', '액티비티'],
+  },
+  {
+    flag: '/main/program/united-states 1.png',
+    title: '미국 뉴저지 3주',
+    tags: ['초3~고3', '🐥 나홀로'],
+    price: '920만원',
+    schedules: ['26.07.12~26.07.30(3주)'],
+    composition: ['명문 공립학교 캠프 프로그램'],
+  },
+  {
+    flag: '/main/program/canada 1.png',
+    title: '캐나다 밴쿠버-써리 4주',
+    tags: ['초5~중2', '🐥 나홀로'],
+    price: '약 1,440만원',
+    priceNote: '* $9,750',
+    schedules: ['26.07.19~26.08.13(4주)'],
+    composition: ['명문 사립학교 캠프', '현지학생과 버디', '캐나다 로키 여행', '홈스테이'],
+  },
+  {
+    flag: '/main/program/united-kingdom 1.png',
+    title: '영국 4주',
+    tags: ['초4~고2', '🐥 나홀로'],
+    price: '1,065만원',
+    schedules: ['26.07.17~26.08.15(4주)'],
+    composition: ['영국 보딩스쿨 캠프', '유럽여행'],
+  },
+  {
+    flag: '/main/program/new-zealand 1.png',
+    title: '뉴질랜드 오클랜드 4주',
+    tags: ['초5~중1', '🐥 나홀로'],
+    price: '835만원',
+    schedules: ['26.07.17~26.08.15(4주)'],
+    composition: ['뉴질랜드 공립 스쿨링 프로그램'],
+  },
+  {
+    flag: '/main/program/new-zealand 1.png',
+    title: '뉴질랜드 해밀턴 4주',
+    tags: ['초1~중3', '🐥 나홀로', '👫 부모동반'],
+    price: '800만원',
+    priceNote: '*부모동반 690만원',
+    schedules: ['26.07.19~26.08.15(4주)'],
+    composition: ['현지 공립학교 수업 참여', '엄선된 현지인 가정 홈스테이', '방과후 활동들', '주말문화탐방여행'],
+  },
+  {
+    flag: '/main/program/new-zealand 1.png',
+    title: '뉴질랜드 해밀턴 3주',
+    tags: ['초1~중3', '🐥 나홀로', '👫 부모동반'],
+    price: '600만원',
+    priceNote: '*부모동반 530만원',
+    schedules: ['26.07.26~26.08.15(3주)'],
+    composition: ['현지 공립학교 수업 참여', '엄선된 현지인 가정 홈스테이', '방과후 활동들', '주말문화탐방여행'],
+  },
+  {
+    flag: '/main/program/new-zealand 1.png',
+    title: '뉴질랜드 해밀턴 10주',
+    tags: ['초1~중3', '🐥 나홀로', '👫 부모동반'],
+    price: '1,600만원',
+    priceNote: '*부모동반 1,270만원',
+    schedules: ['26.07.19~26.09.26(10주)'],
+    composition: ['현지 공립학교 수업 참여', '엄선된 현지인 가정 홈스테이', '방과후 활동들', '주말문화탐방여행'],
+  },
+]
+
+const CheckIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path fillRule="evenodd" clipRule="evenodd" d="M12.5741 2.98139C12.7381 3.14548 12.8302 3.368 12.8302 3.60002C12.8302 3.83204 12.7381 4.05456 12.5741 4.21864L6.01563 10.7771C5.92896 10.8638 5.82606 10.9325 5.71281 10.9794C5.59956 11.0264 5.47818 11.0505 5.35559 11.0505C5.23301 11.0505 5.11162 11.0264 4.99837 10.9794C4.88512 10.9325 4.78222 10.8638 4.69555 10.7771L1.43705 7.51915C1.35348 7.43843 1.28682 7.34188 1.24096 7.23512C1.1951 7.12837 1.17096 7.01355 1.16995 6.89737C1.16895 6.78119 1.19108 6.66597 1.23508 6.55843C1.27908 6.4509 1.34405 6.35321 1.4262 6.27105C1.50836 6.18889 1.60606 6.12392 1.71359 6.07993C1.82112 6.03593 1.93634 6.01379 2.05253 6.0148C2.16871 6.01581 2.28352 6.03995 2.39028 6.08581C2.49703 6.13166 2.59358 6.19832 2.6743 6.28189L5.3553 8.9629L11.3362 2.98139C11.4175 2.90008 11.514 2.83558 11.6202 2.79157C11.7264 2.74757 11.8402 2.72491 11.9551 2.72491C12.0701 2.72491 12.1839 2.74757 12.2901 2.79157C12.3963 2.83558 12.4928 2.90008 12.5741 2.98139Z" fill="#2469FF" />
+  </svg>
+)
+
 export default function ProgramPage() {
   return (
     <main>
@@ -109,6 +197,47 @@ export default function ProgramPage() {
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_no_bottom} ${styles.td_left}`}>현지 공립학교 수업 참여 + 엄선된 현지인 가정 홈스테이 + 방과후 활동들 + 주말문화탐방여행</div>
 
           </div>
+        </div>
+
+        {/* 모바일 카드 뷰 */}
+        <div className={styles.mobile_cards}>
+          {PROGRAM_CARDS.map((card) => (
+            <div key={card.title} className={styles.program_card}>
+              <div className={styles.card_top}>
+                <div className={styles.card_title_area}>
+                  <Image src={card.flag} alt="" width={22} height={22} style={{ objectFit: 'contain' }} />
+                  <span className={styles.card_title}>{card.title}</span>
+                </div>
+                <div className={styles.card_tags}>
+                  {card.tags.map((tag) => (
+                    <span key={tag} className={styles.card_tag}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+              <div className={styles.card_bottom}>
+                <div className={styles.card_info_row}>
+                  <div className={styles.card_info_price_box}>
+                    <span className={styles.card_info_price}>{card.price}</span>
+                    {card.priceNote && <span className={styles.card_info_note}>{card.priceNote}</span>}
+                  </div>
+                  <div className={styles.card_info_schedule_box}>
+                    {card.schedules.map((s) => (
+                      <span key={s} className={styles.card_info_schedule}>{s}</span>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.card_composition_box}>
+                  <span className={styles.card_composition_title}>프로그램 구성</span>
+                  {card.composition.map((item) => (
+                    <div key={item} className={styles.card_composition_item}>
+                      <CheckIcon />
+                      <span className={styles.card_composition_text}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
