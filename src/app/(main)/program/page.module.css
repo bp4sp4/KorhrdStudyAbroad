@@ -536,7 +536,7 @@ line-height: 25.2px; /* 140% */
 
   .card_info_price_box {
     display: flex;
-    width: 120.5px;
+    width: 122px;
     min-height: 71px;
     padding: 10px 12px;
     flex-direction: column;
