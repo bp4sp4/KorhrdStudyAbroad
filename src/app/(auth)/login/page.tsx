@@ -56,6 +56,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleKakaoLogin}
             className={styles.kakao_button}
+            style={{ display: 'none' }}
           >
             <KakaoIcon />
             카카오로 시작하기
@@ -64,6 +65,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleNaverLogin}
             className={styles.naver_button}
+            style={{ display: 'none' }}
           >
             <NaverIcon />
             네이버로 시작하기
