@@ -100,6 +100,8 @@ export default function MyPage() {
   const [payments, setPayments] = useState<Payment[]>([])
   const [loadingPayments, setLoadingPayments] = useState(false)
   const [toast, setToast] = useState('')
+  const [showWithdrawConfirm, setShowWithdrawConfirm] = useState(false)
+  const [withdrawing, setWithdrawing] = useState(false)
 
   const showToast = (msg: string) => {
     setToast(msg)
@@ -176,6 +178,21 @@ export default function MyPage() {
     await supabase.from('profiles').update({ full_name: fullName, phone }).eq('id', userId)
     setSavingProfile(false)
     showToast('회원 정보가 저장되었습니다.')
+  }
+
+  const handleWithdraw = async () => {
+    setWithdrawing(true)
+    const res = await fetch('/api/auth/delete-account', { method: 'DELETE' })
+    const data = await res.json()
+    if (data.success) {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      window.location.href = '/'
+    } else {
+      setWithdrawing(false)
+      setShowWithdrawConfirm(false)
+      showToast('탈퇴 처리에 실패했습니다.')
+    }
   }
 
   const isPasswordValid = password.length >= 8
@@ -346,8 +363,23 @@ export default function MyPage() {
             </button>
 
             <div className={styles.btn_row_withdraw}>
-              <button className={styles.btn_withdraw}>탈퇴하기</button>
+              <button className={styles.btn_withdraw} onClick={() => setShowWithdrawConfirm(true)}>탈퇴하기</button>
             </div>
+
+            {showWithdrawConfirm && (
+              <div className={styles.confirm_overlay}>
+                <div className={styles.confirm_box}>
+                  <p className={styles.confirm_title}>정말 탈퇴하시겠어요?</p>
+                  <p className={styles.confirm_desc}>탈퇴 시 모든 정보가 삭제되며 복구할 수 없습니다.</p>
+                  <div className={styles.confirm_btns}>
+                    <button className={styles.confirm_cancel} onClick={() => setShowWithdrawConfirm(false)} disabled={withdrawing}>취소</button>
+                    <button className={styles.confirm_ok} onClick={handleWithdraw} disabled={withdrawing}>
+                      {withdrawing ? '처리 중...' : '탈퇴하기'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
           </div>
         )}
