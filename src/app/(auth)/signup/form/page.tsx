@@ -57,9 +57,7 @@ function SignupForm() {
       setLoading(false)
       return
     }
-    setError('회원가입이 완료되었습니다!')
-    setShowModal(true)
-    setTimeout(() => router.push('/login'), 1500)
+    router.push('/signup/success')
   }
 
   const FIELDS = [
