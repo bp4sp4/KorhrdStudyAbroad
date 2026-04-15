@@ -29,12 +29,8 @@ const PersonIcon = () => (
 )
 
 export default function LoginPage() {
-  const handleKakaoLogin = async () => {
-    const supabase = createClient()
-    await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
-    })
+  const handleKakaoLogin = () => {
+    window.location.href = '/api/auth/kakao'
   }
 
   const handleNaverLogin = () => {
@@ -52,7 +48,14 @@ export default function LoginPage() {
         </div>
 
         <div className={styles.social_buttons}>
-          {/* 카카오 로그인 임시 숨김 */}
+          <button
+            type="button"
+            onClick={handleKakaoLogin}
+            className={styles.kakao_button}
+          >
+            <KakaoIcon />
+            카카오로 시작하기
+          </button>
           {/* 네이버 로그인 임시 숨김 */}
           <Link href="/login/email" className={styles.email_button}>
             <EmailIcon />
