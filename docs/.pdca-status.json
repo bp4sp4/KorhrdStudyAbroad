@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-15T01:27:12.423Z",
+  "lastUpdated": "2026-04-15T01:32:24.346Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -115,7 +115,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:39.589Z",
-        "lastUpdated": "2026-04-14T09:53:21.587Z"
+        "lastUpdated": "2026-04-15T01:32:24.346Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/login/page.tsx"
     },
@@ -700,7 +700,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-15T01:27:12.423Z"
+    "lastActivity": "2026-04-15T01:32:24.346Z"
   },
   "history": [
     {
@@ -5782,6 +5782,24 @@
     {
       "timestamp": "2026-04-15T01:27:12.423Z",
       "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:32:15.517Z",
+      "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:32:19.433Z",
+      "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:32:24.346Z",
+      "feature": "login",
       "phase": "do",
       "action": "updated"
     }

@@ -1,7 +1,7 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
 import styles from '../auth.module.css'
 
 const KakaoIcon = () => (
@@ -29,7 +29,10 @@ const PersonIcon = () => (
 )
 
 export default function LoginPage() {
+  const [kakaoLoading, setKakaoLoading] = useState(false)
+
   const handleKakaoLogin = () => {
+    setKakaoLoading(true)
     window.location.href = '/api/auth/kakao'
   }
 
@@ -52,9 +55,14 @@ export default function LoginPage() {
             type="button"
             onClick={handleKakaoLogin}
             className={styles.kakao_button}
+            disabled={kakaoLoading}
           >
-            <KakaoIcon />
-            카카오로 시작하기
+            {kakaoLoading ? (
+              <span className={styles.kakao_spinner} />
+            ) : (
+              <KakaoIcon />
+            )}
+            {kakaoLoading ? '카카오 연결 중...' : '카카오로 시작하기'}
           </button>
           {/* 네이버 로그인 임시 숨김 */}
           <Link href="/login/email" className={styles.email_button}>
