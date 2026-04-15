@@ -65,9 +65,7 @@ export async function GET(request: NextRequest) {
       .eq('email', userEmail)
       .single()
 
-    if (existingProfile) {
-      // 기존 유저: 로그인 처리만
-    } else {
+    if (!existingProfile) {
       // 신규 유저 생성
       const { data: newUserData, error: createError } = await admin.auth.admin.createUser({
         email: userEmail,
@@ -83,19 +81,23 @@ export async function GET(request: NextRequest) {
         throw new Error(`Failed to create user: ${createError.message}`)
       }
 
-      const newUserId = newUserData?.user?.id
-      if (newUserId && phone) {
-        // 프로필 바로 생성 (약관동의 페이지 생략)
+      // createUser 반환값 or 이미 있는 유저 이메일로 조회
+      let userId = newUserData?.user?.id
+      if (!userId) {
+        const { data: { users } } = await admin.auth.admin.listUsers({ perPage: 1000 })
+        userId = users.find((u) => u.email === userEmail)?.id
+      }
+
+      if (userId && phone) {
         await admin.from('profiles').upsert({
-          id: newUserId,
+          id: userId,
           email: userEmail,
           full_name: userName,
           phone,
           login_provider: 'kakao',
         }, { onConflict: 'id' })
 
-        // phone_verified 저장
-        await admin.auth.admin.updateUserById(newUserId, {
+        await admin.auth.admin.updateUserById(userId, {
           user_metadata: {
             full_name: userName,
             provider: 'kakao',
