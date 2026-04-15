@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import styles from './terms.module.css'
 import { termsData } from '../../(main)/terms/termsData'
 import { privacyData } from '../../(main)/privacy/privacyData'
@@ -45,6 +46,8 @@ function SignupTermsForm() {
   const provider = searchParams.get('provider')
   const [checked, setChecked] = useState<Record<string, boolean>>({ service: false, privacy: false, age: false })
   const [expanded, setExpanded] = useState<Record<string, boolean>>({ service: false, privacy: false, age: false })
+  const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
 
   const allChecked = TERMS.every((t) => checked[t.id])
   const requiredChecked = TERMS.filter((t) => t.required).every((t) => checked[t.id])
@@ -102,16 +105,51 @@ function SignupTermsForm() {
           </div>
         ))}
 
+        {done && (
+          <div className={styles.done_overlay}>
+            <div className={styles.done_box}>
+              <div className={styles.done_icon}>✓</div>
+              <p className={styles.done_title}>회원가입이 완료되었습니다!</p>
+              <p className={styles.done_sub}>잠시 후 메인 페이지로 이동합니다.</p>
+            </div>
+          </div>
+        )}
+
         <button
           className={styles.next_btn}
-          disabled={!requiredChecked}
-          onClick={() => {
-            if (provider === 'kakao') router.push('/kakao-phone')
-            else if (provider === 'naver') router.push('/naver-phone')
-            else router.push('/signup/phone')
+          disabled={!requiredChecked || loading}
+          onClick={async () => {
+            if (provider === 'kakao') {
+              setLoading(true)
+              const supabase = createClient()
+              const { data: { user } } = await supabase.auth.getUser()
+              const rawPhone = user?.user_metadata?.phone_number || ''
+              const digits = rawPhone.replace(/[^0-9]/g, '')
+              const phone = digits.startsWith('82') ? '0' + digits.slice(2) : digits
+              if (phone) {
+                const res = await fetch('/api/auth/kakao-complete', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ phone }),
+                })
+                const data = await res.json()
+                setLoading(false)
+                if (data.success) {
+                  setDone(true)
+                  setTimeout(() => router.push('/'), 2000)
+                  return
+                }
+              }
+              setLoading(false)
+              router.push('/kakao-phone')
+            } else if (provider === 'naver') {
+              router.push('/naver-phone')
+            } else {
+              router.push('/signup/phone')
+            }
           }}
         >
-          다음
+          {loading ? '처리 중...' : '다음'}
         </button>
       </div>
     </div>

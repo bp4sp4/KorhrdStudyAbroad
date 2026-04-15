@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-14T09:49:19.818Z",
+  "lastUpdated": "2026-04-15T01:11:38.787Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -47,7 +47,9 @@
     "kakao-phone",
     "naver-phone",
     "naver-callback",
-    "social-terms"
+    "social-terms",
+    "kakao",
+    "kakao-callback"
   ],
   "primaryFeature": "supabase",
   "features": {
@@ -99,9 +101,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:30.834Z",
-        "lastUpdated": "2026-04-14T08:27:09.479Z"
+        "lastUpdated": "2026-04-15T01:11:38.787Z"
       },
-      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/auth/callback/route.ts"
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/auth/kakao/callback/route.ts"
     },
     "login": {
       "phase": "do",
@@ -112,7 +114,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:39.589Z",
-        "lastUpdated": "2026-04-14T09:49:19.818Z"
+        "lastUpdated": "2026-04-14T09:53:21.587Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/login/page.tsx"
     },
@@ -125,7 +127,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-25T05:18:46.801Z",
-        "lastUpdated": "2026-04-14T09:26:36.321Z"
+        "lastUpdated": "2026-04-14T09:53:12.299Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/signup/page.tsx"
     },
@@ -648,6 +650,32 @@
         "lastUpdated": "2026-04-14T07:46:30.254Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/social-terms/page.tsx"
+    },
+    "kakao": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T09:52:21.481Z",
+        "lastUpdated": "2026-04-14T09:52:21.481Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/auth/kakao/route.ts"
+    },
+    "kakao-callback": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-14T09:52:54.308Z",
+        "lastUpdated": "2026-04-14T09:52:54.309Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/kakao-callback/page.tsx"
     }
   },
   "pipeline": {
@@ -658,7 +686,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-14T09:49:19.818Z"
+    "lastActivity": "2026-04-15T01:11:38.787Z"
   },
   "history": [
     {
@@ -5638,6 +5666,78 @@
     {
       "timestamp": "2026-04-14T09:49:19.818Z",
       "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:52:21.481Z",
+      "feature": "kakao",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:52:37.852Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:52:54.309Z",
+      "feature": "kakao-callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:52:58.834Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:53:03.024Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:53:12.299Z",
+      "feature": "signup",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:53:17.197Z",
+      "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-14T09:53:21.587Z",
+      "feature": "login",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:02:56.430Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:05:08.327Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:11:12.951Z",
+      "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:11:38.787Z",
+      "feature": "callback",
       "phase": "do",
       "action": "updated"
     }
