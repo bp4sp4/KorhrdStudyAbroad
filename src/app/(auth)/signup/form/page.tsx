@@ -57,7 +57,7 @@ function SignupForm() {
       setLoading(false)
       return
     }
-    router.push('/signup/success')
+    window.location.href = '/signup/success'
   }
 
   const FIELDS = [
