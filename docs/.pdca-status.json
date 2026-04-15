@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-04-15T01:11:38.787Z",
+  "lastUpdated": "2026-04-15T01:27:12.423Z",
   "activeFeatures": [
     "supabase",
     "korhrdabroad",
@@ -49,7 +49,8 @@
     "naver-callback",
     "social-terms",
     "kakao",
-    "kakao-callback"
+    "kakao-callback",
+    "delete-account"
   ],
   "primaryFeature": "supabase",
   "features": {
@@ -439,7 +440,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-30T06:14:10.664Z",
-        "lastUpdated": "2026-04-08T08:54:16.825Z"
+        "lastUpdated": "2026-04-15T01:27:12.423Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(main)/mypage/page.tsx"
     },
@@ -676,6 +677,19 @@
         "lastUpdated": "2026-04-14T09:52:54.309Z"
       },
       "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/(auth)/kakao-callback/page.tsx"
+    },
+    "delete-account": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-04-15T01:23:45.260Z",
+        "lastUpdated": "2026-04-15T01:23:45.260Z"
+      },
+      "lastFile": "/Users/korhrd/Documents/GitHub/korhrdabroad/src/app/api/auth/delete-account/route.ts"
     }
   },
   "pipeline": {
@@ -686,7 +700,7 @@
   "session": {
     "startedAt": "2026-03-25T05:02:22.843Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-04-15T01:11:38.787Z"
+    "lastActivity": "2026-04-15T01:27:12.423Z"
   },
   "history": [
     {
@@ -5738,6 +5752,36 @@
     {
       "timestamp": "2026-04-15T01:11:38.787Z",
       "feature": "callback",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:23:45.260Z",
+      "feature": "delete-account",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:23:50.081Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:23:56.071Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:24:02.557Z",
+      "feature": "mypage",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-04-15T01:27:12.423Z",
+      "feature": "mypage",
       "phase": "do",
       "action": "updated"
     }
