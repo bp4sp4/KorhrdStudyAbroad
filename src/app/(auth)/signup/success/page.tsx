@@ -16,7 +16,7 @@ export default function SignupSuccessPage() {
 
         <div className={styles.btn_row}>
           <Link href="/" className={styles.btn_home}>홈으로 돌아가기</Link>
-          <Link href="/apply" className={styles.btn_apply}>프로그램 알아보기</Link>
+          <Link href="/program" className={styles.btn_apply}>프로그램 알아보기</Link>
         </div>
       </div>
     </div>
