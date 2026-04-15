@@ -64,7 +64,14 @@ export default function LoginPage() {
             )}
             {kakaoLoading ? '카카오 연결 중...' : '카카오로 시작하기'}
           </button>
-          {/* 네이버 로그인 임시 숨김 */}
+          <button
+            type="button"
+            onClick={handleNaverLogin}
+            className={styles.naver_button}
+          >
+            <NaverIcon />
+            네이버로 시작하기
+          </button>
           <Link href="/login/email" className={styles.email_button}>
             <EmailIcon />
             로그인

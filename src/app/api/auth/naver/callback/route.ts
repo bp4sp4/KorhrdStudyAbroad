@@ -79,6 +79,7 @@ export async function GET(request: NextRequest) {
           avatar_url: naverUser.profile_image,
           provider: 'naver',
           phone_number: naverUser.mobile || '',
+          phone_verified: true,
         },
       })
 
@@ -89,6 +90,30 @@ export async function GET(request: NextRequest) {
         }
       } else if (!newUser.user) {
         throw new Error('User creation returned empty')
+      }
+
+      // 네이버에서 제공한 번호로 profiles에 바로 저장
+      const naverPhone = naverUser.mobile || ''
+      const digits = naverPhone.replace(/[^0-9]/g, '')
+      const normalizedPhone = digits.startsWith('82') ? '0' + digits.slice(2) : digits
+
+      if (normalizedPhone) {
+        // 유저 ID 확인 (신규 생성 또는 기존 유저)
+        let userId = newUser?.user?.id
+        if (!userId) {
+          const { data: existingAuth } = await supabaseAdmin.auth.admin.listUsers()
+          const found = existingAuth?.users?.find((u) => u.email === userEmail)
+          userId = found?.id
+        }
+        if (userId) {
+          await supabaseAdmin.from('profiles').upsert({
+            id: userId,
+            email: userEmail,
+            full_name: naverUser.name || naverUser.nickname || null,
+            phone: normalizedPhone,
+            login_provider: 'naver',
+          }, { onConflict: 'id' })
+        }
       }
     }
 

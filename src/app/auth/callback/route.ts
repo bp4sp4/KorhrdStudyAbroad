@@ -27,17 +27,8 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/`)
       }
 
-      // 네이버 로그인
+      // 네이버 로그인 — 콜백에서 이미 프로필 저장 완료, 바로 메인
       if (user?.user_metadata?.provider === 'naver') {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('phone')
-          .eq('id', user.id)
-          .single()
-
-        if (!profile?.phone) {
-          return NextResponse.redirect(`${origin}/naver-phone`)
-        }
         return NextResponse.redirect(`${origin}/`)
       }
 

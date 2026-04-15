@@ -143,6 +143,27 @@ function SignupTermsForm() {
               setLoading(false)
               router.push('/kakao-phone')
             } else if (provider === 'naver') {
+              setLoading(true)
+              const supabase = createClient()
+              const { data: { user } } = await supabase.auth.getUser()
+              const rawPhone = user?.user_metadata?.phone_number || ''
+              const digits = rawPhone.replace(/[^0-9]/g, '')
+              const phone = digits.startsWith('82') ? '0' + digits.slice(2) : digits
+              if (phone) {
+                const res = await fetch('/api/auth/kakao-complete', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ phone }),
+                })
+                const data = await res.json()
+                setLoading(false)
+                if (data.success) {
+                  setDone(true)
+                  setTimeout(() => router.push('/'), 2000)
+                  return
+                }
+              }
+              setLoading(false)
               router.push('/naver-phone')
             } else {
               router.push('/signup/phone')
