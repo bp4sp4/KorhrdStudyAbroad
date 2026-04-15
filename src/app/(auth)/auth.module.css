@@ -354,6 +354,25 @@
   background-color: #F0D900;
 }
 
+.kakao_button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.kakao_spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(60, 30, 30, 0.3);
+  border-top-color: #3C1E1E;
+  border-radius: 50%;
+  animation: kakao_spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes kakao_spin {
+  to { transform: rotate(360deg); }
+}
+
 .naver_button {
   background-color: #03C75A;
   color: #fff;
