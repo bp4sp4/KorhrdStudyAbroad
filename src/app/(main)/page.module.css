@@ -1260,3 +1260,72 @@ aspect-ratio: 1/1;
   text-align: center;
   padding: 20px 0;
 }
+
+/* ── 모달 모바일 (480px 이하) ── */
+@media (max-width: 480px) {
+  .modal_box {
+    padding: 20px 16px;
+    border-radius: 12px;
+    max-height: 96vh;
+  }
+
+  .modal_header {
+    margin-bottom: 12px;
+  }
+
+  .modal_title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .modal_form {
+    gap: 8px;
+  }
+
+  .form_field {
+    gap: 4px;
+  }
+
+  .form_field_large {
+    height: 80px;
+    gap: 4px;
+  }
+
+  .form_label {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+  }
+
+  .form_required {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .form_input {
+    height: 30px;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .form_textarea {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .form_submit {
+    padding: 12px 16px;
+    font-size: 15px;
+    line-height: 18px;
+  }
+
+  .privacy_row {
+    gap: 4px;
+  }
+
+  .privacy_link,
+  .privacy_agree {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}

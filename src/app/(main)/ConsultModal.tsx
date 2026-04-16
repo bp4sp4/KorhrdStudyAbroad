@@ -76,7 +76,7 @@ export default function ConsultModal({ onClose, title = '간편상담신청', ty
               </div>
               <div className={styles.form_field}>
                 <label className={styles.form_label}>거주지역 <span className={styles.form_required}>*</span></label>
-                <input name="region" className={styles.form_input} type="text" placeholder="예) 서울시 도봉구" required />
+                <input name="region" className={styles.form_input} type="text" placeholder="예) 한평생시 유학구" required />
               </div>
               <div className={styles.form_field}>
                 <label className={styles.form_label}>희망 시작일 <span className={styles.form_required}>*</span></label>
