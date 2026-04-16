@@ -94,7 +94,7 @@ export default function ConsultForm({ onClose }: { onClose?: () => void } = {}) 
               <input
                 type="text"
                 className={styles.input}
-                placeholder="예) 서울시 도봉구"
+                placeholder="예) 한평생시 유학구"
                 value={formData.region}
                 onChange={(e) => setFormData({ ...formData, region: e.target.value })}
                 required
