@@ -12,7 +12,7 @@ export default function TermsPage() {
           <p className={styles.section_content} style={{ whiteSpace: 'pre-line' }}>{item.content}</p>
         </section>
       ))}
-      <p className={styles.effective_date}>시행일자: 2026년 1월 29일</p>
+      <p className={styles.effective_date}>시행일자: 2026년 4월 14일</p>
     </PolicyLayout>
   )
 }
