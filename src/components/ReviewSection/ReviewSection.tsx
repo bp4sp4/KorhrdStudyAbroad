@@ -30,9 +30,9 @@ const REVIEWS = [
 
 // 4카드 = 2행씩 배경 변경 (총 3그룹)
 const BG_IMAGES = [
-  '/main/review/review_background_01.png',
-  '/main/review/review_background_02.png',
-  '/main/review/review_background_03.png',
+  '/main/review/review_background_01.webp',
+  '/main/review/review_background_02.webp',
+  '/main/review/review_background_03.webp',
 ]
 
 // 카드 높이 425px + gap 24px = 449px/행, 1.5행 = 673px/그룹
