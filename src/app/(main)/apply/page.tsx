@@ -53,11 +53,11 @@ const NAV_ITEMS = [
 ]
 
 const PROGRAM_PRICES: Record<string, { amount: number; display: string }> = {
-  philippines_cebu_solo: { amount: 4500000, display: '4,500,000원' },
-  usa_newjersey_solo: { amount: 9200000, display: '9,200,000원' },
-  canada_vancouver_solo: { amount: 14400000, display: '14,400,000원' },
-  uk_solo: { amount: 10650000, display: '10,650,000원' },
-  nz_auckland_solo: { amount: 8350000, display: '8,350,000원' },
+  philippines_cebu_solo: { amount: 5300000, display: '5,300,000원' },
+  usa_newjersey_solo: { amount: 10600000, display: '10,600,000원' },
+  canada_vancouver_solo: { amount: 12120000, display: '12,120,000원' },
+  uk_solo: { amount: 12250000, display: '12,250,000원' },
+  nz_auckland_solo: { amount: 9600000, display: '9,600,000원' },
   nz_hamilton_solo_4w: { amount: 8000000, display: '8,000,000원' },
   nz_hamilton_parent_4w: { amount: 6900000, display: '6,900,000원' },
   nz_hamilton_solo_3w: { amount: 6000000, display: '6,000,000원' },

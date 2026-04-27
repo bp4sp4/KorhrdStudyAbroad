@@ -44,7 +44,7 @@ const PROGRAM_CARDS: ProgramCard[] = [
     title: '영국 4주',
     tags: ['초4~고2', '🐥 나홀로'],
     price: '1,065만원',
-    schedules: ['26.07.17~26.08.15(4주)'],
+    schedules: ['26.07.20~26.08.7(4주)'],
     composition: ['영국 보딩스쿨 캠프', '유럽여행'],
   },
   {
@@ -128,7 +128,7 @@ export default function ProgramPage() {
             </div>
             <div className={styles.td}>초2~중3</div>
             <div className={styles.td}>
-              450만원<br />
+              530만원<br />
               신청비 10만원
             </div>
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>1:1 수업 집중 + 소그룹 수업 + 아시아 학생 연합캠프 + 액티비티</div>
@@ -139,7 +139,7 @@ export default function ProgramPage() {
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.12~26.07.30(3주)</span></div>
             <div className={styles.td}>초3~고3</div>
-            <div className={styles.td}>920만원</div>
+            <div className={styles.td}>1060만원</div>
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>명문 공립학교 캠프 프로그램</div>
 
             {/* ── Row 3: 캐나다 ── */}
@@ -148,16 +148,16 @@ export default function ProgramPage() {
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.19~26.08.13(4주)</span></div>
             <div className={styles.td}>초5~중2</div>
-            <div className={styles.td}><span>약 1,440만원<br/><span className={styles.td_note}>* $9,750</span></span></div>
+            <div className={styles.td}><span>약 1,212만원<br/></span></div>
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>명문 사립학교 캠프 + 현지학생과 버디 + 캐나다 로키 여행 + 홈스테이</div>
 
             {/* ── Row 4: 영국 ── */}
             <div className={styles.td}><Image src="/main/program/united-kingdom 1.png" alt="" width={22} height={22} style={{ objectFit: 'contain' }} />영국</div>
             <div className={styles.td}>영국</div>
             <div className={styles.td}>🐥 나홀로</div>
-            <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.17~26.08.15(4주)</span></div>
+            <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.20~26.08.07(3주)</span></div>
             <div className={styles.td}>초4~고2</div>
-            <div className={styles.td}>1,065만원</div>
+            <div className={styles.td}>1,225만원</div>
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>영국 보딩스쿨 캠프 + 유럽여행</div>
 
             {/* ── Row 5: 뉴질랜드 오클랜드 ── */}
@@ -166,7 +166,7 @@ export default function ProgramPage() {
             <div className={styles.td}>🐥 나홀로</div>
             <div className={`${styles.td} ${styles.td_schedule}`}><span>26.07.17~26.08.15(4주)</span></div>
             <div className={styles.td}>초5~중1</div>
-            <div className={styles.td}>835만원</div>
+            <div className={styles.td}>960만원</div>
             <div className={`${styles.td} ${styles.td_last_col} ${styles.td_left}`}>뉴질랜드 공립 스쿨링 프로그램</div>
 
             {/* ── Row 6: 뉴질랜드 해밀턴 4주 ── */}
